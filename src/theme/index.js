@@ -1,6 +1,6 @@
 export const mainTheme = {
   token: {
-    fontFamily: "Poppins, sans-serif",
+    fontFamily: "Outfit, sans-serif",
   },
   components: {
     Menu: {
