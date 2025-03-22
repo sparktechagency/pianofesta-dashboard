@@ -3,7 +3,7 @@ import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { CgUnblock } from "react-icons/cg";
 import { MdBlock } from "react-icons/md";
-const AllUserTable = ({
+const AllBusinessUserTable = ({
   data,
   loading,
   showViewModal,
@@ -27,24 +27,24 @@ const AllUserTable = ({
       key: "name",
     },
     {
-      title: "Gender",
-      dataIndex: "gender", // Data key for memberType
-      key: "gender",
+      title: "Active Sponsorship",
+      dataIndex: "activeSponsorship", // Data key for name
+      key: "activeSponsorship",
     },
     {
-      title: "Email",
-      dataIndex: "email", // Data key for email
-      key: "email",
+      title: "Credit",
+      dataIndex: "credit", // Data key for memberType
+      key: "credit",
     },
     {
-      title: "Phone",
-      dataIndex: "phone", // Data key for phone
-      key: "phone",
+      title: "Event Created",
+      dataIndex: "eventCreated", // Data key for eventCreated
+      key: "eventCreated",
     },
     {
-      title: "Date of Birth",
-      dataIndex: "dateOfBirth", // Data key for dateOfBirth
-      key: "dateOfBirth",
+      title: "Job Posted ",
+      dataIndex: "jobPosted", // Data key for jobPosted
+      key: "jobPosted",
     },
     {
       title: "Action",
@@ -104,4 +104,4 @@ const AllUserTable = ({
   );
 };
 
-export default AllUserTable;
+export default AllBusinessUserTable;

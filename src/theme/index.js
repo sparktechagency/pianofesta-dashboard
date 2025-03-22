@@ -57,7 +57,7 @@ export const mainTheme = {
       headerSortActiveBg: "#6A0DADCC",
       headerSortHoverBg: "#6A0DADAA",
       colorBgContainer: "#F9FAFB",
-      colorText: "#262621",
+      colorText: "#6A0DAD",
       borderColor: "#6A0DAD",
       headerColor: "#F9FAFB",
       fontSize: 18,

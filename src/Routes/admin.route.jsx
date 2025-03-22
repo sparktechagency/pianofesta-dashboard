@@ -18,6 +18,7 @@ import AdminAllUsers from "../Pages/Admin/AdminAllUsers";
 import Profile from "../Pages/Common/settings/Profile";
 import PrivacyPolicy from "../Pages/Common/settings/PrivacyPolicy";
 import TermsOfService from "../Pages/Common/settings/TermsOfService";
+import AdminBusinessUser from "../Pages/Admin/AdminBusinessUser";
 
 export const adminPaths = [
   {
@@ -29,13 +30,19 @@ export const adminPaths = [
   },
   {
     name: "User Management",
-    icon: setting,
+    icon: users,
     children: [
       {
         key: "regular",
         path: "regular",
         element: <AdminAllUsers />,
         name: "Regular",
+      },
+      {
+        key: "business",
+        path: "business",
+        element: <AdminBusinessUser />,
+        name: "Business",
       },
     ],
   },

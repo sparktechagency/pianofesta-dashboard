@@ -8,6 +8,8 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 const Accordion = ({
+  isEditing,
+  num,
   item,
   className,
   showFaqUpdateModal,
@@ -33,35 +35,55 @@ const Accordion = ({
 
   return (
     <div
+      onClick={() => {
+        if (!isEditing) toggleAccordion();
+      }}
       className={cn(
-        "mb-5 bg-secondary-color/20 duration-500 rounded shadow ",
+        "mb-5 bg-[#F2EBFD] duration-500 rounded shadow ",
         className
       )}
     >
-      <div className="flex justify-between items-center p-4 cursor-pointer  duration-500">
+      <h1 className="px-4 pt-4 pb-2 text-base-color/50 text-xl md:text-2xl lg:text-3xl font-semibold">
+        {num}
+      </h1>
+      <div className="flex justify-between items-center px-4 pb-4 cursor-pointer  duration-500">
         <h3 className="text-base-color text-base md:text-lg lg:text-xl  font-semibold">
           {item?.question}
         </h3>
         <div className="flex gap-2">
-          <div onClick={() => showFaqUpdateModal(item)} className="p-[2px] ">
-            <FaEdit className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
-          </div>
-          <div onClick={() => showFaqDeleteModal(item)} className="p-[2px] ">
-            <MdDelete className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
-          </div>
+          {isEditing && (
+            <>
+              <div
+                onClick={() => showFaqUpdateModal(item)}
+                className="p-[2px] "
+              >
+                <FaEdit className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
+              </div>
+              <div
+                onClick={() => showFaqDeleteModal(item)}
+                className="p-[2px] "
+              >
+                <MdDelete className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
+              </div>
+            </>
+          )}
           {isOpen ? (
             <div
-              onClick={toggleAccordion}
-              className="p-[2px] rounded-full border border-secondary-color"
+              onClick={() => {
+                if (isEditing) toggleAccordion();
+              }}
+              className="p-[2px] rounded-full border border-[#000000] bg-[#000000]"
             >
-              <HiMinus className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
+              <HiMinus className="text-[#F2EBFD] text-base md:text-lg lg:text-xl duration-500" />
             </div>
           ) : (
             <div
-              onClick={toggleAccordion}
-              className="p-[2px] rounded-full border border-secondary-color"
+              onClick={() => {
+                if (isEditing) toggleAccordion();
+              }}
+              className="p-[2px] rounded-full border border-[#000000] bg-[#000000]"
             >
-              <GoPlus className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
+              <GoPlus className="text-[#F2EBFD] text-base md:text-lg lg:text-xl duration-500" />
             </div>
           )}
         </div>
@@ -74,7 +96,7 @@ const Accordion = ({
           transition: "height 0.5s ease", // Smooth transition effect for height
         }}
       >
-        <div className="p-4 bg-secondary-color/10 text-base-color duration-500 text-sm md:text-base lg:text-lg rounded-bl rounded-br">
+        <div className="p-4 bg-[#F2EBFD] text-base-color duration-500 text-sm md:text-base lg:text-lg rounded-bl rounded-br">
           {item?.answer}
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   YAxis,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip as RechartsTooltip,
 } from "recharts";
 
 const data = [
@@ -24,7 +25,22 @@ const data = [
 
 const Bar_Chart = () => {
   // Formatter function to add 'K' suffix to Y-axis values
-  const yAxisTickFormatter = (value) => `${value}K`;
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white shadow-md p-2 rounded-md border border-gray-300">
+          <p className="text-sm font-semibold text-gray-800">
+            {payload[0].payload.name}
+          </p>
+          <p className="text-xs text-gray-600">
+            Total Income:{" "}
+            <span className="font-semibold">${payload[0].uv}</span>
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   // Custom tick style
   const tickStyle = { fill: "#222222" };
@@ -42,9 +58,10 @@ const Bar_Chart = () => {
           }}
           barCategoryGap={30} // Adjust the gap between bars if necessary
         >
+          <RechartsTooltip content={<CustomTooltip />} />
           <XAxis dataKey="name" tick={{ ...tickStyle }} tickMargin={6} />
           <YAxis
-            tickFormatter={yAxisTickFormatter}
+            // tickFormatter={yAxisTickFormatter}
             tick={{ ...tickStyle }}
             axisLine={{
               stroke: "#0861C500", // Y-axis line color
@@ -69,8 +86,8 @@ const Bar_Chart = () => {
 
           <defs>
             <linearGradient id="incomeGradient" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#17223A" />
-              <stop offset="100%" stopColor="#30599D" />
+              <stop offset="0%" stopColor="#6A0DAD" />
+              <stop offset="100%" stopColor="#8F59F9" />
             </linearGradient>
           </defs>
         </BarChart>

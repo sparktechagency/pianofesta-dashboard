@@ -1,14 +1,14 @@
 import { useState } from "react";
-import userData from "../../../public/data/Users";
-import AllUserTable from "../../Components/UI/Tables/UserTable";
-import UserModal from "../../Components/UI/Modal/User/UserModal";
-import UserBlockModal from "../../Components/UI/Modal/User/UserBlockModal";
-import UserUnblockModal from "../../Components/UI/Modal/User/UserUnblockModal";
-import { ConfigProvider, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import businessData from "../../../public/data/BusinessData";
+import BusinessUserModal from "../../Components/UI/Modal/BusinessUser/BusinessUserModal";
+import BusinessUserBlockModal from "../../Components/UI/Modal/BusinessUser/BusinessUserBlockModal";
+import BusinessUserUnblockModal from "../../Components/UI/Modal/BusinessUser/BusinessUserUnblockModal";
+import AllBusinessUserTable from "../../Components/UI/Tables/BusinessUserTable";
 
-const AdminAllUsers = () => {
-  const user = userData;
+const AdminBusinessUser = () => {
+  const user = businessData;
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   console.log(searchText);
@@ -36,7 +36,7 @@ const AdminAllUsers = () => {
     };
   }
 
-  const showViewUserModal = (record) => {
+  const showViewModal = (record) => {
     setCurrentRecord(record);
     setIsViewModalVisible(true);
   };
@@ -68,25 +68,21 @@ const AdminAllUsers = () => {
               User List
             </p>
             <div className="flex gap-4 items-center">
-              <ConfigProvider
-                theme={{ token: { colorTextPlaceholder: "#6A0DAD " } }}
-              >
-                <Input
-                  placeholder="Search User..."
-                  onChange={handleSearch}
-                  className="text-secondary-color font-semibold !border-secondary-color !bg-transparent py-2 !rounded-xl"
-                  prefix={
-                    <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />
-                  }
-                />
-              </ConfigProvider>
+              <Input
+                placeholder="Search User..."
+                onChange={handleSearch}
+                className="text-secondary-color font-semibold !border-secondary-color !bg-transparent py-2 !rounded-xl"
+                prefix={
+                  <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />
+                }
+              />
             </div>
           </div>
         </div>
-        <AllUserTable
+        <AllBusinessUserTable
           data={user}
           loading={false}
-          showViewModal={showViewUserModal}
+          showViewModal={showViewModal}
           showBlockModal={showBlockModal}
           showUnblockModal={showUnblockModal}
           setPage={setPage}
@@ -94,17 +90,17 @@ const AdminAllUsers = () => {
           total={user.length}
           limit={limit}
         />
-        <UserModal
+        <BusinessUserModal
           isUserViewModalVisible={isViewModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <UserBlockModal
+        <BusinessUserBlockModal
           isBlockModalVisible={isBlockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <UserUnblockModal
+        <BusinessUserUnblockModal
           isUnblockModalVisible={isUnblockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
@@ -114,4 +110,4 @@ const AdminAllUsers = () => {
   );
 };
 
-export default AdminAllUsers;
+export default AdminBusinessUser;
