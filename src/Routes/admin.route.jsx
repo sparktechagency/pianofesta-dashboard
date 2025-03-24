@@ -14,11 +14,15 @@ import setting from "/images/dashboard-logo/setting.svg";
 
 //* ------------------IMPORT COMPONENTS------------------
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
-import AdminAllUsers from "../Pages/Admin/AdminAllUsers";
+import AdminAllUsers from "../Pages/Admin/AdminUserManagement/AdminAllUsers";
+import AdminBusinessUser from "../Pages/Admin/AdminUserManagement/AdminBusinessUser";
+
 import Profile from "../Pages/Common/settings/Profile";
 import PrivacyPolicy from "../Pages/Common/settings/PrivacyPolicy";
 import TermsOfService from "../Pages/Common/settings/TermsOfService";
-import AdminBusinessUser from "../Pages/Admin/AdminBusinessUser";
+import AdminCategory from "../Pages/Admin/AdminCategory";
+import AdminEarning from "../Pages/Admin/AdminEarning";
+import AdminInspiration from "../Pages/Admin/AdminInspiration";
 
 export const adminPaths = [
   {
@@ -45,6 +49,27 @@ export const adminPaths = [
         name: "Business",
       },
     ],
+  },
+  {
+    path: "category",
+    element: <AdminCategory />,
+    key: "category",
+    name: "Category",
+    icon: dashboardLogo,
+  },
+  {
+    path: "earning",
+    element: <AdminEarning />,
+    key: "earning",
+    name: "Earning",
+    icon: dashboardLogo,
+  },
+  {
+    path: "inspiration",
+    element: <AdminInspiration />,
+    key: "inspiration",
+    name: "Inspiration",
+    icon: dashboardLogo,
   },
   {
     name: "Setting",

@@ -1,5 +1,7 @@
-import { ImUser, ImUserCheck, ImUsers } from "react-icons/im";
-import { LuBadgeCheck } from "react-icons/lu";
+import { FaUserTie } from "react-icons/fa";
+import { ImUser, ImUsers } from "react-icons/im";
+import { MdEvent } from "react-icons/md";
+import { FaListCheck } from "react-icons/fa6";
 
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
@@ -8,35 +10,42 @@ const data = [
     id: 1,
     background: "#FFFFFF",
     name: "Total User",
-    icon: <ImUsers className="size-8 text-base-color" />,
+    icon: <ImUsers className="size-7 text-secondary-color" />,
     count: 10000,
   },
   {
     id: 2,
     background: "#FFFFFF",
-    name: "Basic User",
-    icon: <ImUser className="size-8 text-base-color" />,
+    name: "Regular Users",
+    icon: <ImUser className="size-7 text-secondary-color" />,
     count: 4000,
   },
   {
     id: 3,
     background: "#FFFFFF",
-    name: "Pro User",
-    icon: <ImUserCheck className="size-8 text-base-color" />,
+    name: "Business Users",
+    icon: <FaUserTie className="size-7 text-secondary-color" />,
     count: 6000,
   },
   {
-    id: 3,
+    id: 4,
     background: "#FFFFFF",
-    name: "Premimum User",
-    icon: <LuBadgeCheck className="size-8 text-base-color" />,
+    name: "Total Event",
+    icon: <MdEvent className="size-7 text-secondary-color" />,
     count: 6000,
   },
   {
-    id: 3,
+    id: 5,
     background: "#FFFFFF",
-    name: "Earning",
-    icon: <RiMoneyDollarCircleFill className="size-8 text-base-color" />,
+    name: "Active  Job Listings",
+    icon: <FaListCheck className="size-7 text-secondary-color" />,
+    count: 6000,
+  },
+  {
+    id: 6,
+    background: "#FFFFFF",
+    name: "Revenue",
+    icon: <RiMoneyDollarCircleFill className="size-7 text-secondary-color" />,
     count: 6000,
   },
 ];
@@ -56,14 +65,14 @@ const OverviewCard = () => {
         >
           <div className="flex items-center p-6 justify-between w-full gap-2 ">
             <div className=" w-fit ">
-              <p className="text-base sm:text-lg lg:text-xl font-semibold text-base-color mb-1  tracking-tight">
+              <p className="text-base  font-semibold text-base-color mb-1  tracking-tight">
                 {item.name}
               </p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-base-color capitalize tracking-wider">
+              <p className="text-lg  font-bold text-base-color capitalize tracking-wider">
                 {item.count}
               </p>
             </div>
-            <div className="bg-primary-color p-3 rounded-full">{item.icon}</div>
+            <div className="bg-[#FAF4FF] p-3 rounded-full">{item.icon}</div>
           </div>
         </div>
       ))}

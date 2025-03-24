@@ -1,8 +1,9 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input } from "antd";
 
-const SearchInput = ({ placeholder, setSearch }) => {
+const SearchInput = ({ placeholder, setSearch, setPage, textValue }) => {
   const handleSearch = (e) => {
+    setPage(1);
     debounceSearch(e.target.value);
   };
 
@@ -23,8 +24,8 @@ const SearchInput = ({ placeholder, setSearch }) => {
         theme={{
           components: {
             Input: {
-              colorTextPlaceholder: "#667185",
-              colorIcon: "#667185",
+              colorTextPlaceholder: "#6A0DAD",
+              colorIcon: "#6A0DAD",
             },
           },
         }}
@@ -32,7 +33,8 @@ const SearchInput = ({ placeholder, setSearch }) => {
         <Input
           placeholder={placeholder}
           onChange={handleSearch}
-          className="text-lg text-base-color border-2 !border-[#D0D5DD] !bg-transparent py-2 !rounded-lg md:!w-72 lg:!w-80 !ring-0"
+          value={textValue}
+          className="text-secondary-color font-semibold !border-secondary-color !bg-transparent py-2 !rounded-xl"
           prefix={<SearchOutlined className="text-[#667185]  text-xl mr-2" />}
         />
       </ConfigProvider>

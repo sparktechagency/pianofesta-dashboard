@@ -25,6 +25,15 @@ const YearOption = ({ currentYear, setThisYear }) => {
             borderRadius: 10,
             colorBorder: "#6A0DAD",
             colorText: "#FFFFFF",
+            colorIcon: "#F9FAFB",
+            colorBgContainer: "rgba(0,0,0,0)",
+            optionSelectedColor: "#6A0DAD",
+            optionSelectedBg: "#F9FAFB",
+            optionActiveColor: "#F9FAFB",
+
+            colorBgElevated: "#6A0DAD",
+            selectorBg: "#6A0DAD",
+            colorTextPlaceholder: "#F9FAFB",
           },
         },
       }}

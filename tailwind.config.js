@@ -8,7 +8,7 @@ export default {
         "secondary-color": "#6A0DAD",
         "base-color": "#262621",
         "highlight-color": "#5D5D5D",
-        "input-color": "#F2FBF4",
+        "input-color": "#FAF4FF",
         "error-color": "#E53935",
         "success-color": "#00C566",
         "warning-color": "#FACC15",

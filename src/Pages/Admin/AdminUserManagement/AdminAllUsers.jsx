@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import { Input } from "antd";
-import businessData from "../../../public/data/BusinessData";
-import BusinessUserModal from "../../Components/UI/Modal/BusinessUser/BusinessUserModal";
-import BusinessUserBlockModal from "../../Components/UI/Modal/BusinessUser/BusinessUserBlockModal";
-import BusinessUserUnblockModal from "../../Components/UI/Modal/BusinessUser/BusinessUserUnblockModal";
-import AllBusinessUserTable from "../../Components/UI/Tables/BusinessUserTable";
+import userData from "../../../../public/data/Users";
+import AllUserTable from "../../../Components/UI/Tables/UserTable";
+import UserModal from "../../../Components/UI/Modal/User/UserModal";
+import UserBlockModal from "../../../Components/UI/Modal/User/UserBlockModal";
+import UserUnblockModal from "../../../Components/UI/Modal/User/UserUnblockModal";
+import SearchInput from "../../../utils/SearchInput";
 
-const AdminBusinessUser = () => {
-  const user = businessData;
+const AdminAllUsers = () => {
+  const data = userData;
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
-  console.log(searchText);
+
   const limit = 12;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
@@ -19,24 +19,7 @@ const AdminBusinessUser = () => {
   const [isUnblockModalVisible, setIsUnblockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  const handleSearch = (e) => {
-    debounceSearch(e.target.value);
-  };
-
-  const debounceSearch = debounce((value) => {
-    setPage(1);
-    setSearchText(value);
-  }, 500);
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  const showViewModal = (record) => {
+  const showViewUserModal = (record) => {
     setCurrentRecord(record);
     setIsViewModalVisible(true);
   };
@@ -67,40 +50,35 @@ const AdminBusinessUser = () => {
             <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-gradient-color font-semibold">
               User List
             </p>
-            <div className="flex gap-4 items-center">
-              <Input
-                placeholder="Search User..."
-                onChange={handleSearch}
-                className="text-secondary-color font-semibold !border-secondary-color !bg-transparent py-2 !rounded-xl"
-                prefix={
-                  <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />
-                }
-              />
-            </div>
+            <SearchInput
+              placeholder="Search ..."
+              setSearch={setSearchText}
+              setPage={setPage}
+            />
           </div>
         </div>
-        <AllBusinessUserTable
-          data={user}
+        <AllUserTable
+          data={data}
           loading={false}
-          showViewModal={showViewModal}
+          showViewModal={showViewUserModal}
           showBlockModal={showBlockModal}
           showUnblockModal={showUnblockModal}
           setPage={setPage}
           page={page}
-          total={user.length}
+          total={data.length}
           limit={limit}
         />
-        <BusinessUserModal
+        <UserModal
           isUserViewModalVisible={isViewModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <BusinessUserBlockModal
+        <UserBlockModal
           isBlockModalVisible={isBlockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <BusinessUserUnblockModal
+        <UserUnblockModal
           isUnblockModalVisible={isUnblockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
@@ -110,4 +88,4 @@ const AdminBusinessUser = () => {
   );
 };
 
-export default AdminBusinessUser;
+export default AdminAllUsers;

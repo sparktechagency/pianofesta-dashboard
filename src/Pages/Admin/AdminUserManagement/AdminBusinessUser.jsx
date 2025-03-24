@@ -1,17 +1,16 @@
 import { useState } from "react";
-import userData from "../../../public/data/Users";
-import AllUserTable from "../../Components/UI/Tables/UserTable";
-import UserModal from "../../Components/UI/Modal/User/UserModal";
-import UserBlockModal from "../../Components/UI/Modal/User/UserBlockModal";
-import UserUnblockModal from "../../Components/UI/Modal/User/UserUnblockModal";
-import { ConfigProvider, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import businessData from "../../../../public/data/BusinessData";
+import BusinessUserModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserModal";
+import BusinessUserBlockModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserBlockModal";
+import BusinessUserUnblockModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserUnblockModal";
+import AllBusinessUserTable from "../../../Components/UI/Tables/BusinessUserTable";
+import SearchInput from "../../../utils/SearchInput";
 
-const AdminAllUsers = () => {
-  const user = userData;
+const AdminBusinessUser = () => {
+  const data = businessData;
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-  console.log(searchText);
+
   const limit = 12;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
@@ -19,24 +18,7 @@ const AdminAllUsers = () => {
   const [isUnblockModalVisible, setIsUnblockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  const handleSearch = (e) => {
-    debounceSearch(e.target.value);
-  };
-
-  const debounceSearch = debounce((value) => {
-    setPage(1);
-    setSearchText(value);
-  }, 500);
-
-  function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-  }
-
-  const showViewUserModal = (record) => {
+  const showViewModal = (record) => {
     setCurrentRecord(record);
     setIsViewModalVisible(true);
   };
@@ -67,44 +49,35 @@ const AdminAllUsers = () => {
             <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-gradient-color font-semibold">
               User List
             </p>
-            <div className="flex gap-4 items-center">
-              <ConfigProvider
-                theme={{ token: { colorTextPlaceholder: "#6A0DAD " } }}
-              >
-                <Input
-                  placeholder="Search User..."
-                  onChange={handleSearch}
-                  className="text-secondary-color font-semibold !border-secondary-color !bg-transparent py-2 !rounded-xl"
-                  prefix={
-                    <SearchOutlined className="text-secondary-color font-bold text-lg mr-2" />
-                  }
-                />
-              </ConfigProvider>
-            </div>
+            <SearchInput
+              placeholder="Search ..."
+              setSearch={setSearchText}
+              setPage={setPage}
+            />
           </div>
         </div>
-        <AllUserTable
-          data={user}
+        <AllBusinessUserTable
+          data={data}
           loading={false}
-          showViewModal={showViewUserModal}
+          showViewModal={showViewModal}
           showBlockModal={showBlockModal}
           showUnblockModal={showUnblockModal}
           setPage={setPage}
           page={page}
-          total={user.length}
+          total={data.length}
           limit={limit}
         />
-        <UserModal
+        <BusinessUserModal
           isUserViewModalVisible={isViewModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <UserBlockModal
+        <BusinessUserBlockModal
           isBlockModalVisible={isBlockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <UserUnblockModal
+        <BusinessUserUnblockModal
           isUnblockModalVisible={isUnblockModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
@@ -114,4 +87,4 @@ const AdminAllUsers = () => {
   );
 };
 
-export default AdminAllUsers;
+export default AdminBusinessUser;
