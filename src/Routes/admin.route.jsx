@@ -5,6 +5,7 @@ import users from "/images/dashboard-logo/users.svg";
 import category from "/images/dashboard-logo/category.svg";
 import earning from "/images/dashboard-logo/earning.svg";
 import inspiration from "/images/dashboard-logo/Inspiration.svg";
+import community from "/images/dashboard-logo/community.svg";
 // import organizers from "/images/dashboard-logo/organizers.svg";
 // import subscription from "/images/dashboard-logo/subscription.svg";
 // import withdrawals from "/images/dashboard-logo/withdrawals.svg";
@@ -26,6 +27,8 @@ import AdminCategory from "../Pages/Admin/AdminCategory";
 import AdminEarning from "../Pages/Admin/AdminEarning";
 import AdminInspiration from "../Pages/Admin/AdminInspiration";
 import AdminCommunity from "../Pages/Admin/AdminCommunity";
+import FAQSection from "../Pages/Common/settings/FAQ";
+import AdminSponsorManagement from "../Pages/Admin/AdminSponsor";
 
 export const adminPaths = [
   {
@@ -79,7 +82,14 @@ export const adminPaths = [
     element: <AdminCommunity />,
     key: "community",
     name: "Community",
-    icon: inspiration,
+    icon: community,
+  },
+  {
+    path: "sponsor",
+    element: <AdminSponsorManagement />,
+    key: "sponsor",
+    name: "Sponsor Management",
+    icon: community,
   },
   {
     name: "Setting",
@@ -102,6 +112,12 @@ export const adminPaths = [
         path: "terms-of-service",
         element: <TermsOfService />,
         name: "Terms of Service",
+      },
+      {
+        key: "faq",
+        path: "faq",
+        element: <FAQSection />,
+        name: "FAQ",
       },
     ],
   },

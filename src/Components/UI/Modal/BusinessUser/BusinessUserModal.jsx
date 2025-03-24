@@ -74,6 +74,7 @@ const faqs = [
       "Once your order has shipped, you will receive an email with a tracking number.",
   },
 ];
+
 const BusinessUserModal = ({
   isUserViewModalVisible,
   handleCancel,
