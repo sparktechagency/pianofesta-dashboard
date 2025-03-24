@@ -25,6 +25,7 @@ import TermsOfService from "../Pages/Common/settings/TermsOfService";
 import AdminCategory from "../Pages/Admin/AdminCategory";
 import AdminEarning from "../Pages/Admin/AdminEarning";
 import AdminInspiration from "../Pages/Admin/AdminInspiration";
+import AdminCommunity from "../Pages/Admin/AdminCommunity";
 
 export const adminPaths = [
   {
@@ -71,6 +72,13 @@ export const adminPaths = [
     element: <AdminInspiration />,
     key: "inspiration",
     name: "Inspiration",
+    icon: inspiration,
+  },
+  {
+    path: "community",
+    element: <AdminCommunity />,
+    key: "community",
+    name: "Community",
     icon: inspiration,
   },
   {
