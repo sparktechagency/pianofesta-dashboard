@@ -11,6 +11,7 @@ const AdminCategory = () => {
   const data = categoryData;
   const [activeTab, setActiveTab] = useState("event");
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
   const [searchValue, setSearchValue] = useState("");
 

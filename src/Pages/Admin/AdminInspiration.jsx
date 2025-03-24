@@ -11,6 +11,7 @@ import DeleteInspirationModal from "../../Components/UI/Modal/Inspiration/Delete
 const AdminInspiration = () => {
   const data = inspirationData;
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
   const limit = 12;
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

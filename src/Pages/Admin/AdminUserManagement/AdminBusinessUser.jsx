@@ -9,6 +9,7 @@ import SearchInput from "../../../utils/SearchInput";
 const AdminBusinessUser = () => {
   const data = businessData;
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
 
   const limit = 12;

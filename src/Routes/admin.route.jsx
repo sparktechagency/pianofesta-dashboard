@@ -2,8 +2,10 @@
 //* ------------------ICONS------------------
 import dashboardLogo from "/images/dashboard-logo/dashboard.svg";
 import users from "/images/dashboard-logo/users.svg";
+import category from "/images/dashboard-logo/category.svg";
+import earning from "/images/dashboard-logo/earning.svg";
+import inspiration from "/images/dashboard-logo/Inspiration.svg";
 // import organizers from "/images/dashboard-logo/organizers.svg";
-// import earning from "/images/dashboard-logo/earning.svg";
 // import subscription from "/images/dashboard-logo/subscription.svg";
 // import withdrawals from "/images/dashboard-logo/withdrawals.svg";
 // import suggestion from "/images/dashboard-logo/suggestion.svg";
@@ -55,21 +57,21 @@ export const adminPaths = [
     element: <AdminCategory />,
     key: "category",
     name: "Category",
-    icon: dashboardLogo,
+    icon: category,
   },
   {
     path: "earning",
     element: <AdminEarning />,
     key: "earning",
     name: "Earning",
-    icon: dashboardLogo,
+    icon: earning,
   },
   {
     path: "inspiration",
     element: <AdminInspiration />,
     key: "inspiration",
     name: "Inspiration",
-    icon: dashboardLogo,
+    icon: inspiration,
   },
   {
     name: "Setting",
