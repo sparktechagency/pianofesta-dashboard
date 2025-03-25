@@ -4,6 +4,7 @@ import dashboardLogo from "/images/dashboard-logo/dashboard.svg";
 import users from "/images/dashboard-logo/users.svg";
 import category from "/images/dashboard-logo/category.svg";
 import earning from "/images/dashboard-logo/earning.svg";
+import listing from "/images/dashboard-logo/listing.svg";
 import inspiration from "/images/dashboard-logo/Inspiration.svg";
 import community from "/images/dashboard-logo/community.svg";
 import sponsor from "/images/dashboard-logo/sponsor.svg";
@@ -37,6 +38,9 @@ import AdminSponsorManagement from "../Pages/Admin/AdminSponsor";
 import AdminMessageAndComment from "../Pages/Admin/AdminMessageAndComment";
 import SearchHistory from "../Pages/Admin/SearchHistory";
 import AdminPromotion from "../Pages/Admin/AdminPromotion";
+import AdminEventListing from "../Pages/Admin/AdminListing/AdminEventListing";
+import AdminBusinessListing from "../Pages/Admin/AdminListing/AdminBusinessListing";
+import AdminJobListing from "../Pages/Admin/AdminListing/AdminJobListing";
 
 export const adminPaths = [
   {
@@ -77,6 +81,30 @@ export const adminPaths = [
     key: "earning",
     name: "Earning",
     icon: earning,
+  },
+  {
+    name: "Listings",
+    icon: listing,
+    children: [
+      {
+        key: "event-listing",
+        path: "event-listing",
+        element: <AdminEventListing />,
+        name: "Event",
+      },
+      {
+        key: "business-listing",
+        path: "business-listing",
+        element: <AdminBusinessListing />,
+        name: "Business Profile",
+      },
+      {
+        key: "job-listing",
+        path: "job-listing",
+        element: <AdminJobListing />,
+        name: "Job Opportunity",
+      },
+    ],
   },
   {
     path: "inspiration",
