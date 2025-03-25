@@ -6,6 +6,11 @@ import category from "/images/dashboard-logo/category.svg";
 import earning from "/images/dashboard-logo/earning.svg";
 import inspiration from "/images/dashboard-logo/Inspiration.svg";
 import community from "/images/dashboard-logo/community.svg";
+import sponsor from "/images/dashboard-logo/sponsor.svg";
+import support from "/images/dashboard-logo/support.svg";
+import messageAndCom from "/images/dashboard-logo/messageAndCom.svg";
+import searchHistory from "/images/dashboard-logo/searchHistory.svg";
+import promotion from "/images/dashboard-logo/promotion.svg";
 // import organizers from "/images/dashboard-logo/organizers.svg";
 // import subscription from "/images/dashboard-logo/subscription.svg";
 // import withdrawals from "/images/dashboard-logo/withdrawals.svg";
@@ -29,6 +34,9 @@ import AdminInspiration from "../Pages/Admin/AdminInspiration";
 import AdminCommunity from "../Pages/Admin/AdminCommunity";
 import FAQSection from "../Pages/Common/settings/FAQ";
 import AdminSponsorManagement from "../Pages/Admin/AdminSponsor";
+import AdminMessageAndComment from "../Pages/Admin/AdminMessageAndComment";
+import SearchHistory from "../Pages/Admin/SearchHistory";
+import AdminPromotion from "../Pages/Admin/AdminPromotion";
 
 export const adminPaths = [
   {
@@ -89,7 +97,28 @@ export const adminPaths = [
     element: <AdminSponsorManagement />,
     key: "sponsor",
     name: "Sponsor Management",
-    icon: community,
+    icon: sponsor,
+  },
+  {
+    path: "message-comment",
+    element: <AdminMessageAndComment />,
+    key: "message-comment",
+    name: "Message & Comment",
+    icon: messageAndCom,
+  },
+  {
+    path: "search-history",
+    element: <SearchHistory />,
+    key: "search-history",
+    name: "Search History",
+    icon: searchHistory,
+  },
+  {
+    path: "promotions",
+    element: <AdminPromotion />,
+    key: "promotions",
+    name: "Promotions",
+    icon: promotion,
   },
   {
     name: "Setting",

@@ -62,9 +62,9 @@ const AddSponsorManagementModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
             headerBg: "#F9FAFB",
           },
           Collapse: {
-            colorTextHeading: "#222222",
-            colorBorder: "#222222",
-            colorText: "#222222",
+            colorTextHeading: "#6A0DAD",
+            colorBorder: "#6A0DAD",
+            colorText: "#6A0DAD",
             borderRadiusLG: 0,
             headerPadding: "12px 20px",
             contentBg: "rgb(255,255,255)",
@@ -99,6 +99,22 @@ const AddSponsorManagementModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               placeholder="Enter package title"
               className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
             />
+          </Form.Item>
+
+          <Typography.Title level={5}>Sponsor Type</Typography.Title>
+          <Form.Item
+            name="sponsorType"
+            rules={[{ required: true, message: "Please select a sponsor!" }]}
+            style={{ fontWeight: "500" }}
+          >
+            <Select
+              placeholder="Sponsor Type"
+              className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md "
+            >
+              <Option value="event">Event</Option>
+              <Option value="business">Business</Option>
+              <Option value="job">Job</Option>
+            </Select>
           </Form.Item>
 
           <Collapse
