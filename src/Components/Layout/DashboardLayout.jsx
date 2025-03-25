@@ -72,7 +72,7 @@ const DashboardLayout = () => {
     <div className="h-screen bg-ribg-primary-color ">
       <ScrollRestoration />
 
-      <div className="flex !bg-primary-color">
+      <Layout className="flex !bg-primary-color">
         <Sider
           theme="light"
           width={280}
@@ -94,10 +94,8 @@ const DashboardLayout = () => {
             <img
               src={AllImages.logo}
               alt="logo"
-              width={1000}
-              height={1000}
               sizes="100vw"
-              className="w-[80%] my-12 mx-auto"
+              className="w-auto h-20 my-10 mx-auto"
             />
           </Link>
 
@@ -133,7 +131,7 @@ const DashboardLayout = () => {
             </div>
           </Content>
         </Layout>
-      </div>
+      </Layout>
     </div>
   );
 };

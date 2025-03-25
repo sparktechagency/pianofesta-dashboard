@@ -40,7 +40,7 @@ const CategoryTable = ({
           </Space>
         </>
       ),
-      responsive: ["md"],
+
       align: "center",
     },
   ];

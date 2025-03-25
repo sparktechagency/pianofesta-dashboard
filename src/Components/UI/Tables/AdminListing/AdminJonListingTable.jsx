@@ -72,7 +72,7 @@ const AdminJobListingTable = ({
           </Space>
         </>
       ),
-      responsive: ["md"],
+
       align: "center",
     },
   ];

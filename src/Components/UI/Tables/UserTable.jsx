@@ -85,7 +85,7 @@ const AllUserTable = ({
           </Space>
         </>
       ),
-      responsive: ["md"],
+
       align: "center",
     },
   ];

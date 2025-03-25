@@ -1,12 +1,10 @@
 import { Space, Tooltip } from "antd";
+import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
-import { MdDelete } from "react-icons/md";
-import MyTable from "../../../../utils/MyTable";
-const AdminBusinessListingTable = ({
+const AdminSupportTicketTable = ({
   data,
   loading,
   showViewModal,
-  showDeleteModal,
   setPage,
   page,
   total,
@@ -20,19 +18,35 @@ const AdminBusinessListingTable = ({
       key: "_id",
     },
     {
-      title: "Business Title",
-      dataIndex: "businessTitle", // Data key for businessTitle
-      key: "businessTitle",
+      title: "Ticket ID",
+      dataIndex: "ticketId", // Data key for ticketId
+      key: "ticketId",
     },
     {
-      title: "Category",
-      dataIndex: "category", // Data key for category
-      key: "category",
+      title: "User",
+      dataIndex: "user", // Data key for user
+      key: "user",
     },
     {
-      title: "Business User",
-      dataIndex: "businessUser", // Data key for businessUser
-      key: "businessUser",
+      title: "Subject",
+      dataIndex: "subject", // Data key for subject
+      key: "subject",
+    },
+    {
+      title: "Status",
+      dataIndex: "status", // Data key for status
+      key: "status",
+      render: (status) => {
+        let color;
+        if (status === "Pending") color = "#FACC15";
+        if (status === "Solved") color = "green";
+        return <span style={{ color: color }}>{status}</span>;
+      },
+    },
+    {
+      title: "Created Date",
+      dataIndex: "createdDate", // Data key for createdDate
+      key: "createdDate",
     },
     {
       title: "Action",
@@ -47,15 +61,6 @@ const AdminBusinessListingTable = ({
                 onClick={() => showViewModal(record)}
               >
                 <GoEye style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-
-            <Tooltip placement="left" title="Block this User">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-error-color"
-                onClick={() => showDeleteModal(record)}
-              >
-                <MdDelete style={{ fontSize: "24px" }} />
               </button>
             </Tooltip>
           </Space>
@@ -80,4 +85,4 @@ const AdminBusinessListingTable = ({
   );
 };
 
-export default AdminBusinessListingTable;
+export default AdminSupportTicketTable;

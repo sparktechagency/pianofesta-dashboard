@@ -76,7 +76,7 @@ const AdminListingEventTable = ({
           </Space>
         </>
       ),
-      responsive: ["md"],
+
       align: "center",
     },
   ];

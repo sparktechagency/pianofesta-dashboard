@@ -41,6 +41,7 @@ import AdminPromotion from "../Pages/Admin/AdminPromotion";
 import AdminEventListing from "../Pages/Admin/AdminListing/AdminEventListing";
 import AdminBusinessListing from "../Pages/Admin/AdminListing/AdminBusinessListing";
 import AdminJobListing from "../Pages/Admin/AdminListing/AdminJobListing";
+import AdminSupportTicket from "../Pages/Admin/AdminSupportTicket";
 
 export const adminPaths = [
   {
@@ -126,6 +127,13 @@ export const adminPaths = [
     key: "sponsor",
     name: "Sponsor Management",
     icon: sponsor,
+  },
+  {
+    path: "support",
+    element: <AdminSupportTicket />,
+    key: "support",
+    name: "Support",
+    icon: support,
   },
   {
     path: "message-comment",

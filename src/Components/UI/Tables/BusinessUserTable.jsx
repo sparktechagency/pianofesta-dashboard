@@ -85,7 +85,7 @@ const AllBusinessUserTable = ({
           </Space>
         </>
       ),
-      responsive: ["md"],
+
       align: "center",
     },
   ];
