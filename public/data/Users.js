@@ -2,7 +2,7 @@ const userData = [
   {
     UID: "001",
     name: "Samantha Lee",
-    gender: "Male",
+    gender: "-",
     email: "samantha@example.com",
     phone: "(555) 123-4567",
     dateOfBirth: "28/2/1996",
