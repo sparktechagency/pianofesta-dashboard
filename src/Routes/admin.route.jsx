@@ -42,6 +42,7 @@ import AdminEventListing from "../Pages/Admin/AdminListing/AdminEventListing";
 import AdminBusinessListing from "../Pages/Admin/AdminListing/AdminBusinessListing";
 import AdminJobListing from "../Pages/Admin/AdminListing/AdminJobListing";
 import AdminSupportTicket from "../Pages/Admin/AdminSupportTicket";
+import AdminReport from "../Pages/Admin/AdminReport";
 
 export const adminPaths = [
   {
@@ -107,13 +108,13 @@ export const adminPaths = [
       },
     ],
   },
-  // {
-  //   path: "inspiration",
-  //   element: <AdminInspiration />,
-  //   key: "inspiration",
-  //   name: "Inspiration",
-  //   icon: inspiration,
-  // },
+  {
+    path: "report",
+    element: <AdminReport />,
+    key: "report",
+    name: "Report",
+    icon: inspiration,
+  },
   // {
   //   path: "community",
   //   element: <AdminCommunity />,

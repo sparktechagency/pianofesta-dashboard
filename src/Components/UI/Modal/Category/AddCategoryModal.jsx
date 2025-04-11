@@ -6,7 +6,6 @@ import {
   Modal,
   Select,
   Typography,
-  Upload,
 } from "antd";
 
 const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
@@ -43,7 +42,7 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
           onFinish={handleSave}
           className=" mt-7"
         >
-          <Typography.Title level={5}>Category Name</Typography.Title>
+          <Typography.Title level={5}>Sub Category Name</Typography.Title>
           <Form.Item
             name="name"
             rules={[
@@ -71,29 +70,7 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               <Option value="job">Job</Option>
             </Select>
           </Form.Item>
-          <Typography.Title level={5}>Icon</Typography.Title>
-          <Form.Item
-            rules={[{ required: true, message: "Please upload an icon!" }]}
-            className="relative w-full"
-            name="image"
-          >
-            <Upload
-              beforeUpload={() => false} // Prevent automatic upload to server
-              maxCount={1}
-              accept="image/*"
-              className=""
-              listType="picture"
-            >
-              <Button
-                style={{
-                  zIndex: 1,
-                }}
-                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
-              >
-                <div className="">Upload Service Icon</div>
-              </Button>
-            </Upload>
-          </Form.Item>
+
           <Form.Item>
             <Button
               htmlType="submit"

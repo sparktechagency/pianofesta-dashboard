@@ -28,19 +28,47 @@ const EarningTable = ({
       key: "email",
     },
     {
-      title: "Date",
-      dataIndex: "date", // Data key for date
-      key: "date",
+      title: "Purchase Date",
+      dataIndex: "purchaseDate", // Data key for purchaseDate
+      key: "purchaseDate",
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate", // Data key for endDate
+      key: "endDate",
+    },
+    {
+      title: "Remaining Day",
+      dataIndex: "remainingDay", // Data key for remainingDay
+      key: "remainingDay",
     },
     {
       title: "Plan",
       dataIndex: "plan", // Data key for plan
       key: "plan",
+      filters: [
+        { text: "Basic", value: "Basic" },
+        { text: "Pro", value: "Pro" },
+        { text: "Premium", value: "Premium" },
+      ],
+      onFilter: (value, record) => record.plan.includes(value),
     },
     {
       title: "Amount",
       dataIndex: "amount", // Data key for amount
       key: "amount",
+      sorter: (a, b) => a.amount - b.amount,
+      onFilter: (value, record) => record.amount.includes(value),
+    },
+    {
+      title: "Status",
+      dataIndex: "status", // Data key for status
+      key: "status",
+      filters: [
+        { text: "Active", value: "Active" },
+        { text: "Inactive", value: "Inactive" },
+      ],
+      onFilter: (value, record) => record.status.includes(value),
     },
     {
       title: "Action",

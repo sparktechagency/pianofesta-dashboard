@@ -56,7 +56,7 @@ const testimonials = [
 ];
 
 const mapUrl =
-  "https://www.openstreetmap.org/export/embed.html?bbox=-0.510375,51.286760,0.334015,51.691874&layer=mapnik&marker=51.489,-0.144 ";
+  "https://www.openstreetmap.org/export/embed.html?bbox=-0.510375,51.286760,0.334015,51.691874&layer=mapnik";
 
 const faqs = [
   {
@@ -294,7 +294,7 @@ const BusinessUserModal = ({
 
           {/* FAQ */}
           <div className="mt-4">
-            <p className="text-lg lg:text-xl font-bold mb-3">Location</p>
+            <p className="text-lg lg:text-xl font-bold mb-3">FAQ</p>
             {faqs.map((faq, index) => (
               <Accordion
                 isEditing={false}

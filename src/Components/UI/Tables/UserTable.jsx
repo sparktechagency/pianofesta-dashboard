@@ -30,6 +30,12 @@ const AllUserTable = ({
       title: "Gender",
       dataIndex: "gender", // Data key for memberType
       key: "gender",
+      filters: [
+        { text: "Male", value: "Male" },
+        { text: "Female", value: "Female" },
+        { text: "Other", value: "-" },
+      ],
+      onFilter: (value, record) => record.gender.includes(value),
     },
     {
       title: "Email",
