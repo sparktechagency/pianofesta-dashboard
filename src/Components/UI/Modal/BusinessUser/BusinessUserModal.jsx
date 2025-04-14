@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Modal } from "antd";
+import { Modal, Rate } from "antd";
 import { AllImages } from "../../../../../public/images/AllImages";
 import { HiBadgeCheck } from "react-icons/hi";
 import {
@@ -205,6 +205,35 @@ const BusinessUserModal = ({
             <div className="flex space-x-3">
               <FaFacebook className="text-xl text-[#1877f2] " />
               <FaInstagramSquare className="text-xl text-[#9A3AB2]" />
+            </div>
+          </div>
+
+          <div className="mt-4 p-4 rounded-lg font-semibold border-2 border-[#E1E1E1] grid grid-cols-3">
+            <div className="flex flex-col items-center justify-self-start">
+              <p className="text-sm sm:text-base lg:text-lg">4.5</p>
+              <Rate
+                disabled
+                defaultValue={4.5}
+                allowHalf
+                className="text-sm text-[#000000]"
+              />
+            </div>
+            <div className="flex items-center gap-1 text-center">
+              <img
+                src={AllImages.leftLeaf}
+                alt="cover"
+                className="w-5 object-cover"
+              />
+              <p className="text-sm sm:text-base lg:text-lg">Loved by guests</p>
+              <img
+                src={AllImages.rightLeaf}
+                alt="cover"
+                className="w-5 object-cover"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-self-end">
+              <p className="text-sm sm:text-base lg:text-lg">26</p>
+              <p className="text-xs sm:text-sm lg:text-base">Reviews</p>
             </div>
           </div>
 

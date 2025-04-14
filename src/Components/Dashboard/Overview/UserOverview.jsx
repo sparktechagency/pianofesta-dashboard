@@ -1,6 +1,7 @@
 import Area_Chart from "../../Chart/AreaChart";
 import YearOption from "../../../utils/YearOption";
 import { useState } from "react";
+import { ConfigProvider, Select } from "antd";
 
 const UserOverview = () => {
   const currentYear = new Date().getFullYear();
@@ -16,8 +17,37 @@ const UserOverview = () => {
         <p className="text-2xl text-gradient-color lg:text-3xl font-bold mb-5">
           User Overview
         </p>
-        <div>
-          <YearOption currentYear={currentYear} setThisYear={setYear} />
+        <div className="flex items-center gap-2">
+          <ConfigProvider
+            theme={{
+              components: {
+                Select: {
+                  colorTextQuaternary: "#F9FAFB",
+                  fontSize: 16,
+                  borderRadius: 10,
+                  colorBorder: "#6A0DAD",
+                  colorText: "#FFFFFF",
+                  colorIcon: "#F9FAFB",
+                  colorBgContainer: "rgba(0,0,0,0)",
+                  optionSelectedColor: "#6A0DAD",
+                  optionSelectedBg: "#F9FAFB",
+                  optionActiveColor: "#F9FAFB",
+
+                  colorBgElevated: "#6A0DAD",
+                  selectorBg: "#6A0DAD",
+                  colorTextPlaceholder: "#F9FAFB",
+                },
+              },
+            }}
+          >
+            <Select placeholder="Select User" style={{ width: 150 }}>
+              <Select.Option value="regularUser">Regular User</Select.Option>
+              <Select.Option value="businessUser">Business User</Select.Option>
+            </Select>
+          </ConfigProvider>
+          <div>
+            <YearOption currentYear={currentYear} setThisYear={setYear} />
+          </div>
         </div>
       </div>
       <div>

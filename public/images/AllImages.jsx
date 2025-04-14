@@ -14,10 +14,14 @@ import company from "./company.png";
 import PDFImage from "./pdfImage.png";
 import user from "./user.png";
 import yellow from "./yellow.png";
+import flower from "./flower.png";
+import leftLeaf from "./leftLeaf.png";
+import rightLeaf from "./rightLeaf.png";
 
 // Icons
 
 import bell from "./icons/bell.png";
+import job from "./icons/job.png";
 
 export const AllImages = {
   logo,
@@ -28,6 +32,9 @@ export const AllImages = {
   PDFImage,
   user,
   yellow,
+  flower,
+  leftLeaf,
+  rightLeaf,
 };
 
 export const AuthImages = {
@@ -38,4 +45,5 @@ export const AuthImages = {
 
 export const AllIcons = {
   bell,
+  job,
 };

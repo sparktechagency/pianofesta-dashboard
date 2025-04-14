@@ -1,9 +1,9 @@
 import { FaUserTie } from "react-icons/fa";
 import { ImUser, ImUsers } from "react-icons/im";
 import { MdEvent } from "react-icons/md";
-import { FaListCheck } from "react-icons/fa6";
 
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import { AllIcons } from "../../../../public/images/AllImages";
 
 const data = [
   {
@@ -38,7 +38,7 @@ const data = [
     id: 5,
     background: "#FFFFFF",
     name: "Active  Job Listings",
-    icon: <FaListCheck className="size-7 text-secondary-color" />,
+    icon: <img src={AllIcons.job} className="size-7" />,
     count: 6000,
   },
   {

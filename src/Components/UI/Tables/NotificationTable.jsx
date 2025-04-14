@@ -1,5 +1,5 @@
 import MyTable from "../../../utils/MyTable";
-const MessageTable = ({
+const NotificationTable = ({
   data,
   loading,
   setPage,
@@ -20,7 +20,7 @@ const MessageTable = ({
       key: "recipient",
     },
     {
-      title: "Message",
+      title: "Notification",
       dataIndex: "message", // Data key for message
       key: "message",
     },
@@ -55,4 +55,4 @@ const MessageTable = ({
   );
 };
 
-export default MessageTable;
+export default NotificationTable;

@@ -41,6 +41,14 @@ const AllBusinessUserTable = ({
       onFilter: (value, record) => record.businessProfile.includes(value),
     },
     {
+      title: "Event Created",
+      dataIndex: "eventCreated", // Data key for eventCreated
+      key: "eventCreated",
+
+      sorter: (a, b) => a.eventCreated - b.eventCreated,
+      onFilter: (value, record) => record.eventCreated.includes(value),
+    },
+    {
       title: "Credit",
       dataIndex: "credit", // Data key for memberType
       key: "credit",
@@ -49,12 +57,11 @@ const AllBusinessUserTable = ({
       onFilter: (value, record) => record.credit.includes(value),
     },
     {
-      title: "Event Created",
-      dataIndex: "eventCreated", // Data key for eventCreated
-      key: "eventCreated",
-
-      sorter: (a, b) => a.eventCreated - b.eventCreated,
-      onFilter: (value, record) => record.eventCreated.includes(value),
+      title: "Job Posted ",
+      dataIndex: "jobPosted", // Data key for jobPosted
+      key: "jobPosted",
+      sorter: (a, b) => a.jobPosted - b.jobPosted,
+      onFilter: (value, record) => record.jobPosted.includes(value),
     },
     {
       title: "Followers",
@@ -87,13 +94,6 @@ const AllBusinessUserTable = ({
 
       sorter: (a, b) => a.additionalServices - b.additionalServices,
       onFilter: (value, record) => record.additionalServices.includes(value),
-    },
-    {
-      title: "Job Posted ",
-      dataIndex: "jobPosted", // Data key for jobPosted
-      key: "jobPosted",
-      sorter: (a, b) => a.jobPosted - b.jobPosted,
-      onFilter: (value, record) => record.jobPosted.includes(value),
     },
     {
       title: "Reviews ",

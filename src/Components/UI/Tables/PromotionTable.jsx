@@ -53,6 +53,15 @@ const PromotionTable = ({
       title: "Status",
       dataIndex: "status", // Data key for status
       key: "status",
+      render: (status) => (
+        <span
+          className={`${
+            status === "Active" ? "text-success-color" : "text-error-color"
+          }`}
+        >
+          {status}
+        </span>
+      ),
     },
     {
       title: "Action",

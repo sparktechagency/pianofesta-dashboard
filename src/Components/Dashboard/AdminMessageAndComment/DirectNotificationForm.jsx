@@ -1,6 +1,6 @@
 import { Button, Form, Input, Typography } from "antd";
 
-const DirectMessages = () => {
+const DirectNotification = () => {
   const [form] = Form.useForm();
 
   const handleSave = async (values) => {
@@ -52,4 +52,4 @@ const DirectMessages = () => {
   );
 };
 
-export default DirectMessages;
+export default DirectNotification;

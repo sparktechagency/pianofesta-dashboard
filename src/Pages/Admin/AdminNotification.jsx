@@ -1,10 +1,10 @@
 import { useState } from "react";
-import DirectMessages from "../../Components/Dashboard/AdminMessageAndComment/DirectMessagesForm";
-import MassMessageForm from "../../Components/Dashboard/AdminMessageAndComment/MassMessage";
 import messageData from "../../../public/data/messageData";
-import MessageTable from "../../Components/UI/Tables/MessageTable";
+import NotificationTable from "../../Components/UI/Tables/NotificationTable";
+import DirectNotification from "../../Components/Dashboard/AdminMessageAndComment/DirectNotificationForm";
+import MassNotification from "../../Components/Dashboard/AdminMessageAndComment/MassNotification";
 
-const AdminMessageAndComment = () => {
+const AdminNotification = () => {
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
@@ -24,7 +24,7 @@ const AdminMessageAndComment = () => {
                 : "text-[#717375] border-b-2 border-transparent"
             }`}
           >
-            Direct Messages
+            Direct Notification
           </p>
           <p
             onClick={() => setActiveTab("massMessage")}
@@ -34,7 +34,7 @@ const AdminMessageAndComment = () => {
                 : "text-[#717375] border-b-2 border-transparent"
             }`}
           >
-            Mass Message
+            Mass Notification
           </p>
           <p
             onClick={() => setActiveTab("communicationHistory")}
@@ -52,15 +52,15 @@ const AdminMessageAndComment = () => {
       <div className=" bg-primary-color min-h-[70vh] rounded-xl px-4">
         {activeTab === "directMessages" ? (
           <div className="bg-primary-color w-1/2 py-4  ">
-            <DirectMessages />
+            <DirectNotification />
           </div>
         ) : activeTab === "massMessage" ? (
           <div className="bg-primary-color w-1/2 py-4  ">
-            <MassMessageForm />
+            <MassNotification />
           </div>
         ) : (
           <div className="bg-primary-color  py-4  ">
-            <MessageTable
+            <NotificationTable
               data={messageData}
               loading={false}
               setPage={setPage}
@@ -75,4 +75,4 @@ const AdminMessageAndComment = () => {
   );
 };
 
-export default AdminMessageAndComment;
+export default AdminNotification;

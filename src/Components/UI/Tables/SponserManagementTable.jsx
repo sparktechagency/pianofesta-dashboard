@@ -45,11 +45,6 @@ const SponseManagementTable = ({
       key: "expirationDays",
     },
     {
-      title: "Expiration (Days)",
-      dataIndex: "expirationDays", // Data key for packageName
-      key: "expirationDays",
-    },
-    {
       title: "Priority Level",
       dataIndex: "priorityLevel", // Data key for packageName
       key: "priorityLevel",

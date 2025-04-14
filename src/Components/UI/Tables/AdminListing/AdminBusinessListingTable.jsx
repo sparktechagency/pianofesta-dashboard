@@ -35,6 +35,30 @@ const AdminBusinessListingTable = ({
       key: "businessUser",
     },
     {
+      title: "Followers",
+      dataIndex: "followers", // Data key for followers
+      key: "followers",
+      render: () => <span>11</span>,
+    },
+    {
+      title: "Likes",
+      dataIndex: "likes", // Data key for likes
+      key: "likes",
+      render: () => <span>11</span>,
+    },
+    {
+      title: "Comments",
+      dataIndex: "comments", // Data key for Comments
+      key: "comments",
+      render: () => <span>5</span>,
+    },
+    {
+      title: "Ratings",
+      dataIndex: "ratings", // Data key for ratings
+      key: "ratings",
+      render: () => <span>4</span>,
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (

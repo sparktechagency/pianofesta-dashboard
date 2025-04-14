@@ -1,14 +1,17 @@
 import { useState } from "react";
 import promotionData from "../../../public/data/promotionData";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import PromotionDeleteModal from "../../Components/UI/Modal/Promotion/PromotionModal";
 import PromotionTable from "../../Components/UI/Tables/PromotionTable";
+import { MdAdd } from "react-icons/md";
+import AddPromotionModal from "../../Components/UI/Modal/Promotion/AddPromotionModal";
 
 const AdminPromotion = () => {
   const data = promotionData;
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const limit = 12;
 
@@ -92,6 +95,13 @@ const AdminPromotion = () => {
             <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-gradient-color font-semibold">
               Promotions
             </p>
+            <Button
+              onClick={() => setIsAddModalOpen(true)}
+              className="text-base lg:text-lg !p-4 !bg-secondary-color !text-primary-color border !border-secondary-color !rounded flex items-center gap-2"
+            >
+              <MdAdd className="text-base lg:text-lg text-primary-color" />
+              Create New Coupon
+            </Button>
           </div>
         </div>
         <PromotionTable
@@ -109,6 +119,10 @@ const AdminPromotion = () => {
           isDeleteModalVisible={isDeleteModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
+        />
+        <AddPromotionModal
+          isAddModalOpen={isAddModalOpen}
+          setIsAddModalOpen={setIsAddModalOpen}
         />
       </div>
     </div>

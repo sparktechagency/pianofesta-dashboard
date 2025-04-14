@@ -31,11 +31,8 @@ import PrivacyPolicy from "../Pages/Common/settings/PrivacyPolicy";
 import TermsOfService from "../Pages/Common/settings/TermsOfService";
 import AdminCategory from "../Pages/Admin/AdminCategory";
 import AdminEarning from "../Pages/Admin/AdminEarning";
-import AdminInspiration from "../Pages/Admin/AdminInspiration";
-import AdminCommunity from "../Pages/Admin/AdminCommunity";
 import FAQSection from "../Pages/Common/settings/FAQ";
 import AdminSponsorManagement from "../Pages/Admin/AdminSponsor";
-import AdminMessageAndComment from "../Pages/Admin/AdminMessageAndComment";
 import SearchHistory from "../Pages/Admin/SearchHistory";
 import AdminPromotion from "../Pages/Admin/AdminPromotion";
 import AdminEventListing from "../Pages/Admin/AdminListing/AdminEventListing";
@@ -43,6 +40,8 @@ import AdminBusinessListing from "../Pages/Admin/AdminListing/AdminBusinessListi
 import AdminJobListing from "../Pages/Admin/AdminListing/AdminJobListing";
 import AdminSupportTicket from "../Pages/Admin/AdminSupportTicket";
 import AdminReport from "../Pages/Admin/AdminReport";
+import AdminNotification from "../Pages/Admin/AdminNotification";
+import AdminMessage from "../Pages/Admin/AdminMessage";
 
 export const adminPaths = [
   {
@@ -138,9 +137,16 @@ export const adminPaths = [
   },
   {
     path: "message-comment",
-    element: <AdminMessageAndComment />,
+    element: <AdminMessage />,
     key: "message-comment",
     name: "Message & Comment",
+    icon: messageAndCom,
+  },
+  {
+    path: "notification",
+    element: <AdminNotification />,
+    key: "notification",
+    name: "Notification",
     icon: messageAndCom,
   },
   {

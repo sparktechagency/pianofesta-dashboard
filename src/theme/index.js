@@ -72,5 +72,9 @@ export const mainTheme = {
       colorPrimary: "#F9FAFB",
       colorPrimaryHover: "#F9FAFB",
     },
+    Radio: {
+      colorPrimary: "#6A0DAD",
+      colorPrimaryHover: "#6A0DAD",
+    },
   },
 };

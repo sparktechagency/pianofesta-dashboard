@@ -2,7 +2,7 @@ import { Button, Form, Input, Select, Typography } from "antd";
 
 const { Option } = Select;
 
-const MassMessageForm = () => {
+const MassNotification = () => {
   const [form] = Form.useForm();
 
   const handleSave = async (values) => {
@@ -127,4 +127,4 @@ const MassMessageForm = () => {
   );
 };
 
-export default MassMessageForm;
+export default MassNotification;
