@@ -48,7 +48,7 @@ const AdminBusinessUser = () => {
         <div className="bg-primary-color w-full p-4   rounded-tl-xl rounded-tr-xl">
           <div className=" flex items-center justify-between my-5">
             <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-gradient-color font-semibold">
-              User List
+              Business User List
             </p>
             <SearchInput
               placeholder="Search ..."

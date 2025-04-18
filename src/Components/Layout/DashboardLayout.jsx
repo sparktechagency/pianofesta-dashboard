@@ -95,7 +95,7 @@ const DashboardLayout = () => {
               src={AllImages.logo}
               alt="logo"
               sizes="100vw"
-              className="w-auto h-20 my-10 mx-auto"
+              className="w-[90%] h-auto my-10 mx-auto"
             />
           </Link>
 
