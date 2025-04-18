@@ -42,6 +42,7 @@ import AdminSupportTicket from "../Pages/Admin/AdminSupportTicket";
 import AdminReport from "../Pages/Admin/AdminReport";
 import AdminNotification from "../Pages/Admin/AdminNotification";
 import AdminMessage from "../Pages/Admin/AdminMessage";
+import Notifications from "../Pages/Common/Notifications";
 
 export const adminPaths = [
   {
@@ -50,6 +51,10 @@ export const adminPaths = [
     key: "dashboard",
     name: "Dashboard",
     icon: dashboardLogo,
+  },
+  {
+    path: "notifications",
+    element: <Notifications />,
   },
   {
     name: "User Management",
@@ -128,24 +133,24 @@ export const adminPaths = [
     name: "Sponsor Management",
     icon: sponsor,
   },
+  // {
+  //   path: "support",
+  //   element: <AdminSupportTicket />,
+  //   key: "support",
+  //   name: "Support",
+  //   icon: support,
+  // },
   {
-    path: "support",
-    element: <AdminSupportTicket />,
-    key: "support",
-    name: "Support",
-    icon: support,
-  },
-  {
-    path: "message-comment",
+    path: "support-message",
     element: <AdminMessage />,
-    key: "message-comment",
-    name: "Message & Comment",
+    key: "support-message",
+    name: "Support Message",
     icon: messageAndCom,
   },
   {
-    path: "notification",
+    path: "send-notification",
     element: <AdminNotification />,
-    key: "notification",
+    key: "send-notification",
     name: "Notification",
     icon: messageAndCom,
   },

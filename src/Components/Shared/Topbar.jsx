@@ -54,7 +54,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       {notifications.map((notification) => (
         <div className="test-start" key={notification.id}>
           <div className="flex gap-2">
-            <BellFilled className="text-[#022940]" />
+            <BellFilled className="text-secondary-color" />
             <div className="flex flex-col items-start">
               <p>{notification.message}</p>
               <p className="text-gray-400">{notification.time}</p>
@@ -64,7 +64,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       ))}
       <Link
         to={`/${user?.role}/notifications`}
-        className="w-2/3 mx-auto bg-[#022940] !text-primary-color rounded h-8 py-1"
+        className="w-2/3 mx-auto bg-secondary-color !text-primary-color rounded h-8 py-1"
       >
         See More
       </Link>

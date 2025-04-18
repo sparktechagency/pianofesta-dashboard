@@ -44,7 +44,7 @@ const DirectNotification = () => {
             htmlType="submit"
             className="w-full h-12 !bg-gradient-to-b from-[#8F59F9] to-[#6A0DAD] border !border-secondary-color !text-white text-base sm:text-lg font-bold rounded-md"
           >
-            Send Message
+            Send Notification
           </Button>
         </Form.Item>
       </Form>
