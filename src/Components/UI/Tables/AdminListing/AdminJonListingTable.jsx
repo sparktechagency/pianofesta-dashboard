@@ -1,6 +1,7 @@
 import { Space, Tooltip } from "antd";
 import { MdDelete } from "react-icons/md";
 import MyTable from "../../../../utils/MyTable";
+import { useEffect, useState } from "react";
 const AdminJobListingTable = ({
   data,
   loading,
@@ -9,13 +10,24 @@ const AdminJobListingTable = ({
   page,
   total,
   limit,
-  // showFilters = true,
+  setSelectedData = () => {},
 }) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const handleSelectChange = (selectedKeys) => {
+    setSelectedRowKeys(selectedKeys);
+  };
+
+  // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
+  useEffect(() => {
+    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.uid)));
+  }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
+
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
-      key: "_id",
+      dataIndex: "uid",
+      key: "uid",
     },
     {
       title: "Job Title",
@@ -79,6 +91,9 @@ const AdminJobListingTable = ({
 
   return (
     <MyTable
+      selectedRowKeys={selectedRowKeys} // Correctly passing selectedRowKeys to MyTable
+      handleSelectChange={handleSelectChange} // Correctly passing the handleSelectChange function
+      rowSelectionOn={true} // Enabling row selection
       columns={columns}
       data={data}
       loading={loading}

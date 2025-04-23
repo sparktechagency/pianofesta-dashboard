@@ -2,13 +2,13 @@ import { Button } from "antd";
 import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 
-const PrivacyPolicy = () => {
+const CookiesPolicy = () => {
   const [activeTab, setActiveTab] = useState("regularUser");
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
   const handleOnSave = () => {
-    console.log(content);
+    console.log("Saved PP");
   };
 
   return (
@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
     >
       <div className="bg-secondary-color w-full flex items-center p-5 mb-10  rounded-tl-xl rounded-tr-xl">
         <p className="text-2xl text-primary-color font-semibold">
-          Privacy policy
+          Cookies Policy
         </p>
       </div>
       <div className="flex items-center gap-2 bg-gradient rounded-lg p-3 mb-10">
@@ -64,4 +64,4 @@ const PrivacyPolicy = () => {
     </div>
   );
 };
-export default PrivacyPolicy;
+export default CookiesPolicy;

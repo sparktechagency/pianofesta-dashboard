@@ -1,12 +1,10 @@
 import { Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
-import { MdDelete } from "react-icons/md";
-const ReportTable = ({
+const AddAdminTable = ({
   data,
   loading,
   showViewModal,
-  showDeleteModal,
   setPage,
   page,
   total,
@@ -20,27 +18,15 @@ const ReportTable = ({
       key: "_id",
     },
     {
-      title: "Post Title",
-      dataIndex: "postTitle", // Data key for postTitle
-      key: "postTitle",
+      title: "Name",
+      dataIndex: "name", // Data key for name
+      key: "name",
     },
     {
-      title: "Post Category",
-      dataIndex: "postCategory", // Data key for postCategory
-      key: "postCategory",
+      title: "Email",
+      dataIndex: "email", // Data key for email
+      key: "email",
     },
-    {
-      title: "Reported By",
-      dataIndex: "reportedBy", // Data key for reportedBy
-      key: "reportedBy",
-    },
-    {
-      title: "Comments",
-      dataIndex: "comments", // Data key for rating
-      key: "comments",
-      render: () => <p>Lorem ipsum dolor sit amet consectetur.</p>,
-    },
-
     {
       title: "Action",
       key: "action",
@@ -56,17 +42,10 @@ const ReportTable = ({
                 <GoEye style={{ fontSize: "24px" }} />
               </button>
             </Tooltip>
-            <Tooltip placement="left" title="Block this User">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-error-color"
-                onClick={() => showDeleteModal(record)}
-              >
-                <MdDelete style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
           </Space>
         </>
       ),
+
       align: "center",
     },
   ];
@@ -85,4 +64,4 @@ const ReportTable = ({
   );
 };
 
-export default ReportTable;
+export default AddAdminTable;

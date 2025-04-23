@@ -3,6 +3,7 @@ import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 
 const TermsOfService = () => {
+  const [activeTab, setActiveTab] = useState("regularUser");
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
@@ -18,6 +19,28 @@ const TermsOfService = () => {
       <div className="bg-secondary-color w-full flex items-center p-5 mb-10  rounded-tl-xl rounded-tr-xl">
         <p className="text-2xl text-primary-color font-semibold">
           Terms & Conditions
+        </p>
+      </div>
+      <div className="flex items-center gap-2 bg-gradient rounded-lg p-3 mb-10">
+        <p
+          onClick={() => setActiveTab("regularUser")}
+          className={`text-base sm:text-lg lg:text-xl font-semibold cursor-pointer p-1  ${
+            activeTab === "regularUser"
+              ? "border-b-2 border-secondary-color text-secondary-color"
+              : "text-[#717375] border-b-2 border-transparent"
+          }`}
+        >
+          Regular User
+        </p>
+        <p
+          onClick={() => setActiveTab("businessUser")}
+          className={`text-base sm:text-lg lg:text-xl font-semibold cursor-pointer p-1  ${
+            activeTab === "businessUser"
+              ? "border-b-2 border-secondary-color text-secondary-color"
+              : "text-[#717375] border-b-2 border-transparent"
+          }`}
+        >
+          Business User
         </p>
       </div>
       <div className=" flex justify-center items-center">

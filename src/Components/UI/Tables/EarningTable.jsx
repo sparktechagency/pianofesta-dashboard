@@ -1,6 +1,7 @@
 import { Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
+import { useEffect, useState } from "react";
 const EarningTable = ({
   data,
   loading,
@@ -9,13 +10,23 @@ const EarningTable = ({
   page,
   total,
   limit,
-  // showFilters = true,
+  setSelectedData = () => {},
 }) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const handleSelectChange = (selectedKeys) => {
+    setSelectedRowKeys(selectedKeys);
+  };
+
+  // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
+  useEffect(() => {
+    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.UID)));
+  }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
-      key: "_id",
+      dataIndex: "UID",
+      key: "UID",
     },
     {
       title: "Name",
@@ -46,29 +57,16 @@ const EarningTable = ({
       title: "Plan",
       dataIndex: "plan", // Data key for plan
       key: "plan",
-      filters: [
-        { text: "Basic", value: "Basic" },
-        { text: "Pro", value: "Pro" },
-        { text: "Premium", value: "Premium" },
-      ],
-      onFilter: (value, record) => record.plan.includes(value),
     },
     {
       title: "Amount",
       dataIndex: "amount", // Data key for amount
       key: "amount",
-      sorter: (a, b) => a.amount - b.amount,
-      onFilter: (value, record) => record.amount.includes(value),
     },
     {
       title: "Status",
       dataIndex: "status", // Data key for status
       key: "status",
-      filters: [
-        { text: "Active", value: "Active" },
-        { text: "Inactive", value: "Inactive" },
-      ],
-      onFilter: (value, record) => record.status.includes(value),
     },
     {
       title: "Action",
@@ -94,6 +92,9 @@ const EarningTable = ({
 
   return (
     <MyTable
+      selectedRowKeys={selectedRowKeys} // Correctly passing selectedRowKeys to MyTable
+      handleSelectChange={handleSelectChange} // Correctly passing the handleSelectChange function
+      rowSelectionOn={true} // Enabling row selection
       columns={columns}
       data={data}
       loading={loading}
@@ -101,7 +102,7 @@ const EarningTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"email"}
+      keyValue={"UID"}
     />
   );
 };

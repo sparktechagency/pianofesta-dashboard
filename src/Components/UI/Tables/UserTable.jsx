@@ -3,6 +3,7 @@ import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { CgUnblock } from "react-icons/cg";
 import { MdBlock } from "react-icons/md";
+import { useEffect, useState } from "react";
 const AllUserTable = ({
   data,
   loading,
@@ -13,8 +14,25 @@ const AllUserTable = ({
   page,
   total,
   limit,
+  setSelectedData = () => {},
+  rowSelectionOn = false,
+
   // showFilters = true,
 }) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const handleSelectChange = (selectedKeys) => {
+    setSelectedRowKeys(selectedKeys);
+  };
+
+  // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
+  useEffect(() => {
+    // Set the selected data to the parent
+    setSelectedData(
+      data.filter((user) => selectedRowKeys.includes(user.email))
+    );
+  }, [selectedRowKeys, data, setSelectedData]); // Ensure this is using the props
+
   const columns = [
     {
       title: "#UID",
@@ -30,12 +48,6 @@ const AllUserTable = ({
       title: "Gender",
       dataIndex: "gender", // Data key for memberType
       key: "gender",
-      filters: [
-        { text: "Male", value: "Male" },
-        { text: "Female", value: "Female" },
-        { text: "Other", value: "-" },
-      ],
-      onFilter: (value, record) => record.gender.includes(value),
     },
     {
       title: "Email",
@@ -98,6 +110,9 @@ const AllUserTable = ({
 
   return (
     <MyTable
+      selectedRowKeys={selectedRowKeys}
+      handleSelectChange={handleSelectChange}
+      rowSelectionOn={rowSelectionOn}
       columns={columns}
       data={data}
       loading={loading}

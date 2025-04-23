@@ -3,6 +3,8 @@ import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { CgUnblock } from "react-icons/cg";
 import { MdBlock } from "react-icons/md";
+import { useEffect, useState } from "react";
+
 const AllBusinessUserTable = ({
   data,
   loading,
@@ -13,13 +15,24 @@ const AllBusinessUserTable = ({
   page,
   total,
   limit,
-  // showFilters = true,
+  setSelectedData = () => {},
 }) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const handleSelectChange = (selectedKeys) => {
+    setSelectedRowKeys(selectedKeys);
+  };
+
+  // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
+  useEffect(() => {
+    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.UID)));
+  }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
+
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
-      key: "_id",
+      dataIndex: "UID",
+      key: "UID",
     },
     {
       title: "Name",
@@ -30,77 +43,51 @@ const AllBusinessUserTable = ({
       title: "Active Sponsorship",
       dataIndex: "activeSponsorship", // Data key for name
       key: "activeSponsorship",
-      sorter: (a, b) => a.activeSponsorship - b.activeSponsorship,
-      onFilter: (value, record) => record.activeSponsorship.includes(value),
     },
     {
       title: "Business Profile",
       dataIndex: "businessProfile", // Data key for name
       key: "businessProfile",
-      sorter: (a, b) => a.businessProfile - b.businessProfile,
-      onFilter: (value, record) => record.businessProfile.includes(value),
     },
     {
       title: "Event Created",
       dataIndex: "eventCreated", // Data key for eventCreated
       key: "eventCreated",
-
-      sorter: (a, b) => a.eventCreated - b.eventCreated,
-      onFilter: (value, record) => record.eventCreated.includes(value),
     },
     {
       title: "Credit",
       dataIndex: "credit", // Data key for memberType
       key: "credit",
-      render: (credit) => `$${credit}`,
-      sorter: (a, b) => a.credit - b.credit,
-      onFilter: (value, record) => record.credit.includes(value),
     },
     {
       title: "Job Posted ",
       dataIndex: "jobPosted", // Data key for jobPosted
       key: "jobPosted",
-      sorter: (a, b) => a.jobPosted - b.jobPosted,
-      onFilter: (value, record) => record.jobPosted.includes(value),
     },
     {
       title: "Followers",
       dataIndex: "followers", // Data key for followers
       key: "followers",
-
-      sorter: (a, b) => a.followers - b.followers,
-      onFilter: (value, record) => record.followers.includes(value),
     },
     {
       title: "Likes",
       dataIndex: "likes", // Data key for likes
       key: "likes",
-
-      sorter: (a, b) => a.likes - b.likes,
-      onFilter: (value, record) => record.likes.includes(value),
     },
     {
       title: "Supported Events",
       dataIndex: "supportedEvents", // Data key for supportedEvents
       key: "supportedEvents",
-
-      sorter: (a, b) => a.supportedEvents - b.supportedEvents,
-      onFilter: (value, record) => record.supportedEvents.includes(value),
     },
     {
       title: "Additional Services",
       dataIndex: "additionalServices", // Data key for additionalServices
       key: "additionalServices",
-
-      sorter: (a, b) => a.additionalServices - b.additionalServices,
-      onFilter: (value, record) => record.additionalServices.includes(value),
     },
     {
       title: "Reviews ",
       dataIndex: "reviews", // Data key for reviews
       key: "reviews",
-      sorter: (a, b) => a.reviews - b.reviews,
-      onFilter: (value, record) => record.reviews.includes(value),
     },
     {
       title: "Action",
@@ -141,13 +128,15 @@ const AllBusinessUserTable = ({
           </Space>
         </>
       ),
-
       align: "center",
     },
   ];
 
   return (
     <MyTable
+      selectedRowKeys={selectedRowKeys} // Correctly passing selectedRowKeys to MyTable
+      handleSelectChange={handleSelectChange} // Correctly passing the handleSelectChange function
+      rowSelectionOn={true} // Enabling row selection
       columns={columns}
       data={data}
       loading={loading}
@@ -155,7 +144,7 @@ const AllBusinessUserTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"email"}
+      keyValue={"UID"}
     />
   );
 };

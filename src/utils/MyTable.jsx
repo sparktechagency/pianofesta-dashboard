@@ -10,9 +10,19 @@ const MyTable = ({
   page,
   onChange,
   keyValue,
+  rowSelectionOn = false,
+  selectedRowKeys = [],
+  handleSelectChange = () => {},
 }) => {
   return (
     <Table
+      rowSelection={
+        rowSelectionOn && {
+          type: "checkbox",
+          selectedRowKeys: selectedRowKeys,
+          onChange: handleSelectChange,
+        }
+      }
       loading={loading}
       columns={columns}
       dataSource={data}

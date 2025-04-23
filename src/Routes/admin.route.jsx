@@ -19,6 +19,7 @@ import promotion from "/images/dashboard-logo/promotion.svg";
 // import feedback from "/images/dashboard-logo/feedback.svg";
 // import supportRequests from "/images/dashboard-logo/supportRequests.svg";
 
+import dataManagement from "/images/dashboard-logo/dataManagement.svg";
 import setting from "/images/dashboard-logo/setting.svg";
 
 //* ------------------IMPORT COMPONENTS------------------
@@ -43,6 +44,8 @@ import AdminReport from "../Pages/Admin/AdminReport";
 import AdminNotification from "../Pages/Admin/AdminNotification";
 import AdminMessage from "../Pages/Admin/AdminMessage";
 import Notifications from "../Pages/Common/Notifications";
+import CookiesPolicy from "../Pages/Common/settings/CookiesPolicy";
+import AddAdmin from "../Pages/Common/settings/AddAdmin";
 
 export const adminPaths = [
   {
@@ -169,15 +172,10 @@ export const adminPaths = [
     icon: promotion,
   },
   {
-    name: "Setting",
-    icon: setting,
+    name: "Data Management",
+    icon: dataManagement,
+
     children: [
-      {
-        key: "profile",
-        path: "profile",
-        element: <Profile />,
-        name: "Profile",
-      },
       {
         key: "privacy-policy",
         path: "privacy-policy",
@@ -191,11 +189,30 @@ export const adminPaths = [
         name: "Terms of Service",
       },
       {
+        key: "cookies-policy",
+        path: "cookies-policy",
+        element: <CookiesPolicy />,
+        name: "Cookies Policy",
+      },
+      {
+        key: "add-admin",
+        path: "add-admin",
+        element: <AddAdmin />,
+        name: "Add Admin",
+      },
+      {
         key: "faq",
         path: "faq",
         element: <FAQSection />,
         name: "FAQ",
       },
     ],
+  },
+  {
+    name: "Setting",
+    icon: setting,
+    key: "setting",
+    path: "setting",
+    element: <Profile />,
   },
 ];
