@@ -50,6 +50,12 @@ const AllBusinessUserTable = ({
       key: "businessProfile",
     },
     {
+      title: "Created Date",
+      dataIndex: "dateOfBirth", // Data key for dateOfBirth
+      key: "dateOfBirth",
+      render: () => <p>26/02/2023</p>,
+    },
+    {
       title: "Event Created",
       dataIndex: "eventCreated", // Data key for eventCreated
       key: "eventCreated",

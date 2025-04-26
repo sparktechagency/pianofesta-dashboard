@@ -60,6 +60,11 @@ const AllUserTable = ({
       key: "phone",
     },
     {
+      title: "Created Date",
+      dataIndex: "dateOfBirth", // Data key for dateOfBirth
+      key: "dateOfBirth",
+    },
+    {
       title: "Date of Birth",
       dataIndex: "dateOfBirth", // Data key for dateOfBirth
       key: "dateOfBirth",

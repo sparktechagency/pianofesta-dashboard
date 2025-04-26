@@ -32,6 +32,12 @@ const SearchHistoryTable = ({
       key: "location",
     },
     {
+      title: "Area",
+      dataIndex: "city", // Data key for location
+      key: "city",
+      render: () => <p>Garbatella</p>,
+    },
+    {
       title: " Results Count",
       dataIndex: "resultsCount", // Data key for resultsCount
       key: "resultsCount",

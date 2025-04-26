@@ -1,13 +1,9 @@
-import { Space, Tooltip } from "antd";
-import { GoEye } from "react-icons/go";
-import { MdDelete } from "react-icons/md";
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
+import { AllImages } from "../../../../../public/images/AllImages";
 const AdminBusinessListingTable = ({
   data,
   loading,
-  showViewModal,
-  showDeleteModal,
   setPage,
   page,
   total,
@@ -35,6 +31,132 @@ const AdminBusinessListingTable = ({
       title: "Business Title",
       dataIndex: "businessTitle", // Data key for businessTitle
       key: "businessTitle",
+    },
+    {
+      title: "Short Description",
+      dataIndex: "shortDescription", // Data key for eventName
+      key: "shortDescription",
+      render: () => <p>This is a short description</p>,
+    },
+    {
+      title: "Detail Description",
+      dataIndex: "detailDescription", // Data key for eventName
+      key: "detailDescription",
+      render: () => <p>This is a detail description</p>,
+    },
+    {
+      title: "Logo",
+      dataIndex: "logo", // Data key for eventName
+      key: "logo",
+      render: () => (
+        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Cover",
+      dataIndex: "cover", // Data key for eventName
+      key: "cover",
+      render: () => (
+        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email", // Data key for email
+      key: "email",
+      render: () => <p>abc@gmail.com</p>,
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone", // Data key for phone
+      key: "phone",
+      render: () => <p>1234567890</p>,
+    },
+    {
+      title: "Created Date",
+      dataIndex: "CreatedDate", // Data key for CreatedDate
+      key: "CreatedDate",
+      render: () => <p>2023-06-01</p>,
+    },
+    {
+      title: "Website",
+      dataIndex: "website", // Data key for website
+      key: "website",
+      render: () => <p>https://example.com</p>,
+    },
+    {
+      title: "Facebook",
+      dataIndex: "Facebook", // Data key for Facebook
+      key: "Facebook",
+      render: () => <p>https://example.com</p>,
+    },
+    {
+      title: "Instagram",
+      dataIndex: "Instagram", // Data key for Instagram
+      key: "Instagram",
+      render: () => <p>https://example.com</p>,
+    },
+    {
+      title: "Start-End",
+      dataIndex: "Start-End", // Data key for Start-End
+      key: "Start-End",
+      render: () => <p>10:00 AM - 5:00PM</p>,
+    },
+    {
+      title: "Days",
+      dataIndex: "Days", // Data key for Days
+      key: "Days",
+      render: () => <p>Sun - Fri</p>,
+    },
+    {
+      title: "Address",
+      dataIndex: "address", // Data key for addre
+      key: "address",
+      render: () => <p>123 Main St, City</p>,
+    },
+    {
+      title: "Geo-Location",
+      dataIndex: "geoLocation", // Data key for geoLocation
+      key: "geoLocation",
+      render: () => <p>27.123456, 78.123456</p>,
+    },
+    {
+      title: "Provider Type",
+      dataIndex: "provider-type", // Data key for provider-type
+      key: "provider-type",
+      render: () => <p>Venue</p>,
+    },
+    {
+      title: "Event Type",
+      dataIndex: "event-type", // Data key for event-type
+      key: "event-type",
+      render: () => <p>€560</p>,
+    },
+    {
+      title: "Max Guests",
+      dataIndex: "Max-Guests", // Data key for Max-Guests
+      key: "Max-Guests",
+      render: () => <p>560</p>,
+    },
+    {
+      title: "FAQ ",
+      dataIndex: "faq", // Data key for faq
+      key: "faq",
+      render: () => <p>-</p>,
+    },
+    {
+      title: "Promotion-Image",
+      dataIndex: "Promotion-Image", // Data key for eventName
+      key: "Promotion-Image",
+      render: () => (
+        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Price Range",
+      dataIndex: "price-range", // Data key for price-range
+      key: "price-range",
+      render: () => <p>Venue</p>,
     },
     {
       title: "Business Category",
@@ -71,34 +193,10 @@ const AdminBusinessListingTable = ({
       render: () => <span>4</span>,
     },
     {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <>
-          <Space size="middle">
-            {/* View Details Tooltip */}
-            <Tooltip placement="right" title="View Details">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-secondary-color"
-                onClick={() => showViewModal(record)}
-              >
-                <GoEye style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-
-            <Tooltip placement="left" title="Block this User">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-error-color"
-                onClick={() => showDeleteModal(record)}
-              >
-                <MdDelete style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-          </Space>
-        </>
-      ),
-
-      align: "center",
+      title: "Listed-By",
+      dataIndex: "Listed-By", // Data key for Listed-By
+      key: "Listed-By",
+      render: () => <span>Jhone</span>,
     },
   ];
 

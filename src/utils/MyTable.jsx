@@ -1,6 +1,7 @@
 import { Table } from "antd";
 
 const MyTable = ({
+  className = "",
   loading,
   columns,
   data,
@@ -10,12 +11,14 @@ const MyTable = ({
   page,
   onChange,
   keyValue,
+  scroll = { x: "max-content" },
   rowSelectionOn = false,
   selectedRowKeys = [],
   handleSelectChange = () => {},
 }) => {
   return (
     <Table
+      className={className}
       rowSelection={
         rowSelectionOn && {
           type: "checkbox",
@@ -38,7 +41,7 @@ const MyTable = ({
             }
           : false
       }
-      scroll={{ x: true }}
+      scroll={scroll}
       rowKey={keyValue}
     />
   );

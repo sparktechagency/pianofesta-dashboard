@@ -109,6 +109,97 @@ const AdminEventListing = () => {
             >
               <div className="flex flex-col items-start gap-1">
                 <Typography.Text className="text-lg text-base-color font-semibold">
+                  Created From
+                </Typography.Text>
+                <DatePicker
+                  className="!rounded-lg !text-base !w-fit !bg-primary-color !border !shadow-none !text-base-color"
+                  placeholder={"Created From Date"}
+                />
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Created To
+                </Typography.Text>
+                <DatePicker
+                  className="!rounded-lg !text-base !w-fit !bg-primary-color !border !shadow-none !text-base-color"
+                  placeholder={"Created To Date"}
+                />
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Start Date
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  End Date
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Start Time
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  End Time
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Address
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="yes">Yes</Select.Option>
+                  <Select.Option value="no">No</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
                   Event Category
                 </Typography.Text>
                 <Select
@@ -122,7 +213,48 @@ const AdminEventListing = () => {
                   <Select.Option value="business">Business</Select.Option>
                 </Select>
               </div>
-
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Promotion Img
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="yes">Yes</Select.Option>
+                  <Select.Option value="no">No</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Participants
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Entrance Fee
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
               {/* Job Posted Dropdown */}
               <div className="flex flex-col items-start gap-1">
                 <Typography.Text className="text-lg text-base-color font-semibold">

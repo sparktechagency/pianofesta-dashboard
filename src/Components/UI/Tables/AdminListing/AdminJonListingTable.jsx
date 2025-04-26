@@ -1,11 +1,9 @@
-import { Space, Tooltip } from "antd";
-import { MdDelete } from "react-icons/md";
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
+import { AllImages } from "../../../../../public/images/AllImages";
 const AdminJobListingTable = ({
   data,
   loading,
-  showDeleteModal,
   setPage,
   page,
   total,
@@ -35,9 +33,58 @@ const AdminJobListingTable = ({
       key: "jobTitle",
     },
     {
-      title: "Job Role",
-      dataIndex: "jobRole", // Data key for jobRole
-      key: "jobRole",
+      title: "Logo",
+      dataIndex: "logo", // Data key for eventName
+      key: "logo",
+      render: () => (
+        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Cover",
+      dataIndex: "cover", // Data key for eventName
+      key: "cover",
+      render: () => (
+        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Gallery",
+      dataIndex: "gallery", // Data key for eventName
+      key: "gallery",
+      render: () => (
+        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email", // Data key for email
+      key: "email",
+      render: () => <p>abc@gmail.com</p>,
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone", // Data key for phone
+      key: "phone",
+      render: () => <p>1234567890</p>,
+    },
+    {
+      title: "Created Date",
+      dataIndex: "CreatedDate", // Data key for CreatedDate
+      key: "CreatedDate",
+      render: () => <p>2023-06-01</p>,
+    },
+    {
+      title: "Address",
+      dataIndex: "address", // Data key for addre
+      key: "address",
+      render: () => <p>123 Main St, City</p>,
+    },
+    {
+      title: " Role",
+      dataIndex: "Role", // Data key for Role
+      key: "Role",
+      render: () => <p>CEO</p>,
     },
     {
       title: "Contract Type",
@@ -54,38 +101,34 @@ const AdminJobListingTable = ({
       dataIndex: "experience", // Data key for experience
       key: "experience",
     },
-    {
-      title: "Organizer",
-      dataIndex: "organizer", // Data key for organizer
-      key: "organizer",
-    },
+
     {
       title: "Work Hrs",
       dataIndex: "workHrs", // Data key for workHrs
       key: "workHrs",
     },
-
     {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <>
-          <Space size="middle">
-            {/* View Details Tooltip */}
-
-            <Tooltip placement="left" title="Block this User">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-error-color"
-                onClick={() => showDeleteModal(record)}
-              >
-                <MdDelete style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-          </Space>
-        </>
-      ),
-
-      align: "center",
+      title: "FAQ",
+      dataIndex: "FAQ", // Data key for FAQ
+      key: "FAQ",
+      render: () => <span>5</span>,
+    },
+    {
+      title: "Ratings",
+      dataIndex: "ratings", // Data key for ratings
+      key: "ratings",
+      render: () => <span>4</span>,
+    },
+    {
+      title: "Comments",
+      dataIndex: "comments", // Data key for Comments
+      key: "comments",
+      render: () => <span>5</span>,
+    },
+    {
+      title: "Posted By",
+      dataIndex: "organizer", // Data key for organizer
+      key: "organizer",
     },
   ];
 

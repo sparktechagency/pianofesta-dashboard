@@ -96,30 +96,45 @@ const AdminAllUsers = () => {
                 placeholder={"To Date"}
               />
             </div>
-            <div className="flex flex-col items-start gap-1">
-              <Typography.Text className="text-lg text-base-color font-semibold">
-                Gender
-              </Typography.Text>
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Select: {
-                      colorIcon: "#F9FAFB",
-                      colorBgContainer: "rgba(0,0,0,0)",
-                      fontSize: 20,
-                      optionSelectedColor: "#6A0DAD",
-                      optionSelectedBg: "#F9FAFB",
-                      optionActiveColor: "#F9FAFB",
-                      colorBorder: "#6A0DAD",
-                      colorBgElevated: "#FFFFFF",
-                      selectorBg: "#FFFFFF",
-                      colorText: "#3a3a3a",
-                      colorTextPlaceholder: "#B5B5B5",
-                      zIndexPopup: 990,
-                    },
+            <ConfigProvider
+              theme={{
+                components: {
+                  Select: {
+                    colorIcon: "#F9FAFB",
+                    colorBgContainer: "rgba(0,0,0,0)",
+                    fontSize: 20,
+                    optionSelectedColor: "#6A0DAD",
+                    optionSelectedBg: "#F9FAFB",
+                    optionActiveColor: "#F9FAFB",
+                    colorBorder: "#6A0DAD",
+                    colorBgElevated: "#FFFFFF",
+                    selectorBg: "#FFFFFF",
+                    colorText: "#3a3a3a",
+                    colorTextPlaceholder: "#B5B5B5",
+                    zIndexPopup: 990,
                   },
-                }}
-              >
+                },
+              }}
+            >
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Created Date
+                </Typography.Text>
+                <Select
+                  defaultValue="all"
+                  style={{ width: 150 }}
+                  className="!h-10"
+                >
+                  <Select.Option value="all">All</Select.Option>
+                  <Select.Option value="asc">ASC</Select.Option>
+                  <Select.Option value="desc">DESC</Select.Option>
+                </Select>
+              </div>
+              <div className="flex flex-col items-start gap-1">
+                <Typography.Text className="text-lg text-base-color font-semibold">
+                  Gender
+                </Typography.Text>
+
                 <Select
                   defaultValue="all"
                   style={{ width: 150 }}
@@ -130,8 +145,8 @@ const AdminAllUsers = () => {
                   <Select.Option value="female">Female</Select.Option>
                   <Select.Option value="other">Other</Select.Option>
                 </Select>
-              </ConfigProvider>
-            </div>
+              </div>
+            </ConfigProvider>
           </div>
           <div
             className={`${

@@ -33,6 +33,22 @@ const MassNotification = () => {
             <Option value="milan">Milan</Option>
           </Select>
         </Form.Item>
+        <Typography.Title level={5}>Range</Typography.Title>
+        <Form.Item
+          name="Range"
+          rules={[{ required: true, message: "Please select a Rage!" }]}
+          style={{ fontWeight: "500" }}
+        >
+          <Select
+            placeholder="Select Range"
+            className="font-medium h-12 border !border-secondary-color rounded-md"
+          >
+            <Option value="1">1 KM</Option>
+            <Option value="10">10 KM</Option>
+            <Option value="20">20 KM</Option>
+            <Option value="30">30 KM</Option>
+          </Select>
+        </Form.Item>
 
         {/* Dropdown for Categories */}
         <Typography.Title level={5}>Categories</Typography.Title>
