@@ -62,6 +62,7 @@ const EarningTable = ({
       title: "Amount",
       dataIndex: "amount", // Data key for amount
       key: "amount",
+      render: (amount) => <span>${amount}</span>,
     },
     {
       title: "Status",

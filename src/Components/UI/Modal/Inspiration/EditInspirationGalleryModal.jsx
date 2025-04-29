@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   ConfigProvider,
@@ -9,7 +10,11 @@ import {
   Upload,
 } from "antd";
 
-const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
+const EditGalleryInspirationModal = ({
+  isEditModalOpen,
+  setIsEditModalOpen,
+  currentRecord,
+}) => {
   const [form] = Form.useForm();
 
   const handleSave = async (values) => {
@@ -28,12 +33,12 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
       }}
     >
       <Modal
-        open={isAddModalOpen}
-        onCancel={() => setIsAddModalOpen(false)}
+        open={isEditModalOpen}
+        onCancel={() => setIsEditModalOpen(false)}
         footer={null}
       >
         <h1 className="text-2xl font-bold py-4 text-secondary-color">
-          New Blog
+          Edit Gallery
         </h1>
         <Form
           form={form}
@@ -71,21 +76,6 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
             </Select>
           </Form.Item>
 
-          <Typography.Title level={5}> Description</Typography.Title>
-          <Form.Item
-            name="description"
-            rules={[
-              { required: true, message: "Please input the description!" },
-            ]}
-            style={{ fontWeight: "500" }}
-          >
-            <Input.TextArea
-              rows={4}
-              placeholder="Enter description"
-              className="font-medium h-12  !text-base-color  placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
-            />
-          </Form.Item>
-
           <Typography.Title level={5}>Cover Image</Typography.Title>
           <Form.Item
             rules={[{ required: true, message: "Please upload an image!" }]}
@@ -95,6 +85,31 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
             <Upload
               beforeUpload={() => false} // Prevent automatic upload to server
               maxCount={1}
+              accept="image/*"
+              className=""
+              listType="picture"
+            >
+              <Button
+                style={{
+                  zIndex: 1,
+                }}
+                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
+              >
+                <div className="">Upload Image</div>
+              </Button>
+            </Upload>
+          </Form.Item>
+          <Typography.Title level={5}>
+            Image Gallery (Optional, max 10)
+          </Typography.Title>
+          <Form.Item
+            rules={[{ required: true, message: "Please upload an image!" }]}
+            className="relative w-full"
+            name="image"
+          >
+            <Upload
+              beforeUpload={() => false} // Prevent automatic upload to server
+              maxCount={10}
               accept="image/*"
               className=""
               listType="picture"
@@ -123,4 +138,4 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
   );
 };
 
-export default AddInspirationModal;
+export default EditGalleryInspirationModal;

@@ -9,7 +9,11 @@ import {
   Upload,
 } from "antd";
 
-const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
+const EditInspirationModal = ({
+  isEditModalOpen,
+  setIsEditModalOpen,
+  currentRecord,
+}) => {
   const [form] = Form.useForm();
 
   const handleSave = async (values) => {
@@ -28,19 +32,14 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
       }}
     >
       <Modal
-        open={isAddModalOpen}
-        onCancel={() => setIsAddModalOpen(false)}
+        open={isEditModalOpen}
+        onCancel={() => setIsEditModalOpen(false)}
         footer={null}
       >
-        <h1 className="text-2xl font-bold py-4 text-secondary-color">
-          New Blog
-        </h1>
         <Form
           form={form}
           layout="vertical"
-          initialValues={{
-            facilities: ["Boost voucher to popular"],
-          }}
+          initialValues={currentRecord}
           onFinish={handleSave}
           className=" mt-7"
         >
@@ -114,7 +113,7 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               htmlType="submit"
               className="w-full h-12 !bg-secondary-color border !border-secondary-color !text-white text-base sm:text-lg font-bold"
             >
-              Add
+              Edit
             </Button>
           </Form.Item>
         </Form>
@@ -123,4 +122,4 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
   );
 };
 
-export default AddInspirationModal;
+export default EditInspirationModal;

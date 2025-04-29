@@ -6,6 +6,7 @@ import category from "/images/dashboard-logo/category.svg";
 import earning from "/images/dashboard-logo/earning.svg";
 import listing from "/images/dashboard-logo/listing.svg";
 import inspiration from "/images/dashboard-logo/Inspiration.svg";
+import report from "/images/dashboard-logo/report.svg";
 import community from "/images/dashboard-logo/community.svg";
 import sponsor from "/images/dashboard-logo/sponsor.svg";
 import support from "/images/dashboard-logo/support.svg";
@@ -46,6 +47,8 @@ import AdminMessage from "../Pages/Admin/AdminMessage";
 import Notifications from "../Pages/Common/Notifications";
 import CookiesPolicy from "../Pages/Common/settings/CookiesPolicy";
 import AddAdmin from "../Pages/Common/settings/AddAdmin";
+import AdminRequestedCategory from "../Pages/Admin/AdminRequestedCategory";
+import AdminInspiration from "../Pages/Admin/AdminInspiration";
 
 export const adminPaths = [
   {
@@ -78,11 +81,22 @@ export const adminPaths = [
     ],
   },
   {
-    path: "category",
-    element: <AdminCategory />,
-    key: "category",
-    name: "Category",
+    name: "Categories",
     icon: category,
+    children: [
+      {
+        path: "allCategories",
+        element: <AdminCategory />,
+        key: "allCategories",
+        name: "All Categories",
+      },
+      {
+        key: "requestedCategory",
+        path: "requestedCategory",
+        element: <AdminRequestedCategory />,
+        name: "Requested Categories",
+      },
+    ],
   },
   {
     path: "earning",
@@ -120,6 +134,13 @@ export const adminPaths = [
     element: <AdminReport />,
     key: "report",
     name: "Report",
+    icon: report,
+  },
+  {
+    path: "inspiration",
+    element: <AdminInspiration />,
+    key: "inspiration",
+    name: "Inspiration",
     icon: inspiration,
   },
   // {

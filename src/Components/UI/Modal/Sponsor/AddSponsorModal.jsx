@@ -237,10 +237,10 @@ const AddSponsorManagementModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
                         placeholder="Select Priority Level"
                         className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md"
                       >
-                        {[...Array(12)].map((_, i) => (
-                          <Option key={i + 1} value={`${i + 1}`}>{`${
-                            i + 1
-                          } Month${i === 0 ? "" : "s"}`}</Option>
+                        {[...Array(3)].map((_, i) => (
+                          <Option key={i + 1} value={`${i + 1}`}>{`${i + 1} ${
+                            i === 0 ? "" : ""
+                          }`}</Option>
                         ))}
                       </Select>
                     </Form.Item>
@@ -295,9 +295,9 @@ const AddSponsorManagementModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
                         placeholder="Select Time"
                         className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md"
                       >
-                        {[1, 2, 3, 4, 5].map((time) => (
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((time) => (
                           <Option key={time} value={`${time}`}>
-                            {time}
+                            {time} Month
                           </Option>
                         ))}
                       </Select>

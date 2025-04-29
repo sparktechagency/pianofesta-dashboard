@@ -3,7 +3,7 @@ import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { AllImages } from "../../../../public/images/AllImages";
-const InspirationTable = ({
+const InspirationGalleryTable = ({
   data,
   loading,
   showViewModal,
@@ -33,11 +33,6 @@ const InspirationTable = ({
       title: " Title",
       dataIndex: "postTitle", // Data key for postTitle
       key: "postTitle",
-    },
-    {
-      title: "Description",
-      dataIndex: "description", // Data key for name
-      key: "description",
     },
     {
       title: " category",
@@ -112,4 +107,4 @@ const InspirationTable = ({
   );
 };
 
-export default InspirationTable;
+export default InspirationGalleryTable;

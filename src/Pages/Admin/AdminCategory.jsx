@@ -66,7 +66,7 @@ const AdminCategory = () => {
                 : "text-[#717375] border-b-2 border-transparent"
             }`}
           >
-            Event
+            Type of Event
           </p>
           <p
             onClick={() => setActiveTab("business")}
@@ -76,17 +76,17 @@ const AdminCategory = () => {
                 : "text-[#717375] border-b-2 border-transparent"
             }`}
           >
-            Business
+            Type of Supplier
           </p>
           <p
-            onClick={() => setActiveTab("job")}
+            onClick={() => setActiveTab("extraService")}
             className={`text-base sm:text-lg lg:text-xl font-semibold cursor-pointer p-1  ${
-              activeTab === "job"
+              activeTab === "extraService"
                 ? "border-b-2 border-secondary-color text-secondary-color"
                 : "text-[#717375] border-b-2 border-transparent"
             }`}
           >
-            Job
+            Extra Services
           </p>
         </div>
         <Button
@@ -94,7 +94,7 @@ const AdminCategory = () => {
           className="text-base lg:text-lg !p-4 !bg-secondary-color !text-primary-color border !border-secondary-color !rounded flex items-center gap-2"
         >
           <MdAdd className="text-base lg:text-lg text-primary-color" />
-          Add Category
+          Add New Subcategory
         </Button>
       </div>
 
@@ -108,8 +108,8 @@ const AdminCategory = () => {
               {activeTab === "event"
                 ? "Event"
                 : activeTab === "business"
-                ? "Business"
-                : "Job"}
+                ? "Supplier"
+                : "Extra Services"}
             </p>
             <div className="flex gap-4 items-center">
               <ConfigProvider

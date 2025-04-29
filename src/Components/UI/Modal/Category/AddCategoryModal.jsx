@@ -66,8 +66,8 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md "
             >
               <Option value="event">Event</Option>
-              <Option value="business">Business</Option>
-              <Option value="job">Job</Option>
+              <Option value="business">Supplier</Option>
+              <Option value="job">Extra Service</Option>
             </Select>
           </Form.Item>
 

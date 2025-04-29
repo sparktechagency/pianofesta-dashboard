@@ -1,6 +1,7 @@
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
 import { AllImages } from "../../../../../public/images/AllImages";
+import { Button } from "antd";
 const AdminJobListingTable = ({
   data,
   loading,
@@ -129,6 +130,16 @@ const AdminJobListingTable = ({
       title: "Posted By",
       dataIndex: "organizer", // Data key for organizer
       key: "organizer",
+    },
+    {
+      title: "Resume",
+      dataIndex: "resume", // Data key for resume
+      key: "resume",
+      render: () => (
+        <Button className="!bg-secondary-color !border-secondary-color !text-white">
+          View
+        </Button>
+      ),
     },
   ];
 
