@@ -234,8 +234,10 @@ const AddSponsorManagementModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
                       style={{ fontWeight: "500" }}
                     >
                       <Select
+                        mode="tags"
+                        maxCount={1}
                         placeholder="Select Priority Level"
-                        className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md"
+                        className="font-medium h-12 flex justify-center items-center !text-base-color !placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md"
                       >
                         {[...Array(3)].map((_, i) => (
                           <Option key={i + 1} value={`${i + 1}`}>{`${i + 1} ${
