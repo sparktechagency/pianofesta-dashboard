@@ -15,9 +15,11 @@ import { adminPaths } from "../../Routes/admin.route";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import Sider from "antd/es/layout/Sider";
 import { AllImages } from "../../../public/images/AllImages";
+import useUserData from "../../hooks/useUserData";
+import Cookies from "js-cookie";
 
 const DashboardLayout = () => {
-  const userRole = JSON.parse(localStorage.getItem("home_care_user"));
+  const userRole = useUserData();
   const location = useLocation();
 
   const defaultUrl = userRole?.role === "admin" ? "/admin" : "/";
@@ -43,6 +45,12 @@ const DashboardLayout = () => {
     };
   }, []);
 
+  const handleLogout = () => {
+    Cookies.remove("pianofesta_accessToken");
+    window.location.href = "/signin";
+    window.location.reload();
+  };
+
   const activeKeys = getActiveKeys(normalizedPath);
   const menuItems =
     userRole?.role === "admin"
@@ -62,7 +70,7 @@ const DashboardLayout = () => {
       />
     ),
     label: (
-      <div onClick={() => localStorage.removeItem("home_care_user")}>
+      <div onClick={handleLogout}>
         <NavLink to="/signin">Logout</NavLink>
       </div>
     ),

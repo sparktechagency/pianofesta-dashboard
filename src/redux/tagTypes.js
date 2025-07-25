@@ -1,5 +1,5 @@
 export const tagTypes = {
-  user: "User",
+  auth: "Auth",
 };
 
-export const tagTypesList = [tagTypes.user];
+export const tagTypesList = [tagTypes.auth];

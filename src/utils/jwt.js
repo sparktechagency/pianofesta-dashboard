@@ -1,5 +1,12 @@
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 export const decodedToken = (token) => {
-  return jwtDecode(token);
+  try {
+    return jwtDecode(token);
+  } catch (error) {
+    Cookies.remove("pianofesta_accessToken");
+    window.location.reload();
+    return null; // Return null instead of crashing the app
+  }
 };

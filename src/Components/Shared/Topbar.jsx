@@ -5,6 +5,7 @@ import { Dropdown, Flex, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AllImages } from "../../../public/images/AllImages";
+import useUserData from "../../hooks/useUserData";
 
 const notifications = [
   {
@@ -35,7 +36,7 @@ const notifications = [
 ];
 
 const Topbar = ({ collapsed, setCollapsed }) => {
-  const user = JSON.parse(localStorage.getItem("home_care_user"));
+  const user = useUserData();
   const [notificationCount, setNotificationCount] = useState(
     notifications.length
   );

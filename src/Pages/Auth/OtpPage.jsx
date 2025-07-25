@@ -4,15 +4,39 @@ import { Link, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import Container from "../../Components/UI/Container";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import Cookies from "js-cookie";
+import tryCatchWrapper from "../../utils/TryCatchWraper";
+import { useForgetOtpVerifyMutation } from "../../redux/features/auth/authApi";
 
 const OtpPage = () => {
+  const [form] = Form.useForm();
+  const email = Cookies.get("pianofesta_email");
   const [otp, setOtp] = useState("");
+  const [otpMatch] = useForgetOtpVerifyMutation();
 
-  const navigate = useNavigate();
+  const router = useNavigate();
 
-  const handleOTPSubmit = () => {
-    console.log("OTP:", otp);
-    navigate("/update-password");
+  const handleOTPSubmit = async () => {
+    const res = await tryCatchWrapper(
+      otpMatch,
+      { body: { otp: otp } },
+      "Verifying..."
+    );
+    if (res?.statusCode === 200) {
+      form.resetFields();
+      Cookies.remove("pianofesta_email");
+      Cookies.remove("pianofesta_forgetToken");
+      Cookies.set(
+        "pianofesta_forgetOtpMatchToken",
+        res.data.forgetOtpMatchToken,
+        {
+          path: "/",
+          expires: 1,
+        }
+      );
+
+      router("/update-password");
+    }
   };
 
   return (
@@ -26,11 +50,15 @@ const OtpPage = () => {
               </h1>
               <div className="text-[#667085]">
                 <p className="lg:text-lg">We sent a verification link to</p>
-                <p className="lg:text-lg mb-2 ">user@example.com</p>
+                <p className="lg:text-lg mb-2 ">{email}</p>
               </div>
             </div>
 
-            <Form layout="vertical" className="bg-transparent w-full">
+            <Form
+              form={form}
+              layout="vertical"
+              className="bg-transparent w-full"
+            >
               <Form.Item className="">
                 <div className="flex justify-center items-center">
                   <OTPInput

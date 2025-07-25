@@ -1,18 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 
+import Cookies from "js-cookie";
+
 import Container from "../../Components/UI/Container";
+import tryCatchWrapper from "../../utils/TryCatchWraper";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
 
 const SignIn = () => {
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const [form] = Form.useForm();
+  const router = useNavigate(); // useNavigate hook for navigation
+  const [login] = useLoginMutation();
 
-  const onFinish = (values) => {
-    localStorage.removeItem("home_care_user");
-    localStorage.setItem(
-      "home_care_user",
-      JSON.stringify({ ...values, role: "admin" })
-    );
-    navigate("/"); // Correct use of navigate function
+  const onFinish = async (values) => {
+    const res = await tryCatchWrapper(login, { body: values }, "Logging In...");
+
+    if (res?.statusCode === 200 && res?.data?.user?.role === "admin") {
+      Cookies.set("pianofesta_accessToken", res?.data?.accessToken, {
+        path: "/",
+        expires: 365,
+        secure: false,
+      });
+      form.resetFields();
+      router("/", { replace: true });
+    } else if (res?.statusCode === 200 && res?.data?.user?.role !== "admin") {
+      form.resetFields();
+      toast.error("Access Denied", {
+        duration: 2000,
+      });
+    }
   };
   return (
     <div className="text-base-color">
@@ -33,6 +50,7 @@ const SignIn = () => {
             {/* -------- Form Start ------------ */}
 
             <Form
+              form={form}
               layout="vertical"
               className="bg-transparent w-full"
               onFinish={onFinish}

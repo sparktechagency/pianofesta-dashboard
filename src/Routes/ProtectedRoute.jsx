@@ -1,14 +1,21 @@
-/* eslint-disable react/prop-types */
+import { decodedToken } from "../utils/jwt";
 import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function ProtectedRoute({ children, role }) {
-  const user = JSON.parse(localStorage.getItem("home_care_user"));
+  const token = Cookies.get("pianofesta_accessToken");
 
-  if (!user || user?.role !== role) {
-    return <Navigate to="/signin" replace />;
+  if (token) {
+    const user = decodedToken(token || "");
+
+    if (!user || user.role !== role) {
+      return <Navigate to="/sign-in" replace />;
+    }
+
+    return <>{children}</>;
+  } else {
+    return <Navigate to="/sign-in" replace />;
   }
-
-  return <>{children}</>;
 }
 
 export default ProtectedRoute;

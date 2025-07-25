@@ -3,13 +3,33 @@ import { Button, Form, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../Components/UI/Container";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { useForgetPasswordMutation } from "../../redux/features/auth/authApi";
+import tryCatchWrapper from "../../utils/TryCatchWraper";
+import Cookies from "js-cookie";
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const router = useNavigate();
+  const [forgetPassword] = useForgetPasswordMutation();
+  const onFinish = async (values) => {
+    const res = await tryCatchWrapper(
+      forgetPassword,
+      { body: values },
+      "Sending OTP..."
+    );
+    if (res?.statusCode === 200) {
+      form.resetFields();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    navigate("/verify-otp");
+      Cookies.set("pianofesta_email", values.email, {
+        path: "/",
+        expires: 1,
+      });
+      Cookies.set("pianofesta_forgetToken", res.data.forgetToken, {
+        path: "/",
+        expires: 1,
+      });
+      router("/forgot-password/otp-verify");
+    }
   };
   return (
     <div className="text-base-color">

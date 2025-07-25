@@ -3,12 +3,31 @@ import { Button, Form, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../../Components/UI/Container";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import tryCatchWrapper from "../../utils/TryCatchWraper";
+import { useResetPasswordMutation } from "../../redux/features/auth/authApi";
+import Cookies from "js-cookie";
 
 const UpdatePassword = () => {
-  const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    navigate("/signin");
+  const router = useNavigate();
+  const [form] = Form.useForm();
+  const [resetPassword] = useResetPasswordMutation();
+
+  const onFinish = async (values) => {
+    const data = {
+      newPassword: values.password,
+      confirmPassword: values.confirmPassword,
+    };
+
+    const res = await tryCatchWrapper(
+      resetPassword,
+      { body: data },
+      "Changing Password..."
+    );
+    if (res?.statusCode === 200) {
+      form.resetFields();
+      Cookies.remove("pianofesta_forgetOtpMatchToken");
+      router("/signin");
+    }
   };
 
   return (
@@ -30,6 +49,7 @@ const UpdatePassword = () => {
             </div>
             {/* -------- Form Start ------------ */}
             <Form
+              form={form}
               layout="vertical"
               className="bg-transparent w-full"
               onFinish={onFinish}

@@ -8,14 +8,15 @@ import Cookies from "js-cookie";
 const baseQuery = fetchBaseQuery({
   baseUrl: getBaseUrl(),
   credentials: "include",
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers) => {
     const token = Cookies.get("pianofesta_accessToken");
     const signUpToken = getFromLocalStorage("pianofesta_createUserToken");
 
-    const changePassToken = getFromLocalStorage("pianofesta_otp_match_token");
+    const changePassToken = Cookies.get("pianofesta_forgetToken");
+    const forgetOtpMatchToken = Cookies.get("pianofesta_forgetOtpMatchToken");
 
     if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+      headers.set("token", `${token}`);
     }
 
     if (signUpToken) {
@@ -23,7 +24,10 @@ const baseQuery = fetchBaseQuery({
     }
 
     if (changePassToken) {
-      headers.set("Forget-password", `Forget-password ${changePassToken}`);
+      headers.set("token", `${changePassToken}`);
+    }
+    if (forgetOtpMatchToken) {
+      headers.set("token", `${forgetOtpMatchToken}`);
     }
 
     return headers;

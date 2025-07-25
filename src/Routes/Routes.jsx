@@ -15,16 +15,25 @@ import UpdatePassword from "../Pages/Auth/UpdatePassword";
 import NotFoundPage from "../Components/UI/NotFound/NotFound";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.route";
+import { decodedToken } from "../utils/jwt";
+import Cookies from "js-cookie";
 
 function AuthRedirect() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("home_care_user"));
-    if (user && user.role) {
-      navigate(`/${user.role}/dashboard`, { replace: true });
+    const token = Cookies.get("pianofesta_accessToken");
+
+    if (token) {
+      const user = decodedToken(token || "");
+
+      if (user && user.role === "admin") {
+        navigate(`/${user.role}/overview`, { replace: true });
+      } else {
+        navigate("/sign-in", { replace: true });
+      }
     } else {
-      navigate("/signin", { replace: true });
+      navigate("/sign-in", { replace: true });
     }
   }, [navigate]);
 
@@ -66,7 +75,7 @@ const router = createBrowserRouter([
     element: <ForgotPassword />,
   },
   {
-    path: "verify-otp",
+    path: "forgot-password/otp-verify",
     element: <OtpPage />,
   },
   {

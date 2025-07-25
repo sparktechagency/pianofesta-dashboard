@@ -3,7 +3,6 @@ import { Button, Form, Input, Typography } from "antd";
 const ChangePassword = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
-    localStorage.removeItem("home_care_user");
     window.location.reload();
   };
   return (
