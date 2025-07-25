@@ -9,22 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Jan", uv: 475 },
-  { name: "Feb", uv: 580 },
-  { name: "Mar", uv: 300 },
-  { name: "Apr", uv: 525 },
-  { name: "May", uv: 375 },
-  { name: "Jun", uv: 450 },
-  { name: "Jul", uv: 575 },
-  { name: "Aug", uv: 360 },
-  { name: "Sep", uv: 200 },
-  { name: "Oct", uv: 400 },
-  { name: "Nov", uv: 300 },
-  { name: "Dec", uv: 600 },
-];
-
-const Area_Chart = () => {
+const Area_Chart = ({ chartData }) => {
   // Formatter function to add 'K' suffix to Y-axis values
   const yAxisTickFormatter = (value) => `${value}`;
 
@@ -35,7 +20,7 @@ const Area_Chart = () => {
     <div className="w-full h-80">
       <ResponsiveContainer>
         <AreaChart
-          data={data}
+          data={chartData}
           margin={{
             top: 20,
             right: 30,
@@ -43,7 +28,13 @@ const Area_Chart = () => {
             bottom: 0,
           }}
         >
-          <XAxis dataKey="name" tick={{ ...tickStyle }} tickMargin={6} />
+          <XAxis
+            dataKey="monthName"
+            tick={{ ...tickStyle }}
+            tickMargin={6}
+            interval={0}
+            tickFormatter={(month) => month.substring(0, 3)} // Show first 3 letters
+          />
           <YAxis
             tickFormatter={yAxisTickFormatter}
             tick={{ ...tickStyle }}
@@ -61,10 +52,15 @@ const Area_Chart = () => {
             </linearGradient>
           </defs>
           <Tooltip
-            formatter={(value, name, props) => [`${value}K`, "UV"]}
+            formatter={(value, name, props) => [`${value}`, "count"]}
             labelFormatter={(label) => `Month: ${label}`}
           />
-          <Area type="monotone" dataKey="uv" stroke="" fill="url(#colorUv)" />
+          <Area
+            type="monotone"
+            dataKey="count"
+            stroke=""
+            fill="url(#colorUv)"
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

@@ -2,12 +2,17 @@ import Area_Chart from "../../Chart/AreaChart";
 import YearOption from "../../../utils/YearOption";
 import { useState } from "react";
 import { ConfigProvider, Select } from "antd";
+import { useGetUserRatioQuery } from "../../../redux/features/dashboard/dashboardApi";
+import SpinnerLoader from "../../UI/SpinLoading";
 
 const UserOverview = () => {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
+  const [role, setRole] = useState("user");
 
-  console.log(year);
+  const { data, isFetching } = useGetUserRatioQuery({ year, role });
+
+  const chartData = data?.data?.userOverview;
   return (
     <div
       className="w-full lg:w-1/2 p-3 bg-[#FFFFFF] rounded-lg"
@@ -40,9 +45,14 @@ const UserOverview = () => {
               },
             }}
           >
-            <Select placeholder="Select User" style={{ width: 150 }}>
-              <Select.Option value="regularUser">Regular User</Select.Option>
-              <Select.Option value="businessUser">Business User</Select.Option>
+            <Select
+              value={role}
+              onChange={(value) => setRole(value)}
+              placeholder="Select User"
+              style={{ width: 150 }}
+            >
+              <Select.Option value="user">Regular User</Select.Option>
+              <Select.Option value="organizer">Business User</Select.Option>
             </Select>
           </ConfigProvider>
           <div>
@@ -51,7 +61,7 @@ const UserOverview = () => {
         </div>
       </div>
       <div>
-        <Area_Chart />
+        {isFetching ? <SpinnerLoader /> : <Area_Chart chartData={chartData} />}
       </div>
     </div>
   );

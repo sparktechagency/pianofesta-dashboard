@@ -4,6 +4,7 @@ import { GoEye } from "react-icons/go";
 import { CgUnblock } from "react-icons/cg";
 import { MdBlock } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { formetDateAndTime } from "../../../utils/dateFormet";
 const AllUserTable = ({
   data,
   loading,
@@ -29,15 +30,16 @@ const AllUserTable = ({
   useEffect(() => {
     // Set the selected data to the parent
     setSelectedData(
-      data.filter((user) => selectedRowKeys.includes(user.email))
+      data?.filter((user) => selectedRowKeys.includes(user?.email))
     );
   }, [selectedRowKeys, data, setSelectedData]); // Ensure this is using the props
 
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
-      key: "_id",
+      dataIndex: "UID",
+      key: "UID",
+      render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
       title: "Name",
@@ -58,16 +60,20 @@ const AllUserTable = ({
       title: "Phone",
       dataIndex: "phone", // Data key for phone
       key: "phone",
+      render: (phone) => (phone ? phone : "N/A"),
     },
     {
-      title: "Created Date",
-      dataIndex: "dateOfBirth", // Data key for dateOfBirth
-      key: "dateOfBirth",
+      title: "Joining Date",
+      dataIndex: "createdAt", // Data key for createdAt
+      key: "createdAt",
+      render: (createdAt) => formetDateAndTime(createdAt),
     },
     {
       title: "Date of Birth",
       dataIndex: "dateOfBirth", // Data key for dateOfBirth
       key: "dateOfBirth",
+      render: (dateOfBirth) =>
+        dateOfBirth ? formetDateAndTime(dateOfBirth) : "N/A",
     },
     {
       title: "Action",

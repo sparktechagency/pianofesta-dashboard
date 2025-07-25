@@ -8,33 +8,20 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 
-const data = [
-  { name: "Jan", uv: 80 },
-  { name: "Feb", uv: 70 },
-  { name: "Mar", uv: 50 },
-  { name: "Apr", uv: 60 },
-  { name: "May", uv: 30 },
-  { name: "Jun", uv: 20 },
-  { name: "Jul", uv: 45 },
-  { name: "Aug", uv: 36 },
-  { name: "Sep", uv: 53 },
-  { name: "Oct", uv: 69 },
-  { name: "Nov", uv: 78 },
-  { name: "Dec", uv: 36 },
-];
-
-const Bar_Chart = () => {
+const Bar_Chart = ({ chartData }) => {
   // Formatter function to add 'K' suffix to Y-axis values
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white shadow-md p-2 rounded-md border border-gray-300">
           <p className="text-sm font-semibold text-gray-800">
-            {payload[0].payload.name}
+            {payload[0]?.payload?.monthName}
           </p>
           <p className="text-xs text-gray-600">
             Total Income:{" "}
-            <span className="font-semibold">${payload[0].uv}</span>
+            <span className="font-semibold">
+              ${payload[0]?.payload?.totalRevenue}
+            </span>
           </p>
         </div>
       );
@@ -49,7 +36,7 @@ const Bar_Chart = () => {
     <div className="w-full h-80">
       <ResponsiveContainer>
         <BarChart
-          data={data}
+          data={chartData}
           margin={{
             top: 10,
             right: 20,
@@ -59,7 +46,7 @@ const Bar_Chart = () => {
           barCategoryGap={30} // Adjust the gap between bars if necessary
         >
           <RechartsTooltip content={<CustomTooltip />} />
-          <XAxis dataKey="name" tick={{ ...tickStyle }} tickMargin={6} />
+          <XAxis dataKey="monthName" tick={{ ...tickStyle }} tickMargin={6} />
           <YAxis
             // tickFormatter={yAxisTickFormatter}
             tick={{ ...tickStyle }}
@@ -78,7 +65,7 @@ const Bar_Chart = () => {
           <ReferenceLine y={50} stroke="#E5E5EF" />
           <ReferenceLine y={60} stroke="#E5E5EF" />
           <Bar
-            dataKey="uv"
+            dataKey="totalRevenue"
             fill="url(#incomeGradient)" // Bar color
             barSize={20} // Width of each bar
             radius={[10, 10, 10, 10]}

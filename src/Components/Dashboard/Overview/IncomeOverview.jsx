@@ -1,12 +1,17 @@
 import { useState } from "react";
 import YearOption from "../../../utils/YearOption";
 import Bar_Chart from "../../Chart/BarChart";
+import { useGetEarningRatioQuery } from "../../../redux/features/dashboard/dashboardApi";
+import SpinnerLoader from "../../UI/SpinLoading";
 
 const IncomeOverview = () => {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
 
-  console.log(year);
+  const { data, isFetching } = useGetEarningRatioQuery({ year });
+
+  const chartData = data?.data?.monthlyEarnings;
+
   return (
     <div
       className="w-full lg:w-1/2 p-3 bg-[#FFFFFF] rounded-lg flex flex-col"
@@ -22,7 +27,7 @@ const IncomeOverview = () => {
       </div>
       <hr />
       <div>
-        <Bar_Chart />
+        {isFetching ? <SpinnerLoader /> : <Bar_Chart chartData={chartData} />}
       </div>
     </div>
   );

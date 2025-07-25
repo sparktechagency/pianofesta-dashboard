@@ -4,57 +4,61 @@ import { MdEvent } from "react-icons/md";
 
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { AllIcons } from "../../../../public/images/AllImages";
-
-const data = [
-  {
-    id: 1,
-    background: "#FFFFFF",
-    name: "Total User",
-    icon: <ImUsers className="size-7 text-secondary-color" />,
-    count: 10000,
-  },
-  {
-    id: 2,
-    background: "#FFFFFF",
-    name: "Regular Users",
-    icon: <ImUser className="size-7 text-secondary-color" />,
-    count: 4000,
-  },
-  {
-    id: 3,
-    background: "#FFFFFF",
-    name: "Business Users",
-    icon: <FaUserTie className="size-7 text-secondary-color" />,
-    count: 6000,
-  },
-  {
-    id: 4,
-    background: "#FFFFFF",
-    name: "Total Event",
-    icon: <MdEvent className="size-7 text-secondary-color" />,
-    count: 6000,
-  },
-  {
-    id: 5,
-    background: "#FFFFFF",
-    name: "Active  Job Listings",
-    icon: <img src={AllIcons.job} className="size-7" />,
-    count: 6000,
-  },
-  {
-    id: 6,
-    background: "#FFFFFF",
-    name: "Revenue",
-    icon: <RiMoneyDollarCircleFill className="size-7 text-secondary-color" />,
-    count: 6000,
-  },
-];
+import { useGetOverviewQuery } from "../../../redux/features/dashboard/dashboardApi";
+import SpinnerLoader from "../../UI/SpinLoading";
 
 const OverviewCard = () => {
+  const { data, isFetching } = useGetOverviewQuery();
+  console.log("isFetching", isFetching);
+
+  const cards = [
+    {
+      id: 1,
+      background: "#FFFFFF",
+      name: "Total User",
+      icon: <ImUsers className="size-7 text-secondary-color" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalUsers,
+    },
+    {
+      id: 2,
+      background: "#FFFFFF",
+      name: "Regular Users",
+      icon: <ImUser className="size-7 text-secondary-color" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalRegularUsers,
+    },
+    {
+      id: 3,
+      background: "#FFFFFF",
+      name: "Business Users",
+      icon: <FaUserTie className="size-7 text-secondary-color" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalBusinessUsers,
+    },
+    {
+      id: 4,
+      background: "#FFFFFF",
+      name: "Total Event",
+      icon: <MdEvent className="size-7 text-secondary-color" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalEvents,
+    },
+    {
+      id: 5,
+      background: "#FFFFFF",
+      name: "Active  Job Listings",
+      icon: <img src={AllIcons.job} className="size-7" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalActiveJobs,
+    },
+    {
+      id: 6,
+      background: "#FFFFFF",
+      name: "Revenue",
+      icon: <RiMoneyDollarCircleFill className="size-7 text-secondary-color" />,
+      count: isFetching ? <SpinnerLoader /> : data?.data?.totalRevenue,
+    },
+  ];
   return (
     <div className="flex flex-col lg:flex-row gap-1 lg:gap-5 mb-5">
       {/* Company  */}
-      {data.map((item) => (
+      {cards.map((item) => (
         <div
           key={item.id}
           className={`flex rounded-2xl w-full my-2 lg:my-0 items-center justify-center flex-1`}
