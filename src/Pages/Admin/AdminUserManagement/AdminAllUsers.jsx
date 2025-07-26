@@ -213,7 +213,7 @@ const AdminAllUsers = () => {
         {/* Search + Export */}
         <div className="flex items-center justify-between mb-7">
           <SearchInput
-            placeholder="Search by name, email or "
+            placeholder="Search by name, email"
             setSearch={setSearchText}
             setPage={setPage}
           />

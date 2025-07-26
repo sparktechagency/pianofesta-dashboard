@@ -27,8 +27,8 @@ const RequestCategoryTable = ({
     },
     {
       title: "Requested By",
-      dataIndex: "requestedBy", // Data key for name
       key: "requestedBy",
+      render: (record) => record.user?.name || "N/A",
     },
   ];
 

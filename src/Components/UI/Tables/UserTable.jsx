@@ -92,7 +92,7 @@ const AllUserTable = ({
             </Tooltip>
 
             {/* Block User Tooltip */}
-            {record?.isBanned ? (
+            {record?.isBlocked ? (
               <Tooltip placement="left" title="Unblock this User">
                 <button
                   className="!p-0 !bg-transparent !border-none !text-base-color"

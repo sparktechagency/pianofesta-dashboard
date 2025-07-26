@@ -1,29 +1,30 @@
 /* eslint-disable react/prop-types */
 import { Button, Modal } from "antd";
+import { toast } from "sonner";
+import { useDeleteSubCategoryMutation } from "../../../../redux/features/categories/categoriesApi";
 
 const DeleteCategoryModal = ({
   isDeleteModalVisible,
   handleCancel,
   currentRecord,
 }) => {
-  //   const [blockUser] = useBlockUserMutation();
+  const [deleteSubCategory] = useDeleteSubCategoryMutation();
   const handleDelete = async (data) => {
-    console.log(data);
-    // const toastId = toast.loading("Blocking User...");
-    // try {
-    //   const res = await blockUser({ id: data?._id }).unwrap();
-    //   toast.success(res.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
-    // handleCancel();
+    const toastId = toast.loading("Blocking User...");
+    try {
+      const res = await deleteSubCategory({ id: data?._id }).unwrap();
+      toast.success(res.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+    handleCancel();
   };
   return (
     <Modal

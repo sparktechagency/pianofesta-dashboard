@@ -10,7 +10,7 @@ const userManagementApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: [tagTypes.dashboard],
+      providesTags: [tagTypes.userManagement],
     }),
     businessUser: builder.query({
       query: () => {
@@ -19,9 +19,30 @@ const userManagementApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: [tagTypes.dashboard],
+      providesTags: [tagTypes.userManagement],
+    }),
+    businessUserById: builder.query({
+      query: ({ id }) => {
+        return {
+          url: `/business/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.userManagement],
+    }),
+    blockUnblockUser: builder.mutation({
+      query: ({ id }) => ({
+        url: `/users/block/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.userManagement],
     }),
   }),
 });
 
-export const { useRegularUserQuery, useBusinessUserQuery } = userManagementApi;
+export const {
+  useRegularUserQuery,
+  useBusinessUserQuery,
+  useBusinessUserByIdQuery,
+  useBlockUnblockUserMutation,
+} = userManagementApi;

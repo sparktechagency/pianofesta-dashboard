@@ -71,13 +71,8 @@ const AdminBusinessUser = () => {
         if (searchText) {
           const searchLower = searchText.toLowerCase();
           const name = user?.name?.toLowerCase() ?? "";
-          const customId = user?.customId?.toLowerCase() ?? "";
           const sureName = user?.sureName?.toLowerCase() ?? "";
-          if (
-            !name.includes(searchLower) &&
-            !customId.includes(searchLower) &&
-            !sureName.includes(searchLower)
-          ) {
+          if (!name.includes(searchLower) && !sureName.includes(searchLower)) {
             return false;
           }
         }

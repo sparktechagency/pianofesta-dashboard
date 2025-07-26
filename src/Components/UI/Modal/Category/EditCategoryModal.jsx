@@ -8,7 +8,8 @@ import {
   Typography,
   Upload,
 } from "antd";
-import { useAddSubCategoryMutation } from "../../../../redux/features/categories/categoriesApi";
+import { useEffect } from "react";
+import { useUpdateSubCategoryMutation } from "../../../../redux/features/categories/categoriesApi";
 import tryCatchWrapper from "../../../../utils/TryCatchWraper";
 
 const { Option } = Select;
@@ -23,38 +24,53 @@ const CATEGORY_TYPES = [
   { value: "community", label: "Community" },
 ];
 
-const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
+const EditCategoryModal = ({
+  isEditModalOpen,
+  handleCancel,
+  currentRecord,
+}) => {
   const [form] = Form.useForm();
-  const [addSubCategory] = useAddSubCategoryMutation();
+  const [updateSubCategory] = useUpdateSubCategoryMutation();
+
+  // Set form values when modal opens or currentRecord changes
+  useEffect(() => {
+    if (isEditModalOpen && currentRecord) {
+      form.setFieldsValue({
+        name: currentRecord.name,
+        description: currentRecord.description,
+        type: currentRecord.type,
+        // icon and image are handled separately by Upload components
+      });
+    }
+  }, [isEditModalOpen, currentRecord, form]);
 
   const handleSave = async (values) => {
-    console.log(values);
-
     const formData = new FormData();
 
     formData.append(
       "data",
       JSON.stringify({
         name: values.name,
-        type: values.type, // ensure the Form.Item uses `type` not `categoryType`
+        type: values.type,
         description: values.description,
       })
     );
+
     if (values.icon?.file) {
-      formData.append("icon", values.icon?.file);
+      formData.append("icon", values.icon.file);
     }
     if (values.image?.file) {
-      formData.append("banner", values.image?.file);
+      formData.append("banner", values.image.file);
     }
 
     const res = await tryCatchWrapper(
-      addSubCategory,
-      { body: formData },
-      "Adding Subcategory..."
+      updateSubCategory,
+      { body: formData, params: currentRecord._id },
+      "Updating Subcategory..."
     );
 
-    if (res?.statusCode === 201) {
-      setIsAddModalOpen(false);
+    if (res?.statusCode === 200) {
+      handleCancel();
       form.resetFields();
     }
   };
@@ -71,12 +87,10 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
       }}
     >
       <Modal
-        open={isAddModalOpen}
-        onCancel={() => setIsAddModalOpen(false)}
+        open={isEditModalOpen}
+        onCancel={handleCancel}
         footer={null}
-        title={
-          <Typography.Title level={4}>Add New Subcategory</Typography.Title>
-        }
+        title={<Typography.Title level={4}>Edit Subcategory</Typography.Title>}
       >
         <Form
           form={form}
@@ -85,43 +99,47 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
           className="mt-5"
         >
           <Typography.Title level={5}>Subcategory Icon</Typography.Title>
-          <Form.Item className="relative w-full" name="icon">
+          <Form.Item
+            name="icon"
+            className="relative w-full"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
             <Upload
-              beforeUpload={() => false} // Prevent automatic upload to server
+              beforeUpload={() => false}
               maxCount={1}
               accept="image/*"
-              className=""
               listType="picture"
+              showUploadList={{ showRemoveIcon: true }}
             >
-              <Button
-                style={{
-                  zIndex: 1,
-                }}
-                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
-              >
-                <div className="">Upload Icon</div>
+              <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
+                Upload Icon
               </Button>
             </Upload>
           </Form.Item>
+          <p className="mb-5">{currentRecord?.icon}</p>
+
           <Typography.Title level={5}>Subcategory Image</Typography.Title>
-          <Form.Item className="relative w-full" name="image">
+          <Form.Item
+            name="image"
+            className="relative w-full"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
             <Upload
-              beforeUpload={() => false} // Prevent automatic upload to server
+              beforeUpload={() => false}
               maxCount={1}
               accept="image/*"
-              className=""
               listType="picture"
+              showUploadList={{ showRemoveIcon: true }}
             >
-              <Button
-                style={{
-                  zIndex: 1,
-                }}
-                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
-              >
-                <div className="">Upload Image</div>
+              <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
+                Upload Image
               </Button>
             </Upload>
           </Form.Item>
+          <p className="mb-5">{currentRecord?.banner}</p>
+
           <Typography.Title level={5}>Subcategory Name</Typography.Title>
           <Form.Item
             name="name"
@@ -172,7 +190,7 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               htmlType="submit"
               className="w-full h-12 !bg-secondary-color border !border-secondary-color !text-white text-base sm:text-lg font-bold"
             >
-              Add Category
+              Update Category
             </Button>
           </Form.Item>
         </Form>
@@ -181,4 +199,4 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
   );
 };
 
-export default AddCategoryModal;
+export default EditCategoryModal;

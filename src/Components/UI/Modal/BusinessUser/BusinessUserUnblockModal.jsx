@@ -1,31 +1,33 @@
 /* eslint-disable react/prop-types */
 import { Button, Modal } from "antd";
+import { useBlockUnblockUserMutation } from "../../../../redux/features/userManagement/userManagementApi";
+import { toast } from "sonner";
 
 const BusinessUserUnblockModal = ({
   isUnblockModalVisible,
   handleCancel,
   currentRecord,
 }) => {
-  //   const [unBlockUser] = useUnblockUserMutation();
+  const [unBlockUser] = useBlockUnblockUserMutation();
   const handleUserUnBlock = async (data) => {
-    console.log(data);
-    // const toastId = toast.loading("Unblocking User...");
-    // try {
-    //   const res = await unBlockUser({ id: data?._id }).unwrap();
-    //   if (res?.status === "success") {
-    //     toast.success(res.message, {
-    //       id: toastId,
-    //       duration: 2000,
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
-    // handleCancel();
+    const toastId = toast.loading("Unblocking User...");
+    try {
+      const res = await unBlockUser({ id: data?.userId }).unwrap();
+      if (res?.statusCode === 200) {
+        toast.success(res.message, {
+          id: toastId,
+          duration: 2000,
+        });
+        handleCancel();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+    handleCancel();
   };
   return (
     <Modal

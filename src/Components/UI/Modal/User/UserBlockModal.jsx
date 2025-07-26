@@ -1,29 +1,32 @@
 /* eslint-disable react/prop-types */
 import { Button, Modal } from "antd";
+import { useBlockUnblockUserMutation } from "../../../../redux/features/userManagement/userManagementApi";
+import { toast } from "sonner";
 
 const UserBlockModal = ({
   isBlockModalVisible,
   handleCancel,
   currentRecord,
 }) => {
-  //   const [blockUser] = useBlockUserMutation();
+  const [blockUser] = useBlockUnblockUserMutation();
   const handleBlock = async (data) => {
-    console.log(data);
-    // const toastId = toast.loading("Blocking User...");
-    // try {
-    //   const res = await blockUser({ id: data?._id }).unwrap();
-    //   toast.success(res.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
-    // handleCancel();
+    const toastId = toast.loading("Blocking User...");
+    try {
+      const res = await blockUser({ id: data?._id }).unwrap();
+      if (res?.statusCode === 200) {
+        toast.success(res.message, {
+          id: toastId,
+          duration: 2000,
+        });
+        handleCancel();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
   };
   return (
     <Modal
