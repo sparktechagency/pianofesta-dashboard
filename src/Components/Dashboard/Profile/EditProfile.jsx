@@ -1,20 +1,65 @@
-/* eslint-disable no-unused-vars */
-import { Button, ConfigProvider, Form, Input, Typography, Upload } from "antd";
-import profileImage from "/images/profileImage.png";
-import { useState } from "react";
-import { EditOutlined } from "@ant-design/icons";
-import { MdOutlineEdit } from "react-icons/md";
+import { Button, Form, Input, Upload } from "antd";
+import { useEffect, useState } from "react";
 import { IoCameraOutline, IoChevronBackOutline } from "react-icons/io5";
+import { getImageUrl } from "../../../helpers/config/envConfig";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../../redux/features/profile/profileApi";
+import tryCatchWrapper from "../../../utils/TryCatchWraper";
+import Loading from "../../ui/Loading";
+
+const inputStructure = [
+  {
+    name: "email",
+    type: "email",
+    inputType: "email",
+    label: "Email",
+    placeholder: "Enter your email",
+    labelClassName: "!font-medium",
+    inputClassName: "!py-2 !w-full",
+    rules: [{ required: true, message: "Email is required" }],
+    disable: true,
+  },
+  {
+    name: "name",
+    type: "text",
+    inputType: "text",
+    label: "Full Name",
+    placeholder: "Enter your Full Name",
+    labelClassName: "!font-medium",
+    inputClassName: "!py-2 !w-full",
+    rules: [{ required: true, message: "Full Name is required" }],
+    disable: false,
+  },
+  {
+    name: "phone",
+    type: "text",
+    inputType: "tel",
+    label: "Contact number",
+    placeholder: "Enter your contact number",
+    labelClassName: "!font-medium",
+    inputClassName: "!py-2 !w-full",
+    rules: [{ required: true, message: "Contact number is required" }],
+    disable: false,
+  },
+];
 
 const EditProfile = () => {
-  const profileData = {
-    fullname: "James Mitchell",
-    email: "emily@gmail.com",
-    address: "Vancouver, BC VG1Z4, Canada",
-    contactNumber: "+99-01846875456",
-  };
+  const [form] = Form.useForm();
+  const imageApiUrl = getImageUrl();
+  const { data, isFetching } = useGetProfileQuery({});
+  const [updateProfile] = useUpdateProfileMutation({});
+
+  const profileData = data?.data?.userData;
+
+  const profileImage = imageApiUrl + profileData?.profileImage;
 
   const [imageUrl, setImageUrl] = useState(profileImage);
+
+  useEffect(() => {
+    setImageUrl(profileImage);
+  }, [profileImage]);
 
   const handleImageUpload = (info) => {
     if (info.file.status === "removed") {
@@ -29,109 +74,116 @@ const EditProfile = () => {
     }
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    console.log(imageUrl);
+  const onFinish = async (values) => {
+    const formData = new FormData();
+    if (values?.image?.file?.originFileObj) {
+      formData.append("image", values?.image?.file?.originFileObj);
+    }
+    const data = {
+      fullName: values?.fullName,
+      phone: values?.phone,
+    };
+    formData.append("data", JSON.stringify(data));
+    await tryCatchWrapper(
+      updateProfile,
+      { body: formData },
+      "Updating Profile..."
+    );
   };
 
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-center min-h-[90vh]">
+        <Loading />
+      </div>
+    );
+  }
   return (
-    <div className=" lg:w-[70%] mx-auto">
-      <Form
-        onFinish={onFinish}
-        layout="vertical"
-        className="bg-transparent py-10 text-base-color w-full "
-      >
-        <div className="mt-5 flex flex-col justify-start items-start gap-x-4">
-          <div className=" relative">
-            <img
-              className="h-40 w-40 relative rounded-full border border-secondary-color/10 object-contain"
-              src={imageUrl}
-              alt=""
-            />
-            <Form.Item name="image">
-              <Upload
-                customRequest={(options) => {
-                  setTimeout(() => {
-                    options.onSuccess("ok");
-                  }, 1000);
-                }}
-                onChange={handleImageUpload}
-                maxCount={1}
-                accept="image/*"
-                listType="text"
-                className="absolute -top-10 !right-3 text-end"
-              >
-                <Button
-                  style={{
-                    zIndex: 1,
+    <div
+      className="bg-primary-color min-h-[90vh]  rounded-xl"
+      style={{ boxShadow: "0px 0px 5px  #0000000D" }}
+    >
+      <div className="bg-secondary-color w-full p-5  rounded-tl-xl rounded-tr-xl">
+        <div className=" mx-auto  flex items-center ">
+          <IoChevronBackOutline
+            className="text-4xl cursor-pointer text-primary-color font-semibold mr-2"
+            onClick={() => window.history.back()}
+          />
+          <p className="text-3xl text-primary-color font-semibold">
+            Edit Profile
+          </p>
+        </div>
+      </div>
+      <div className=" flex p-10">
+        <Form
+          form={form}
+          handleFinish={onFinish}
+          className="py-10 w-full lg:w-[70%]"
+          defaultValues={profileData}
+        >
+          <div className="mt-5 flex flex-col mb-10 gap-x-4">
+            <div className=" relative">
+              <img
+                className="h-40 w-40 relative rounded-full border border-secondary-color object-contain "
+                src={imageUrl}
+                alt=""
+              />
+              <Form.Item name="image">
+                <Upload
+                  customRequest={(options) => {
+                    setTimeout(() => {
+                      if (options.onSuccess) {
+                        options.onSuccess("ok");
+                      }
+                    }, 1000);
                   }}
-                  className="bg-white p-2 w-fit h-fit rounded-full shadow !border-none"
+                  onChange={handleImageUpload}
+                  maxCount={1}
+                  accept="image/*"
+                  className=" text-start"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0,
+                    cursor: "pointer",
+                  }}
+                  listType="picture"
                 >
-                  <IoCameraOutline
-                    className="w-5 h-5"
-                    style={{ color: "#19363D" }}
-                  />
-                </Button>
-              </Upload>
-            </Form.Item>
+                  <button
+                    type="button"
+                    style={{
+                      zIndex: 1,
+                    }}
+                    className="bg-secondary-color p-2 w-fit h-fit shadow !border-none absolute -top-12 left-[115px] rounded-full cursor-pointer"
+                  >
+                    <IoCameraOutline className="w-6 h-6 text-primary-color" />
+                  </button>
+                </Upload>
+              </Form.Item>
+            </div>
+            <p className="text-5xl font-semibold -mt-5">
+              {profileData?.fullName}
+            </p>
           </div>
-          <p className="text-5xl font-semibold -mt-5">James Mitchell</p>
-        </div>
 
-        <div className=" text-white mt-5">
-          <Typography.Title level={5} style={{ color: "#222222" }}>
-            Email
-          </Typography.Title>
-          <Form.Item
-            initialValue={profileData.email}
-            name="email"
-            className="text-white "
-          >
-            <Input
-              suffix={<MdOutlineEdit />}
-              type="email"
-              placeholder="Enter your email"
-              className="py-2 px-3 text-xl border !border-secondary-color/10 !text-base-color !bg-input-color"
-            />
-          </Form.Item>
-          <Typography.Title level={5} style={{ color: "#222222" }}>
-            User Name
-          </Typography.Title>
-          <Form.Item
-            initialValue={profileData.fullname}
-            name="userName"
-            className="text-white"
-          >
-            <Input
-              suffix={<MdOutlineEdit />}
-              placeholder="Enter your Name"
-              className="py-2 px-3 text-xl border !border-secondary-color/10 !text-base-color !bg-input-color"
-            />
-          </Form.Item>
-          <Typography.Title level={5} style={{ color: "#222222" }}>
-            Contact number
-          </Typography.Title>
-          <Form.Item
-            initialValue={profileData.contactNumber}
-            name="contactNumber"
-            className="text-white"
-          >
-            <Input
-              suffix={<MdOutlineEdit />}
-              placeholder="Enter your Contact number"
-              className="py-2 px-3 text-xl border !border-secondary-color/10 !text-base-color !bg-input-color"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              className="w-full py-6 border !border-secondary-color/10 hover:border-secondary-color/10 text-xl !text-primary-color bg-secondary-color hover:!bg-secondary-color font-semibold rounded-2xl mt-8"
-              htmlType="submit"
+          {inputStructure.map((input, index) => (
+            <Form.Item
+              key={index}
+              name={input.name}
+              label={input.label}
+              rules={input.rules}
             >
-              Save & Change
-            </Button>
-          </Form.Item>
-        </div>
-      </Form>
+              <Input placeholder={input.placeholder} />
+            </Form.Item>
+          ))}
+
+          <Button htmlType="submit" className="w-full mt-4">
+            Submit
+          </Button>
+
+          <div className=" text-white mt-5"></div>
+        </Form>
+      </div>
     </div>
   );
 };
