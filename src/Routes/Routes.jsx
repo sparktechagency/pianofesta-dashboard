@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 import DashboardLayout from "../Components/Layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
-import Loading from "../Components/UI/Loading";
 
 //* Auth
 import SignIn from "../Pages/Auth/SignIn";
@@ -17,6 +16,7 @@ import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.route";
 import { decodedToken } from "../utils/jwt";
 import Cookies from "js-cookie";
+import Loading from "../Components/ui/Loading";
 
 function AuthRedirect() {
   const navigate = useNavigate();
@@ -30,10 +30,10 @@ function AuthRedirect() {
       if (user && user.role === "admin") {
         navigate(`/${user.role}/overview`, { replace: true });
       } else {
-        navigate("/sign-in", { replace: true });
+        navigate("/signin", { replace: true });
       }
     } else {
-      navigate("/sign-in", { replace: true });
+      navigate("/signin", { replace: true });
     }
   }, [navigate]);
 

@@ -1,8 +1,8 @@
 import { Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { getImageUrl } from "../../../helpers/config/envConfig";
 const CategoryTable = ({
+  activeTab,
   data,
   loading,
   showEditModal,
@@ -13,21 +13,27 @@ const CategoryTable = ({
   limit,
   // showFilters = true,
 }) => {
-  const serverUrl = getImageUrl();
   const columns = [
     {
       title: "#UID",
       render: (_, __, index) => index + 1,
       key: "_id",
     },
-    {
-      title: "Icon",
-      dataIndex: "icon", // Data key for icon
-      key: "icon",
-      render: (icon) => (
-        <img src={serverUrl + icon} alt="icon" className="w-8 h-8" />
-      ),
-    },
+    activeTab !== "inspiration"
+      ? {
+          title: "Icon",
+          dataIndex: "icon",
+          key: "icon",
+          render: (icon) => <img src={icon} alt="icon" className="w-8 h-8" />,
+        }
+      : {
+          title: "Image",
+          dataIndex: "banner",
+          key: "banner",
+          render: (banner) => (
+            <img src={banner} alt="image" className="w-12 h-12" />
+          ),
+        },
     {
       title: "Name",
       dataIndex: "name", // Data key for name

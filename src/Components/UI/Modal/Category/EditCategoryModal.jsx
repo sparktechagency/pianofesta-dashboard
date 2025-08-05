@@ -25,6 +25,7 @@ const CATEGORY_TYPES = [
 ];
 
 const EditCategoryModal = ({
+  activeTab,
   isEditModalOpen,
   handleCancel,
   currentRecord,
@@ -98,48 +99,54 @@ const EditCategoryModal = ({
           onFinish={handleSave}
           className="mt-5"
         >
-          <Typography.Title level={5}>Subcategory Icon</Typography.Title>
-          <Form.Item
-            name="icon"
-            className="relative w-full"
-            valuePropName="fileList"
-            getValueFromEvent={(e) => e && e.fileList}
-          >
-            <Upload
-              beforeUpload={() => false}
-              maxCount={1}
-              accept="image/*"
-              listType="picture"
-              showUploadList={{ showRemoveIcon: true }}
-            >
-              <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
-                Upload Icon
-              </Button>
-            </Upload>
-          </Form.Item>
-          <p className="mb-5">{currentRecord?.icon}</p>
-
-          <Typography.Title level={5}>Subcategory Image</Typography.Title>
-          <Form.Item
-            name="image"
-            className="relative w-full"
-            valuePropName="fileList"
-            getValueFromEvent={(e) => e && e.fileList}
-          >
-            <Upload
-              beforeUpload={() => false}
-              maxCount={1}
-              accept="image/*"
-              listType="picture"
-              showUploadList={{ showRemoveIcon: true }}
-            >
-              <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
-                Upload Image
-              </Button>
-            </Upload>
-          </Form.Item>
-          <p className="mb-5">{currentRecord?.banner}</p>
-
+          {activeTab !== "inspiration" && (
+            <div>
+              <Typography.Title level={5}>Subcategory Icon</Typography.Title>
+              <Form.Item
+                name="icon"
+                className="relative w-full"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e && e.fileList}
+              >
+                <Upload
+                  beforeUpload={() => false}
+                  maxCount={1}
+                  accept="image/*"
+                  listType="picture"
+                  showUploadList={{ showRemoveIcon: true }}
+                >
+                  <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
+                    Upload Icon
+                  </Button>
+                </Upload>
+              </Form.Item>
+              <p className="mb-5">{currentRecord?.icon}</p>
+            </div>
+          )}
+          {activeTab === "inspiration" && (
+            <div>
+              <Typography.Title level={5}>Subcategory Image</Typography.Title>
+              <Form.Item
+                name="image"
+                className="relative w-full"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e && e.fileList}
+              >
+                <Upload
+                  beforeUpload={() => false}
+                  maxCount={1}
+                  accept="image/*"
+                  listType="picture"
+                  showUploadList={{ showRemoveIcon: true }}
+                >
+                  <Button className="text-base sm:text-lg !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5">
+                    Upload Image
+                  </Button>
+                </Upload>
+              </Form.Item>
+              <p className="mb-5">{currentRecord?.banner}</p>
+            </div>
+          )}
           <Typography.Title level={5}>Subcategory Name</Typography.Title>
           <Form.Item
             name="name"
@@ -152,7 +159,6 @@ const EditCategoryModal = ({
               className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-base !bg-input-color"
             />
           </Form.Item>
-
           <Typography.Title level={5}>Subcategory Description</Typography.Title>
           <Form.Item
             name="description"
@@ -165,7 +171,6 @@ const EditCategoryModal = ({
               className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-base !bg-input-color"
             />
           </Form.Item>
-
           <Typography.Title level={5}>Category Type</Typography.Title>
           <Form.Item
             name="type"
@@ -184,7 +189,6 @@ const EditCategoryModal = ({
               ))}
             </Select>
           </Form.Item>
-
           <Form.Item>
             <Button
               htmlType="submit"

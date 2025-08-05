@@ -21,7 +21,6 @@ import TestimonialCard from "../../../../utils/TestimonialCard";
 import Accordion from "../../Accordion";
 import { useBusinessUserByIdQuery } from "../../../../redux/features/userManagement/userManagementApi";
 import { FadeLoader } from "react-spinners";
-import { getImageUrl } from "../../../../helpers/config/envConfig";
 import { Link } from "react-router-dom";
 
 const mapUrl =
@@ -32,7 +31,6 @@ const BusinessUserModal = ({
   handleCancel,
   currentRecord,
 }) => {
-  const serverUrl = getImageUrl();
   const { data, isFetching } = useBusinessUserByIdQuery(
     {
       id: currentRecord?.parentBusiness,
@@ -61,13 +59,13 @@ const BusinessUserModal = ({
           {/* Images  */}
           <div>
             <img
-              src={serverUrl + businessUser?.coverImage || AllImages.coverPhoto}
+              src={businessUser?.coverImage || AllImages.coverPhoto}
               alt="cover"
               className="w-full h-52 object-cover "
             />
             <div className=" border border-secondary-color w-fit -mt-[32px] ml-2 z-40 isolate bg-white rounded-full">
               <img
-                src={serverUrl + businessUser?.logo || AllImages.company}
+                src={businessUser?.logo || AllImages.company}
                 alt="cover"
                 className="w-16 h-16 object-cover  rounded-full "
               />

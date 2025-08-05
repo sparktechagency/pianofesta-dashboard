@@ -40,7 +40,6 @@ import AdminPromotion from "../Pages/Admin/AdminPromotion";
 import AdminEventListing from "../Pages/Admin/AdminListing/AdminEventListing";
 import AdminBusinessListing from "../Pages/Admin/AdminListing/AdminBusinessListing";
 import AdminJobListing from "../Pages/Admin/AdminListing/AdminJobListing";
-import AdminSupportTicket from "../Pages/Admin/AdminSupportTicket";
 import AdminReport from "../Pages/Admin/AdminReport";
 import AdminNotification from "../Pages/Admin/AdminNotification";
 import AdminMessage from "../Pages/Admin/AdminMessage";

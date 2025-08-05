@@ -27,12 +27,17 @@ const AdminCategory = () => {
 
   const limit = 12;
 
-  const { data, isFetching } = useSubCategoryQuery({
-    type: activeTab,
-    page,
-    limit,
-    searchTerm: searchValue,
-  });
+  const { data, isFetching } = useSubCategoryQuery(
+    {
+      type: activeTab,
+      page,
+      limit,
+      searchTerm: searchValue,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const categoryData = data?.data?.data;
   const totalCategoryData = data?.data?.meta?.total;
@@ -139,18 +144,21 @@ const AdminCategory = () => {
 
         {isAddModalOpen && (
           <AddCategoryModal
+            activeTab={activeTab}
             isAddModalOpen={isAddModalOpen}
             setIsAddModalOpen={setIsAddModalOpen}
           />
         )}
 
         <EditCategoryModal
+          activeTab={activeTab}
           isEditModalOpen={isEditModalOpen}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
 
         <CategoryTable
+          activeTab={activeTab}
           data={categoryData}
           loading={isFetching}
           showEditModal={showEditModal}

@@ -23,7 +23,7 @@ const CATEGORY_TYPES = [
   { value: "community", label: "Community" },
 ];
 
-const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
+const AddCategoryModal = ({ activeTab, isAddModalOpen, setIsAddModalOpen }) => {
   const [form] = Form.useForm();
   const [addSubCategory] = useAddSubCategoryMutation();
 
@@ -84,44 +84,52 @@ const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
           onFinish={handleSave}
           className="mt-5"
         >
-          <Typography.Title level={5}>Subcategory Icon</Typography.Title>
-          <Form.Item className="relative w-full" name="icon">
-            <Upload
-              beforeUpload={() => false} // Prevent automatic upload to server
-              maxCount={1}
-              accept="image/*"
-              className=""
-              listType="picture"
-            >
-              <Button
-                style={{
-                  zIndex: 1,
-                }}
-                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
-              >
-                <div className="">Upload Icon</div>
-              </Button>
-            </Upload>
-          </Form.Item>
-          <Typography.Title level={5}>Subcategory Image</Typography.Title>
-          <Form.Item className="relative w-full" name="image">
-            <Upload
-              beforeUpload={() => false} // Prevent automatic upload to server
-              maxCount={1}
-              accept="image/*"
-              className=""
-              listType="picture"
-            >
-              <Button
-                style={{
-                  zIndex: 1,
-                }}
-                className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
-              >
-                <div className="">Upload Image</div>
-              </Button>
-            </Upload>
-          </Form.Item>
+          {activeTab !== "inspiration" && (
+            <div>
+              <Typography.Title level={5}>Subcategory Icon</Typography.Title>
+              <Form.Item className="relative w-full" name="icon">
+                <Upload
+                  beforeUpload={() => false} // Prevent automatic upload to server
+                  maxCount={1}
+                  accept="image/*"
+                  className=""
+                  listType="picture"
+                >
+                  <Button
+                    style={{
+                      zIndex: 1,
+                    }}
+                    className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
+                  >
+                    <div className="">Upload Icon</div>
+                  </Button>
+                </Upload>
+              </Form.Item>
+            </div>
+          )}
+          {activeTab === "inspiration" && (
+            <div>
+              <Typography.Title level={5}>Subcategory Image</Typography.Title>
+              <Form.Item className="relative w-full" name="image">
+                <Upload
+                  beforeUpload={() => false} // Prevent automatic upload to server
+                  maxCount={1}
+                  accept="image/*"
+                  className=""
+                  listType="picture"
+                >
+                  <Button
+                    style={{
+                      zIndex: 1,
+                    }}
+                    className=" text-base sm:text-lg  !bg-secondary-color !text-secondary-color w-full !bg-secondary-color/10 border !border-dashed !border-secondary-color rounded-md flex items-center justify-center !py-5"
+                  >
+                    <div className="">Upload Image</div>
+                  </Button>
+                </Upload>
+              </Form.Item>
+            </div>
+          )}
           <Typography.Title level={5}>Subcategory Name</Typography.Title>
           <Form.Item
             name="name"

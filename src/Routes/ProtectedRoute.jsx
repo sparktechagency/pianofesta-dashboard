@@ -9,12 +9,12 @@ function ProtectedRoute({ children, role }) {
     const user = decodedToken(token || "");
 
     if (!user || user.role !== role) {
-      return <Navigate to="/sign-in" replace />;
+      return <Navigate to="/signin" replace />;
     }
 
     return <>{children}</>;
   } else {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="/signin" replace />;
   }
 }
 

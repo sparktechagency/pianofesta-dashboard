@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SearchOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input, Select, Typography } from "antd";
 import { useState, useMemo } from "react";
@@ -16,7 +17,12 @@ const tabOptions = [
 ];
 
 const AdminRequestedCategory = () => {
-  const { data, isFeatching } = useRequestedCategoryQuery();
+  const { data, isFeatching } = useRequestedCategoryQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
   const reqCategories = data?.data || [];
 
   const [showFilter, setShowFilter] = useState(false);
