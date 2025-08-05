@@ -13,7 +13,11 @@ const Profile = () => {
     >
       <ProfileTap activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {activeTab === "editProfile" ? <EditProfile /> : <ChangePassword />}
+      {activeTab === "editProfile" ? (
+        <EditProfile activeTab={activeTab} />
+      ) : (
+        <ChangePassword />
+      )}
     </div>
   );
 };

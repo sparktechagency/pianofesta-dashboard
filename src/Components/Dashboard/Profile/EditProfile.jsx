@@ -1,14 +1,12 @@
-import { Button, Form, Input, Upload } from "antd";
+import { Button, Form, Input, Typography, Upload } from "antd";
 import { useEffect, useState } from "react";
-import { IoCameraOutline, IoChevronBackOutline } from "react-icons/io5";
-import { getImageUrl } from "../../../helpers/config/envConfig";
+import { IoCameraOutline } from "react-icons/io5";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../../redux/features/profile/profileApi";
 import tryCatchWrapper from "../../../utils/TryCatchWraper";
 import Loading from "../../ui/Loading";
-
 const inputStructure = [
   {
     name: "email",
@@ -21,6 +19,17 @@ const inputStructure = [
     rules: [{ required: true, message: "Email is required" }],
     disable: true,
   },
+  // {
+  //   name: "userName",
+  //   type: "text",
+  //   inputType: "text",
+  //   label: "User name",
+  //   placeholder: "Enter your username",
+  //   labelClassName: "!font-medium",
+  //   inputClassName: "!py-2 !w-full",
+  //   rules: [{ required: true, message: "User name is required" }],
+  //   disable: true,
+  // },
   {
     name: "name",
     type: "text",
@@ -45,21 +54,33 @@ const inputStructure = [
   },
 ];
 
-const EditProfile = () => {
+const EditProfile = ({ activeTab }) => {
   const [form] = Form.useForm();
-  const imageApiUrl = getImageUrl();
-  const { data, isFetching } = useGetProfileQuery({});
+  const { data, isFetching } = useGetProfileQuery(undefined, {
+    skip: activeTab !== "editProfile",
+  });
+
   const [updateProfile] = useUpdateProfileMutation({});
 
-  const profileData = data?.data?.userData;
+  const profileData = data?.data;
 
-  const profileImage = imageApiUrl + profileData?.profileImage;
+  const profileImage = profileData?.profileImage;
 
   const [imageUrl, setImageUrl] = useState(profileImage);
 
   useEffect(() => {
     setImageUrl(profileImage);
   }, [profileImage]);
+
+  useEffect(() => {
+    if (profileData) {
+      form.setFieldsValue({
+        name: profileData.name,
+        email: profileData.email,
+        phone: profileData.phone,
+      });
+    }
+  }, [form, profileData]);
 
   const handleImageUpload = (info) => {
     if (info.file.status === "removed") {
@@ -80,7 +101,7 @@ const EditProfile = () => {
       formData.append("image", values?.image?.file?.originFileObj);
     }
     const data = {
-      fullName: values?.fullName,
+      name: values?.name,
       phone: values?.phone,
     };
     formData.append("data", JSON.stringify(data));
@@ -91,35 +112,28 @@ const EditProfile = () => {
     );
   };
 
+  console.log("is fetching", {
+    name: profileData?.name,
+    email: profileData?.email,
+    phone: profileData?.phone,
+  });
+
   if (isFetching) {
-    return (
-      <div className="flex items-center justify-center min-h-[90vh]">
-        <Loading />
-      </div>
-    );
+    return <Loading />;
   }
+
   return (
-    <div
-      className="bg-primary-color min-h-[90vh]  rounded-xl"
-      style={{ boxShadow: "0px 0px 5px  #0000000D" }}
-    >
-      <div className="bg-secondary-color w-full p-5  rounded-tl-xl rounded-tr-xl">
-        <div className=" mx-auto  flex items-center ">
-          <IoChevronBackOutline
-            className="text-4xl cursor-pointer text-primary-color font-semibold mr-2"
-            onClick={() => window.history.back()}
-          />
-          <p className="text-3xl text-primary-color font-semibold">
-            Edit Profile
-          </p>
-        </div>
-      </div>
+    <div className="bg-primary-color min-h-[90vh]  rounded-xl">
       <div className=" flex p-10">
         <Form
           form={form}
-          handleFinish={onFinish}
+          onFinish={onFinish}
           className="py-10 w-full lg:w-[70%]"
-          defaultValues={profileData}
+          defaultValues={{
+            name: profileData?.name,
+            email: profileData?.email,
+            phone: profileData?.phone,
+          }}
         >
           <div className="mt-5 flex flex-col mb-10 gap-x-4">
             <div className=" relative">
@@ -167,17 +181,23 @@ const EditProfile = () => {
           </div>
 
           {inputStructure.map((input, index) => (
-            <Form.Item
-              key={index}
-              name={input.name}
-              label={input.label}
-              rules={input.rules}
-            >
-              <Input placeholder={input.placeholder} />
-            </Form.Item>
+            <div key={index}>
+              <Typography.Title level={5}>{input.label}</Typography.Title>
+              <Form.Item name={input.name} rules={input.rules}>
+                <Input
+                  placeholder={input.placeholder}
+                  className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-base !bg-input-color"
+                  disabled={input.disable}
+                />
+              </Form.Item>
+            </div>
           ))}
 
-          <Button htmlType="submit" className="w-full mt-4">
+          <Button
+            htmlType="submit"
+            variant="secondary"
+            className="w-full h-12 !bg-secondary-color border !border-secondary-color !text-white text-base sm:text-lg font-bold"
+          >
             Submit
           </Button>
 

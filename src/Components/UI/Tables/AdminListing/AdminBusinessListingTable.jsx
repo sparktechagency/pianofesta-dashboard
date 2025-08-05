@@ -1,6 +1,5 @@
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
-import { AllImages } from "../../../../../public/images/AllImages";
 const AdminBusinessListingTable = ({
   data,
   loading,
@@ -18,185 +17,216 @@ const AdminBusinessListingTable = ({
 
   // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
   useEffect(() => {
-    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.uid)));
+    setSelectedData(data.filter((user) => selectedRowKeys.includes(user._id)));
   }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
 
   const columns = [
     {
       title: "#UID",
-      dataIndex: "uid",
-      key: "uid",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, __, index) => page * limit - limit + index + 1,
+      fixed: "left",
     },
     {
       title: "Business Title",
-      dataIndex: "businessTitle", // Data key for businessTitle
-      key: "businessTitle",
+      dataIndex: "name",
+      key: "name",
+      fixed: "left",
     },
     {
       title: "Short Description",
-      dataIndex: "shortDescription", // Data key for eventName
-      key: "shortDescription",
-      render: () => <p>This is a short description</p>,
+      dataIndex: "description",
+      key: "description",
+      render: (text) => <p>{text || "-"}</p>,
+      width: 300,
     },
     {
       title: "Detail Description",
-      dataIndex: "detailDescription", // Data key for eventName
+      dataIndex: "detailDescription",
       key: "detailDescription",
-      render: () => <p>This is a detail description</p>,
+      render: (text) => <p>{text || "-"}</p>,
+      width: 300,
     },
     {
       title: "Logo",
-      dataIndex: "logo", // Data key for eventName
+      dataIndex: "logo",
       key: "logo",
-      render: () => (
-        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
-      ),
+      render: (url) =>
+        url ? (
+          <img src={url} alt="Logo" className="w-auto h-14 rounded" />
+        ) : (
+          <span>No Logo</span>
+        ),
     },
     {
       title: "Cover",
-      dataIndex: "cover", // Data key for eventName
-      key: "cover",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
-      ),
+      dataIndex: "coverImage",
+      key: "coverImage",
+      render: (url) =>
+        url ? (
+          <img src={url} alt="Cover" className="w-auto h-14 rounded" />
+        ) : (
+          <span>No Cover</span>
+        ),
     },
     {
       title: "Email",
-      dataIndex: "email", // Data key for email
+      dataIndex: "email",
       key: "email",
-      render: () => <p>abc@gmail.com</p>,
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Data key for phone
-      key: "phone",
-      render: () => <p>1234567890</p>,
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Created Date",
-      dataIndex: "CreatedDate", // Data key for CreatedDate
-      key: "CreatedDate",
-      render: () => <p>2023-06-01</p>,
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => (date ? new Date(date).toLocaleDateString() : "-"),
     },
     {
       title: "Website",
-      dataIndex: "website", // Data key for website
+      dataIndex: "website",
       key: "website",
-      render: () => <p>https://example.com</p>,
+      render: (url) =>
+        url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-600 underline"
+          >
+            {url}
+          </a>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Facebook",
-      dataIndex: "Facebook", // Data key for Facebook
-      key: "Facebook",
-      render: () => <p>https://example.com</p>,
+      dataIndex: ["socialLinks", "facebook"],
+      key: "facebook",
+      render: (url) =>
+        url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-600 underline"
+          >
+            Facebook
+          </a>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Instagram",
-      dataIndex: "Instagram", // Data key for Instagram
-      key: "Instagram",
-      render: () => <p>https://example.com</p>,
+      dataIndex: ["socialLinks", "instagram"],
+      key: "instagram",
+      render: (url) =>
+        url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-blue-600 underline"
+          >
+            Instagram
+          </a>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Start-End",
-      dataIndex: "Start-End", // Data key for Start-End
-      key: "Start-End",
-      render: () => <p>10:00 AM - 5:00PM</p>,
+      key: "startEnd",
+      render: (_, record) =>
+        record.availabilities
+          ? `${record.availabilities.startTime} - ${record.availabilities.endTime}`
+          : "-",
     },
     {
       title: "Days",
-      dataIndex: "Days", // Data key for Days
-      key: "Days",
-      render: () => <p>Sun - Fri</p>,
+      key: "days",
+      render: (_, record) =>
+        record.availabilities ? record.availabilities.day.join(", ") : "-",
     },
     {
       title: "Address",
-      dataIndex: "address", // Data key for addre
+      dataIndex: "address",
       key: "address",
-      render: () => <p>123 Main St, City</p>,
     },
     {
       title: "Geo-Location",
-      dataIndex: "geoLocation", // Data key for geoLocation
       key: "geoLocation",
-      render: () => <p>27.123456, 78.123456</p>,
+      render: (_, record) =>
+        record.location
+          ? `${record.location.coordinates[1]}, ${record.location.coordinates[0]}`
+          : "-",
     },
     {
       title: "Provider Type",
-      dataIndex: "provider-type", // Data key for provider-type
-      key: "provider-type",
-      render: () => <p>Venue</p>,
-    },
-    {
-      title: "Event Type",
-      dataIndex: "event-type", // Data key for event-type
-      key: "event-type",
-      render: () => <p>€560</p>,
+      dataIndex: ["providerType", "name"],
+      key: "providerType",
     },
     {
       title: "Max Guests",
-      dataIndex: "Max-Guests", // Data key for Max-Guests
-      key: "Max-Guests",
-      render: () => <p>560</p>,
+      dataIndex: "maxGuest",
+      key: "maxGuest",
     },
     {
-      title: "FAQ ",
-      dataIndex: "faq", // Data key for faq
+      title: "FAQ",
+      dataIndex: "faq",
       key: "faq",
-      render: () => <p>-</p>,
-    },
-    {
-      title: "Promotion-Image",
-      dataIndex: "Promotion-Image", // Data key for eventName
-      key: "Promotion-Image",
-      render: () => (
-        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
-      ),
+      render: (faqs) =>
+        faqs && faqs.length > 0
+          ? faqs.map((faq, idx) => (
+              <p key={faq._id || idx}>
+                <strong>Q:</strong> {faq.question} <br />
+                <strong>A:</strong> {faq.answer}
+              </p>
+            ))
+          : "-",
     },
     {
       title: "Price Range",
-      dataIndex: "price-range", // Data key for price-range
-      key: "price-range",
-      render: () => <p>Venue</p>,
+      dataIndex: "priceRange",
+      key: "priceRange",
+      render: (text) =>
+        text ? text.charAt(0).toUpperCase() + text.slice(1) : "-",
     },
     {
-      title: "Business Category",
-      dataIndex: "category", // Data key for category
-      key: "category",
-    },
-    {
-      title: "Business User",
-      dataIndex: "businessUser", // Data key for businessUser
-      key: "businessUser",
+      title: "Business Level",
+      dataIndex: "businessLevel",
+      key: "businessLevel",
     },
     {
       title: "Followers",
-      dataIndex: "followers", // Data key for followers
-      key: "followers",
-      render: () => <span>11</span>,
+      dataIndex: "totalLikes",
+      key: "totalLikes",
     },
     {
       title: "Likes",
-      dataIndex: "likes", // Data key for likes
+      dataIndex: "totalLikes",
       key: "likes",
-      render: () => <span>11</span>,
     },
     {
       title: "Comments",
-      dataIndex: "comments", // Data key for Comments
+      dataIndex: "totalComments",
       key: "comments",
-      render: () => <span>5</span>,
     },
     {
-      title: "Ratings",
-      dataIndex: "ratings", // Data key for ratings
-      key: "ratings",
-      render: () => <span>4</span>,
+      title: "Average Rating",
+      dataIndex: "averageRating",
+      key: "averageRating",
     },
     {
-      title: "Listed-By",
-      dataIndex: "Listed-By", // Data key for Listed-By
-      key: "Listed-By",
-      render: () => <span>Jhone</span>,
+      title: "Listed By",
+      dataIndex: ["author", "name"],
+      key: "listedBy",
     },
   ];
 
@@ -212,7 +242,7 @@ const AdminBusinessListingTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"uid"}
+      keyValue={"_id"}
     />
   );
 };

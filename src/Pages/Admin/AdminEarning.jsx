@@ -1,5 +1,4 @@
 import { useState } from "react";
-import earningData from "../../../public/data/earningData";
 import EarningTable from "../../Components/UI/Tables/EarningTable";
 import EarningModal from "../../Components/UI/Modal/Earning/EarningModal";
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";
@@ -7,18 +6,30 @@ import { FaFilter } from "react-icons/fa";
 import SearchInput from "../../utils/SearchInput";
 import { BiExport } from "react-icons/bi";
 import * as XLSX from "xlsx";
+import { useAllEarningQuery } from "../../redux/features/earning/earningApi";
 
 const AdminEarning = () => {
-  const data = earningData;
+  const { data, isFetching } = useAllEarningQuery();
+  const earningData = data?.data || [];
+
   const [showFilter, setShowFilter] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const limit = 12;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
+
+  // Filter states
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [purchaseDateSort, setPurchaseDateSort] = useState("all");
+  const [endDateSort, setEndDateSort] = useState("all");
+  const [amountSort, setAmountSort] = useState("all");
+  const [remainingDaysSort, setRemainingDaysSort] = useState("all");
+  const [planFilter, setPlanFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const showViewUserModal = (record) => {
     setCurrentRecord(record);
@@ -32,14 +43,60 @@ const AdminEarning = () => {
 
   const exportToExcel = () => {
     if (selectedData.length > 0) {
-      const worksheet = XLSX.utils.json_to_sheet(selectedData); // Convert the selected data to a worksheet
-      const workbook = XLSX.utils.book_new(); // Create a new workbook
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Selected Earnings"); // Append the worksheet to the workbook
-      XLSX.writeFile(workbook, "selected_earnings.xlsx"); // Write the workbook to a file
+      const worksheet = XLSX.utils.json_to_sheet(selectedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Selected Earnings");
+      XLSX.writeFile(workbook, "selected_earnings.xlsx");
     } else {
       alert("Please select some users to export.");
     }
   };
+
+  // Filtering and sorting
+  const filteredData = earningData
+    .filter((item) => {
+      if (searchText) {
+        const values = Object.values(item).join(" ").toLowerCase();
+        if (!values.includes(searchText.toLowerCase())) return false;
+      }
+      if (fromDate && new Date(item.purchaseDate) < new Date(fromDate))
+        return false;
+      if (toDate && new Date(item.purchaseDate) > new Date(toDate))
+        return false;
+      if (
+        planFilter !== "all" &&
+        item.plan.toLowerCase() !== planFilter.toLowerCase()
+      )
+        return false;
+      if (
+        statusFilter !== "all" &&
+        item.status.toLowerCase() !== statusFilter.toLowerCase()
+      )
+        return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const sortField = (field, order) => {
+        const valA =
+          typeof a[field] === "string" ? a[field].toLowerCase() : a[field];
+        const valB =
+          typeof b[field] === "string" ? b[field].toLowerCase() : b[field];
+        if (order === "asc") return valA > valB ? 1 : -1;
+        if (order === "desc") return valA < valB ? 1 : -1;
+        return 0;
+      };
+
+      let result = 0;
+      if (purchaseDateSort !== "all")
+        result = sortField("purchaseDate", purchaseDateSort);
+      if (result === 0 && endDateSort !== "all")
+        result = sortField("endDate", endDateSort);
+      if (result === 0 && amountSort !== "all")
+        result = sortField("amount", amountSort);
+      if (result === 0 && remainingDaysSort !== "all")
+        result = sortField("remainingday", remainingDaysSort);
+      return result;
+    });
 
   return (
     <div>
@@ -47,38 +104,42 @@ const AdminEarning = () => {
         className="mt-5 bg-primary-color rounded-xl px-4"
         style={{ boxShadow: "0px 0px 5px 1px #00000040" }}
       >
-        <div className="bg-primary-color w-full p-4   rounded-tl-xl rounded-tr-xl">
-          <div className=" flex items-center justify-between my-5">
+        <div className="bg-primary-color w-full p-4 rounded-tl-xl rounded-tr-xl">
+          <div className="flex items-center justify-between my-5">
             <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl text-gradient-color font-semibold">
               Earnings
             </p>
           </div>
         </div>
-        {/* Filtre  */}
+
+        {/* Filter section */}
         <div className="flex justify-between items-start gap-4 mb-7">
           <div
             className={`${
               showFilter ? "flex" : "hidden"
-            }  flex flex-wrap items-center justify-start gap-4`}
+            } flex flex-wrap items-center gap-4`}
           >
-            <div className="flex flex-col items-start gap-1">
+            <div className="flex flex-col gap-1">
               <Typography.Text className="text-lg text-base-color font-semibold">
                 From
               </Typography.Text>
               <DatePicker
                 className="!rounded-lg !text-base !w-fit !bg-primary-color !border !shadow-none !text-base-color"
                 placeholder={"From Date"}
+                onChange={(_, dateStr) => setFromDate(dateStr)}
               />
             </div>
-            <div className="flex flex-col items-start gap-1">
+            <div className="flex flex-col gap-1">
               <Typography.Text className="text-lg text-base-color font-semibold">
                 To
               </Typography.Text>
               <DatePicker
                 className="!rounded-lg !text-base !w-fit !bg-primary-color !border !shadow-none !text-base-color"
                 placeholder={"To Date"}
+                onChange={(_, dateStr) => setToDate(dateStr)}
               />
             </div>
+
             <ConfigProvider
               theme={{
                 components: {
@@ -99,95 +160,61 @@ const AdminEarning = () => {
                 },
               }}
             >
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  Purchase Date
-                </Typography.Text>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="asc">ASC</Select.Option>
-                  <Select.Option value="desc">DESC</Select.Option>
-                </Select>
-              </div>
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  End Date
-                </Typography.Text>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="asc">ASC</Select.Option>
-                  <Select.Option value="desc">DESC</Select.Option>
-                </Select>
-              </div>
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  Amount
-                </Typography.Text>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="asc">ASC</Select.Option>
-                  <Select.Option value="desc">DESC</Select.Option>
-                </Select>
-              </div>
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  Remaining Days
-                </Typography.Text>
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="asc">ASC</Select.Option>
-                  <Select.Option value="desc">DESC</Select.Option>
-                </Select>
-              </div>
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  Plan
-                </Typography.Text>
-
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="basic">Basic</Select.Option>
-                  <Select.Option value="pro">Pro</Select.Option>
-                  <Select.Option value="premium">Premium</Select.Option>
-                </Select>
-              </div>
-              <div className="flex flex-col items-start gap-1">
-                <Typography.Text className="text-lg text-base-color font-semibold">
-                  Status
-                </Typography.Text>
-
-                <Select
-                  defaultValue="all"
-                  style={{ width: 150 }}
-                  className="!h-10"
-                >
-                  <Select.Option value="all">All</Select.Option>
-                  <Select.Option value="active">Active</Select.Option>
-                  <Select.Option value="inactive">Inactive</Select.Option>
-                </Select>
-              </div>
+              {[
+                {
+                  label: "Purchase Date",
+                  value: purchaseDateSort,
+                  setter: setPurchaseDateSort,
+                },
+                {
+                  label: "End Date",
+                  value: endDateSort,
+                  setter: setEndDateSort,
+                },
+                {
+                  label: "Amount",
+                  value: amountSort,
+                  setter: setAmountSort,
+                },
+                {
+                  label: "Remaining Days",
+                  value: remainingDaysSort,
+                  setter: setRemainingDaysSort,
+                },
+                {
+                  label: "Plan",
+                  value: planFilter,
+                  setter: setPlanFilter,
+                  options: ["all", "basic", "pro", "premium", "elite"],
+                },
+                {
+                  label: "Status",
+                  value: statusFilter,
+                  setter: setStatusFilter,
+                  options: ["all", "active", "inactive", "completed"],
+                },
+              ].map(({ label, value, setter, options }) => (
+                <div key={label} className="flex flex-col gap-1">
+                  <Typography.Text className="text-lg text-base-color font-semibold">
+                    {label}
+                  </Typography.Text>
+                  <Select
+                    defaultValue={value}
+                    style={{ width: 150 }}
+                    className="!h-10"
+                    onChange={setter}
+                  >
+                    {(options || ["all", "asc", "desc"]).map((opt) => (
+                      <Select.Option key={opt} value={opt}>
+                        {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </div>
+              ))}
             </ConfigProvider>
           </div>
+
           <div
             className={`${
               showFilter ? "w-fit" : "w-full"
@@ -195,12 +222,13 @@ const AdminEarning = () => {
           >
             <FaFilter
               onClick={() => setShowFilter(!showFilter)}
-              className="text-2xl text-secondary-color cursor-pointer "
+              className="text-2xl text-secondary-color cursor-pointer"
             />
           </div>
         </div>
-        {/* Search and Export Button */}
-        <div className=" flex items-center justify-between mb-7">
+
+        {/* Search and Export */}
+        <div className="flex items-center justify-between mb-7">
           <SearchInput
             placeholder="Search ..."
             setSearch={setSearchText}
@@ -215,16 +243,18 @@ const AdminEarning = () => {
             <p className="text-lg text-white font-semibold">Export</p>
           </Button>
         </div>
+
         <EarningTable
-          data={data}
-          loading={false}
+          data={filteredData}
+          loading={isFetching}
           showViewModal={showViewUserModal}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={filteredData.length}
           limit={limit}
           setSelectedData={setSelectedData}
         />
+
         <EarningModal
           isViewModalVisible={isViewModalVisible}
           handleCancel={handleCancel}

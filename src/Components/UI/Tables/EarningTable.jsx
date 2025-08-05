@@ -1,4 +1,4 @@
-import { Space, Tooltip } from "antd";
+import { Space, Tag, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { useEffect, useState } from "react";
@@ -25,67 +25,77 @@ const EarningTable = ({
   const columns = [
     {
       title: "#UID",
-      dataIndex: "UID",
-      key: "UID",
+      dataIndex: "customId",
+      key: "customId",
     },
     {
       title: "Name",
-      dataIndex: "name", // Data key for name
+      dataIndex: "name", // assuming "name" field is correct
       key: "name",
     },
     {
       title: "Email",
-      dataIndex: "email", // Data key for email
+      dataIndex: "email",
       key: "email",
     },
     {
       title: "Purchase Date",
-      dataIndex: "purchaseDate", // Data key for purchaseDate
+      dataIndex: "purchaseDate",
       key: "purchaseDate",
+      render: (date) => new Date(date).toLocaleDateString(),
     },
     {
       title: "End Date",
-      dataIndex: "endDate", // Data key for endDate
+      dataIndex: "endDate",
       key: "endDate",
+      render: (date) => new Date(date).toLocaleDateString(),
     },
     {
       title: "Remaining Day",
-      dataIndex: "remainingDay", // Data key for remainingDay
-      key: "remainingDay",
+      dataIndex: "remainingday", // match your data property name exactly
+      key: "remainingday",
     },
     {
       title: "Plan",
-      dataIndex: "plan", // Data key for plan
+      dataIndex: "plan",
       key: "plan",
+      render: (plan) => <Tag color="purple">{plan}</Tag>,
     },
     {
       title: "Amount",
-      dataIndex: "amount", // Data key for amount
+      dataIndex: "amount",
       key: "amount",
       render: (amount) => <span>${amount}</span>,
     },
     {
       title: "Status",
-      dataIndex: "status", // Data key for status
+      dataIndex: "status",
       key: "status",
+      render: (status) => {
+        const color =
+          status === "completed"
+            ? "green"
+            : status === "active"
+            ? "blue"
+            : "red";
+        return <Tag color={color}>{status.toUpperCase()}</Tag>;
+      },
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <>
-          <Space size="middle">
-            {/* View Details Tooltip */}
-            <Tooltip placement="right" title="View Details">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-secondary-color"
-                onClick={() => showViewModal(record)}
-              >
-                <GoEye style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-          </Space>
-        </>
+        <Space size="middle">
+          <Tooltip placement="right" title="View Details">
+            <button
+              className="!p-0 !bg-transparent !border-none !text-secondary-color"
+              onClick={() => showViewModal(record)}
+              aria-label="View Details"
+            >
+              <GoEye style={{ fontSize: "24px" }} />
+            </button>
+          </Tooltip>
+        </Space>
       ),
       align: "center",
     },

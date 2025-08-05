@@ -12,7 +12,16 @@ const listingApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.listing],
     }),
+    businessListing: builder.query({
+      query: () => {
+        return {
+          url: "/business/list",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.listing],
+    }),
   }),
 });
 
-export const { useEventListingQuery } = listingApi;
+export const { useEventListingQuery, useBusinessListingQuery } = listingApi;

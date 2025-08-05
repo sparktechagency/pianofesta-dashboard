@@ -1,7 +1,7 @@
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
-import { AllImages } from "../../../../../public/images/AllImages";
 import { createStyles } from "antd-style";
+import dayjs from "dayjs";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -37,214 +37,182 @@ const AdminListingEventTable = ({
     setSelectedRowKeys(selectedKeys);
   };
 
-  // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
   useEffect(() => {
-    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.uid)));
-  }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
+    setSelectedData(data.filter((item) => selectedRowKeys.includes(item._id)));
+  }, [selectedRowKeys, data, setSelectedData]);
+
   const columns = [
     {
-      title: "#UID",
-      dataIndex: "uid",
-      key: "uid",
+      title: "#ID",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, __, index) => page * limit - limit + index + 1,
       fixed: "left",
     },
     {
       title: "Event Name",
-      dataIndex: "eventName", // Data key for eventName
-      key: "eventName",
+      dataIndex: "name",
+      key: "name",
       fixed: "left",
     },
     {
       title: "Short Description",
-      dataIndex: "shortDescription", // Data key for eventName
-      key: "shortDescription",
-      render: () => <p>This is a short description</p>,
+      dataIndex: "description",
+      key: "description",
+      width: 300,
     },
     {
       title: "Detail Description",
-      dataIndex: "detailDescription", // Data key for eventName
+      dataIndex: "detailDescription",
       key: "detailDescription",
-      render: () => <p>This is a detail description</p>,
+      width: 300,
     },
     {
       title: "Created Date",
-      dataIndex: "CreatedDate", // Data key for CreatedDate
-      key: "CreatedDate",
-      render: () => <p>2023-06-01</p>,
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => dayjs(date).format("YYYY-MM-DD"),
     },
     {
       title: "Logo",
-      dataIndex: "logo", // Data key for eventName
+      dataIndex: "logo",
       key: "logo",
-      render: () => (
-        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
-      ),
+      render: (logo) => <img src={logo} className="w-auto h-14" alt="Logo" />,
     },
     {
       title: "Cover",
-      dataIndex: "cover", // Data key for eventName
-      key: "cover",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
-      ),
+      dataIndex: "coverImage",
+      key: "coverImage",
+      render: (cover) =>
+        cover ? <img src={cover} className="w-auto h-14" alt="Cover" /> : "N/A",
     },
     {
       title: "Gallery",
-      dataIndex: "gallery", // Data key for eventName
+      dataIndex: "gallery",
       key: "gallery",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
-      ),
+      render: (gallery) =>
+        gallery?.[0] ? (
+          <img src={gallery[0]} className="w-auto h-14" alt="Gallery" />
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "Email",
-      dataIndex: "email", // Data key for email
+      dataIndex: "email",
       key: "email",
-      render: () => <p>abc@gmail.com</p>,
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Data key for phone
-      key: "phone",
-      render: () => <p>1234567890</p>,
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Address",
-      dataIndex: "address", // Data key for addre
+      dataIndex: "address",
       key: "address",
-      render: () => <p>123 Main St, City</p>,
-    },
-    {
-      title: "Geo-Location",
-      dataIndex: "geoLocation", // Data key for geoLocation
-      key: "geoLocation",
-      render: () => <p>27.123456, 78.123456</p>,
     },
     {
       title: "Booking Link",
-      dataIndex: "bookingLink", // Data key for bookingLink
-      key: "bookingLink",
-      render: () => <p>https://example.com/booking</p>,
+      dataIndex: "bookingAndPaymentLink",
+      key: "bookingAndPaymentLink",
+      render: (link) =>
+        link ? (
+          <a href={link} target="_blank" rel="noreferrer">
+            {link}
+          </a>
+        ) : (
+          "N/A"
+        ),
     },
     {
-      title: "Event Category",
-      dataIndex: "eventCategory", // Data key for eventCategory
-      key: "eventCategory",
-      render: () => <p>Music</p>,
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
     },
     {
-      title: "Event Type",
-      dataIndex: "eventType", // Data key for eventType
-      key: "eventType",
-      render: () => <p>Online</p>,
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
     },
     {
       title: "Start Date",
-      dataIndex: "startDate", // Data key for startDate
+      dataIndex: "startDate",
       key: "startDate",
-      render: () => <p>2023-06-01</p>,
+      render: (date) => dayjs(date).format("YYYY-MM-DD"),
     },
     {
       title: "End Date",
-      dataIndex: "endDate", // Data key for endDate
+      dataIndex: "endDate",
       key: "endDate",
-      render: () => <p>2023-06-30</p>,
+      render: (date) => dayjs(date).format("YYYY-MM-DD"),
     },
     {
       title: "Start Time",
-      dataIndex: "startTime", // Data key for startTime
+      dataIndex: "startTime",
       key: "startTime",
-      render: () => <p>2023-06-01</p>,
     },
     {
       title: "End Time",
-      dataIndex: "endTime", // Data key for endTime
+      dataIndex: "endTime",
       key: "endTime",
-      render: () => <p>2023-06-30</p>,
     },
     {
       title: "Max Participants",
-      dataIndex: "maxParticipants", // Data key for maxParticipants
+      dataIndex: "maxParticipants",
       key: "maxParticipants",
-      render: () => <p>2</p>,
     },
     {
       title: "Entrance Fee",
-      dataIndex: "entranceFee", // Data key for entranceFee
+      dataIndex: "entranceFee",
       key: "entranceFee",
-      render: () => <p>$200</p>,
+      render: (fee) => `$${fee}`,
     },
     {
-      title: "Promotion Img",
-      dataIndex: "promotionImg", // Data key for eventName
-      key: "promotionImg",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
-      ),
+      title: "Supported Services",
+      dataIndex: "supportedServices",
+      key: "supportedServices",
+      render: (services) => services?.join(", ") ?? "N/A",
     },
     {
-      title: "Supported Events",
-      dataIndex: "supportedEvents", // Data key for location
-      key: "supportedEvents",
+      title: "Additional Services",
+      dataIndex: "additionalServices",
+      key: "additionalServices",
+      render: (services) => services?.join(", ") ?? "N/A",
     },
     {
       title: "Notes",
-      dataIndex: "notes", // Data key for location
-      key: "notes",
-    },
-    {
-      title: "Location",
-      dataIndex: "location", // Data key for location
-      key: "location",
-    },
-    {
-      title: "Organizer",
-      dataIndex: "organizer", // Data key for organizer
-      key: "organizer",
+      dataIndex: "additionalNotes",
+      key: "additionalNotes",
     },
     {
       title: "Likes",
-      dataIndex: "likes", // Data key for likes
-      key: "likes",
-      render: () => <span>11</span>,
+      dataIndex: "totalLikes",
+      key: "totalLikes",
     },
     {
       title: "Comments",
-      dataIndex: "comments", // Data key for Comments
-      key: "comments",
-      render: () => <span>5</span>,
+      dataIndex: "totalComments",
+      key: "totalComments",
     },
     {
       title: "Ratings",
-      dataIndex: "ratings", // Data key for ratings
-      key: "ratings",
-      render: () => <span>4</span>,
+      dataIndex: "averageRating",
+      key: "averageRating",
     },
     {
-      title: "FAQ",
-      dataIndex: "faq",
-      key: "faq",
-      render: () => <span>4</span>,
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount", // Data key for amount
-      key: "amount",
-    },
-    {
-      title: "Organized By",
-      dataIndex: "organizedBy", // Data key for amount
-      key: "organizedBy",
-      render: () => <span>Jhon Doe</span>,
+      title: "Reviews",
+      dataIndex: "totalReviews",
+      key: "totalReviews",
     },
   ];
 
   return (
     <MyTable
       className={styles.customTable}
-      selectedRowKeys={selectedRowKeys} // Correctly passing selectedRowKeys to MyTable
-      handleSelectChange={handleSelectChange} // Correctly passing the handleSelectChange function
-      rowSelectionOn={true} // Enabling row selection
+      selectedRowKeys={selectedRowKeys}
+      handleSelectChange={handleSelectChange}
+      rowSelectionOn={true}
       columns={columns}
       data={data}
       loading={loading}
@@ -252,7 +220,7 @@ const AdminListingEventTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"uid"}
+      keyValue={"_id"}
       scroll={{ x: "max-content" }}
     />
   );

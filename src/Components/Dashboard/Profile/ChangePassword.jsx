@@ -1,13 +1,34 @@
 import { Button, Form, Input, Typography } from "antd";
+import tryCatchWrapper from "../../../utils/TryCatchWraper";
+import { useChangePasswordMutation } from "../../../redux/features/auth/authApi";
+import Cookies from "js-cookie";
 
 const ChangePassword = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    window.location.reload();
+  const [form] = Form.useForm();
+  const [updatePassword] = useChangePasswordMutation();
+
+  const onFinish = async (values) => {
+    const data = {
+      oldPassword: values.currentPassword,
+      newPassword: values.reEnterPassword,
+    };
+
+    const res = await tryCatchWrapper(
+      updatePassword,
+      { body: data },
+      "Changing Password..."
+    );
+    if (res.statusCode === 200) {
+      Cookies.remove("pianofesta_accessToken");
+
+      window.location.href = "/signin";
+      window.location.reload();
+    }
   };
   return (
     <div className="lg:w-[70%] my-20">
       <Form
+        form={form}
         onFinish={onFinish}
         layout="vertical"
         className="bg-transparent w-full"
