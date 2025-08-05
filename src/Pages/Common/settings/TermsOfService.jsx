@@ -1,15 +1,9 @@
-import { Button } from "antd";
-import JoditEditor from "jodit-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import TermsOfServiceForUser from "./TermsOfServiceForUser";
+import TermsOfServiceForBusiness from "./TermsOfServiceForBusiness";
 
 const TermsOfService = () => {
   const [activeTab, setActiveTab] = useState("regularUser");
-  const editor = useRef(null);
-  const [content, setContent] = useState("");
-
-  const handleOnSave = () => {
-    console.log("Saved PP");
-  };
 
   return (
     <div
@@ -43,24 +37,11 @@ const TermsOfService = () => {
           Business User
         </p>
       </div>
-      <div className=" flex justify-center items-center">
-        <div className="w-[95%]">
-          <div className="">
-            <JoditEditor
-              ref={editor}
-              value={content}
-              config={{ height: 500, theme: "light", readonly: false }}
-              onBlur={(newContent) => setContent(newContent)}
-            />
-          </div>
-          <Button
-            onClick={handleOnSave}
-            className="w-full py-6 border !border-secondary-color hover:border-secondary-color text-xl !text-primary-color bg-secondary-color hover:!bg-secondary-color font-semibold rounded-2xl mt-8"
-          >
-            Save
-          </Button>
-        </div>
-      </div>
+      {activeTab === "regularUser" ? (
+        <TermsOfServiceForUser />
+      ) : (
+        <TermsOfServiceForBusiness />
+      )}
     </div>
   );
 };

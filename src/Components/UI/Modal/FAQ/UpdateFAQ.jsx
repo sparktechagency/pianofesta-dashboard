@@ -1,11 +1,14 @@
 import { Button, Collapse, ConfigProvider, Form, Input, Modal } from "antd";
 import { useState } from "react";
+import { useUpdateFaqMutation } from "../../../../redux/features/faq/faqApi";
+import { toast } from "sonner";
 const UpdateFAQ = ({
+  id,
   isFaqUpdateModalOpen,
   handleCancelFaqUpdateModal,
   currentRecord,
 }) => {
-  //   const [updateFaq] = useUpdateFaqMutation();
+  const [updateFaq] = useUpdateFaqMutation();
   const { Panel } = Collapse;
 
   const [activeKey, setActiveKey] = useState([0]); // Track the active panel
@@ -14,21 +17,31 @@ const UpdateFAQ = ({
   // Function to save all Q/A pairs
   const handleOnSave = async (values) => {
     console.log(values);
-    // const toastId = toast.loading("Updating FAQ...");
-    // try {
-    //   const res = await updateFaq({ id: currentRecord._id, data: values });
-    //   console.log(res);
-    //   if (res?.data?.success) {
-    //     toast.success("FAQ updated successfully", {
-    //       id: toastId,
-    //       duration: 2000,
-    //     });
-    //     form.resetFields();
-    //     handleCancelFaqUpdateModal();
-    //   }
-    // } catch (error) {
-    //   toast.error("Failed to update FAQ", { id: toastId, duration: 2000 });
-    // }
+    const toastId = toast.loading("Updating FAQ...");
+    try {
+      const res = await updateFaq({
+        id: id,
+        data: {
+          type: "update",
+          index: currentRecord.index,
+          faqItem: {
+            question: values.question,
+            answer: values.answer,
+          },
+        },
+      });
+      console.log(res);
+      if (res?.data?.success) {
+        toast.success("FAQ updated successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+        form.resetFields();
+        handleCancelFaqUpdateModal();
+      }
+    } catch (error) {
+      toast.error("Failed to update FAQ", { id: toastId, duration: 2000 });
+    }
   };
 
   // Function to add a new Q/A pair
@@ -128,7 +141,7 @@ const UpdateFAQ = ({
                   height: "40px",
                   border: "none",
                 }}
-                className="!mt-10 bg-gradient !text-base-color"
+                className="!mt-10 !bg-secondary-color !text-primary-color"
               >
                 Save
               </Button>

@@ -5,59 +5,13 @@ import Accordion from "../../../Components/UI/Accordion";
 import AddFAQ from "../../../Components/UI/Modal/FAQ/AddFAQ";
 import UpdateFAQ from "../../../Components/UI/Modal/FAQ/UpdateFAQ";
 import DeleteFAQModal from "../../../Components/UI/Modal/FAQ/DeleteFAQ";
-const faqData = [
-  {
-    question: "How do I reset my password?",
-    answer:
-      "You can reset your password by clicking on 'Forgot Password' on the login page and following the instructions.",
-  },
-  {
-    question: "How does the matching algorithm work?",
-    answer:
-      "Our algorithm uses preferences, interests, and location data to suggest the best matches for you.",
-  },
-  {
-    question: "Is my personal information secure?",
-    answer:
-      "Yes, we use industry-standard encryption and security measures to keep your data safe.",
-  },
-  {
-    question: "How can I delete my account?",
-    answer:
-      "You can request account deletion in the settings under 'Account Preferences' or contact our support team.",
-  },
-  {
-    question: "Why am I not receiving notifications?",
-    answer:
-      "Ensure notifications are enabled in both your app settings and phone settings. Try restarting the app.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer: "We accept credit cards, debit cards, PayPal, and Google Pay.",
-  },
-  {
-    question: "Can I change my subscription plan?",
-    answer:
-      "Yes, you can upgrade or downgrade your plan anytime in the subscription settings.",
-  },
-  {
-    question: "How do I report a user?",
-    answer:
-      "You can report a user by visiting their profile and clicking on 'Report User' at the bottom.",
-  },
-  {
-    question: "Can I use the app on multiple devices?",
-    answer:
-      "Yes, you can log in to multiple devices using the same account credentials.",
-  },
-  {
-    question: "How do I contact customer support?",
-    answer:
-      "You can reach our support team via email at support@example.com or through the in-app help center.",
-  },
-];
+import { useGetFaqQuery } from "../../../redux/features/faq/faqApi";
+import Loading from "../../../Components/ui/Loading";
 
 const FAQSection = () => {
+  const { data, isFetching } = useGetFaqQuery();
+  const faqData = data?.data?.faqs || [];
+
   const [isFaqModalOpen, setIsFaqModalOpen] = useState(false);
   const [isFaqUpdateModalOpen, setIsFaqUpdateModalOpen] = useState(false);
   const [isFaqDeleteModalOpen, setIsFaqDeleteModalOpen] = useState(false);
@@ -88,6 +42,10 @@ const FAQSection = () => {
     setIsFaqDeleteModalOpen(false);
     setCurrentRecord(null);
   };
+
+  if (isFetching) {
+    <Loading />;
+  }
   return (
     <div className="min-h-[88vh] bg-primary-color  py-4 px-4 rounded-lg">
       <div>
@@ -114,6 +72,7 @@ const FAQSection = () => {
                 isEditing={true}
                 num={index + 1}
                 className=""
+                index={index}
                 showFaqUpdateModal={showFaqUpdateModal}
                 showFaqDeleteModal={showFaqDeleteModal}
               />
@@ -129,6 +88,7 @@ const FAQSection = () => {
       )}
       {isFaqUpdateModalOpen && (
         <UpdateFAQ
+          id={data?.data?._id}
           isFaqUpdateModalOpen={isFaqUpdateModalOpen}
           handleCancelFaqUpdateModal={handleCancelFaqUpdateModal}
           currentRecord={currentRecord}

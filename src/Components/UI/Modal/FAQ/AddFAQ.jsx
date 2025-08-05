@@ -2,9 +2,13 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Input, Collapse, ConfigProvider, Form, Modal } from "antd";
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { toast } from "sonner";
+import { useCreateFaqMutation } from "../../../../redux/features/faq/faqApi";
 const { Panel } = Collapse;
 
 const AddFAQ = ({ isFaqModalOpen, setIsFaqModalOpen }) => {
+  const [createFaq] = useCreateFaqMutation();
+
   const [faqList, setFaqList] = useState([{ question: "", answer: "" }]);
   const [activeKey, setActiveKey] = useState([0]);
   const [form] = Form.useForm();
@@ -35,21 +39,22 @@ const AddFAQ = ({ isFaqModalOpen, setIsFaqModalOpen }) => {
   };
 
   const handleOnSave = async (values) => {
-    console.log(values);
-    // const toastId = toast.loading("Adding FAQ...");
-    // try {
-    //   const res = await createFaq(values);
-    //   if (res?.data?.success) {
-    //     toast.success("FAQ added successfully", {
-    //       id: toastId,
-    //       duration: 2000,
-    //     });
-    //     form.resetFields();
-    //     setIsFaqModalOpen(false);
-    //   }
-    // } catch (error) {
-    //   toast.error("Failed to add FAQ", { id: toastId, duration: 2000 });
-    // }
+    const toastId = toast.loading("Adding FAQ...");
+    try {
+      const res = await createFaq(values?.faqs);
+      if (res?.data?.success) {
+        toast.success("FAQ added successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+        form.resetFields();
+        setIsFaqModalOpen(false);
+      } else {
+        toast.error("Failed to add FAQ", { id: toastId, duration: 2000 });
+      }
+    } catch (error) {
+      toast.error("Failed to add FAQ", { id: toastId, duration: 2000 });
+    }
   };
 
   return (
@@ -88,7 +93,7 @@ const AddFAQ = ({ isFaqModalOpen, setIsFaqModalOpen }) => {
               onChange={setActiveKey}
               className="bg-primary-color"
             >
-              {faqList.map((faq, index) => (
+              {faqList?.map((faq, index) => (
                 <Panel
                   header={`Question`}
                   key={index}

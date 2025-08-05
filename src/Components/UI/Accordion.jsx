@@ -12,6 +12,7 @@ const Accordion = ({
   num,
   item,
   className,
+  index,
   showFaqUpdateModal,
   showFaqDeleteModal,
 }) => {
@@ -54,13 +55,13 @@ const Accordion = ({
           {isEditing && (
             <>
               <div
-                onClick={() => showFaqUpdateModal(item)}
+                onClick={() => showFaqUpdateModal({ ...item, index })}
                 className="p-[2px] "
               >
                 <FaEdit className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
               </div>
               <div
-                onClick={() => showFaqDeleteModal(item)}
+                onClick={() => showFaqDeleteModal({ ...item, index })}
                 className="p-[2px] "
               >
                 <MdDelete className="text-base-color text-base md:text-lg lg:text-xl duration-500" />
