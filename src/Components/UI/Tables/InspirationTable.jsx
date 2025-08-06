@@ -2,7 +2,6 @@ import { Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { AllImages } from "../../../../public/images/AllImages";
 const InspirationTable = ({
   data,
   loading,
@@ -18,42 +17,52 @@ const InspirationTable = ({
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
+      dataIndex: "_id",
       key: "_id",
+      render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
-      title: " Image",
-      dataIndex: "image", // Data key for image
-      key: "image",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-16 h-20" alt="Logo" />
+      title: "Image",
+      dataIndex: "coverImage",
+      key: "coverImage",
+      render: (coverImage) => (
+        <img
+          src={coverImage}
+          className="w-16 h-20 object-cover rounded-md"
+          alt="Cover"
+        />
       ),
     },
     {
-      title: " Title",
-      dataIndex: "postTitle", // Data key for postTitle
-      key: "postTitle",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      render: (title) => <p>{title}</p>,
+      width: 300,
     },
     {
       title: "Description",
-      dataIndex: "description", // Data key for name
+      dataIndex: "description",
       key: "description",
+      render: (desc) => <p>{desc}</p>,
+      width: 400,
     },
     {
-      title: " category",
-      dataIndex: "category", // Data key for category
+      title: "Category",
+      dataIndex: "category",
       key: "category",
-      render: () => <p>Wedding </p>,
+      render: (category) => <span>{category?.name || "N/A"}</span>,
     },
     {
       title: "Post By",
-      dataIndex: "postBy", // Data key for memberType
-      key: "postBy",
+      dataIndex: "author",
+      key: "author",
+      render: (author) => author?.name || "Unknown",
     },
     {
       title: "Role",
-      dataIndex: "role", // Data key for memberType
-      key: "role",
+      dataIndex: ["author", "role"],
+      key: "author",
     },
     {
       title: "Action",
@@ -62,6 +71,16 @@ const InspirationTable = ({
         <>
           <Space size="small">
             {/* View Details Tooltip */}
+            {record?.author?.role === "admin" && (
+              <Tooltip placement="right" title="Edit Blog">
+                <button
+                  className="!p-0 !bg-transparent !border-none !text-secondary-color"
+                  onClick={() => showEditModal(record)}
+                >
+                  <MdEdit style={{ fontSize: "20px" }} />
+                </button>
+              </Tooltip>
+            )}
             {record?.role === "admin" && (
               <Tooltip placement="right" title="Edit Blog">
                 <button

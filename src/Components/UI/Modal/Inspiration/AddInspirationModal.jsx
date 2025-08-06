@@ -8,12 +8,57 @@ import {
   Typography,
   Upload,
 } from "antd";
+import {
+  useCreateInspirationMutation,
+  useGetInspirationCategoryQuery,
+} from "../../../../redux/features/inspiration/inspirationAPi";
+import tryCatchWrapper from "../../../../utils/TryCatchWraper";
 
 const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
   const [form] = Form.useForm();
+  const [createInspiration] = useCreateInspirationMutation();
+
+  const { data, isFetching } = useGetInspirationCategoryQuery(
+    {
+      page: 1,
+      limit: 9999999,
+    },
+    {
+      skip: !isAddModalOpen,
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  const cateroryData = data?.data?.data;
 
   const handleSave = async (values) => {
     console.log(values);
+
+    const formData = new FormData();
+
+    formData.append(
+      "data",
+      JSON.stringify({
+        title: values.title,
+        description: values.description,
+        category: values.category,
+        type: "blog",
+      })
+    );
+    if (values.image?.file) {
+      formData.append("cover", values.image?.file);
+    }
+
+    const res = await tryCatchWrapper(
+      createInspiration,
+      { body: formData },
+      "Adding Inspiration..."
+    );
+
+    if (res?.statusCode === 201) {
+      setIsAddModalOpen(false);
+      form.resetFields();
+    }
   };
 
   return (
@@ -63,11 +108,15 @@ const AddInspirationModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
             style={{ fontWeight: "500" }}
           >
             <Select
+              loading={isFetching}
               placeholder="Select Category"
               className="font-medium h-12 border !border-secondary-color rounded-md"
             >
-              <Select.Option value="weading"> Wedding</Select.Option>
-              <Select.Option value="business"> Business</Select.Option>
+              {cateroryData?.map((item) => (
+                <Select.Option key={item?._id} value={item?._id}>
+                  {item?.name}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
 

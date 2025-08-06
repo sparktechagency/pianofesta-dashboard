@@ -1,29 +1,31 @@
 /* eslint-disable react/prop-types */
 import { Button, Modal } from "antd";
+import { useDeleteInspirationMutation } from "../../../../redux/features/inspiration/inspirationAPi";
+import { toast } from "sonner";
 
 const DeleteInspirationModal = ({
   isDeleteModalVisible,
   handleCancel,
   currentRecord,
 }) => {
-  //   const [blockUser] = useBlockUserMutation();
+  const [deleteInspiration] = useDeleteInspirationMutation();
   const handleDelete = async (data) => {
     console.log(data);
-    // const toastId = toast.loading("Blocking User...");
-    // try {
-    //   const res = await blockUser({ id: data?._id }).unwrap();
-    //   toast.success(res.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
-    // handleCancel();
+    const toastId = toast.loading("Blocking User...");
+    try {
+      const res = await deleteInspiration({ id: data?._id }).unwrap();
+      toast.success(res.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message, {
+        id: toastId,
+        duration: 2000,
+      });
+    }
+    handleCancel();
   };
   return (
     <Modal

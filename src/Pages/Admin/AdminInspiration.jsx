@@ -3,24 +3,26 @@ import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import SearchInput from "../../utils/SearchInput";
 import AddInspirationModal from "../../Components/UI/Modal/Inspiration/AddInspirationModal";
-import inspirationData from "../../../public/data/inspirationData";
 import InspirationTable from "../../Components/UI/Tables/InspirationTable";
 import InspirationModal from "../../Components/UI/Modal/Inspiration/InspirationModal";
 import DeleteInspirationModal from "../../Components/UI/Modal/Inspiration/DeleteInspirationModal";
 import EditInspirationModal from "../../Components/UI/Modal/Inspiration/EditInspirationModal";
-import InspirationGalleryTable from "../../Components/UI/Tables/InspirationGalleryTable";
-import AddInspirationGalleryModal from "../../Components/UI/Modal/Inspiration/AddInspirationGalleryModal";
-import EditGalleryInspirationModal from "../../Components/UI/Modal/Inspiration/EditInspirationGalleryModal";
-import InspirationGalleryModal from "../../Components/UI/Modal/Inspiration/InspirationGalleryModal";
+import { useGetInspirationQuery } from "../../redux/features/inspiration/inspirationAPi";
 
 const AdminInspiration = () => {
-  const data = inspirationData;
-
-  const [activeTab, setActiveTab] = useState("blog");
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
   const limit = 12;
+  const { data, isFetching } = useGetInspirationQuery({
+    page,
+    limit,
+    searchTerm: searchText,
+  });
+
+  const inspirationData = data?.data?.data;
+  const totalInspiration = data?.data?.meta?.total;
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
@@ -49,37 +51,13 @@ const AdminInspiration = () => {
   };
   return (
     <div className="mt-10">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2 bg-gradient rounded-lg p-3">
-          <p
-            onClick={() => setActiveTab("blog")}
-            className={`text-base sm:text-lg lg:text-xl font-semibold cursor-pointer p-1  ${
-              activeTab === "blog"
-                ? "border-b-2 border-secondary-color text-secondary-color"
-                : "text-[#717375] border-b-2 border-transparent"
-            }`}
-          >
-            Blog
-          </p>
-          <p
-            onClick={() => setActiveTab("gallery")}
-            className={`text-base sm:text-lg lg:text-xl font-semibold cursor-pointer p-1  ${
-              activeTab === "gallery"
-                ? "border-b-2 border-secondary-color text-secondary-color"
-                : "text-[#717375] border-b-2 border-transparent"
-            }`}
-          >
-            Gallery
-          </p>
-        </div>
-      </div>
       <div className="flex justify-end items-center">
         <Button
           onClick={() => setIsAddModalOpen(true)}
           className="text-base lg:text-lg !p-4 !bg-secondary-color !text-primary-color border !border-secondary-color !rounded flex items-center gap-2"
         >
           <MdAdd className="text-base lg:text-lg text-primary-color" />
-          {activeTab === "blog" ? "Post New Blog" : "Post New Gallery"}
+          Post New Inspiration
         </Button>
       </div>
 
@@ -99,68 +77,35 @@ const AdminInspiration = () => {
             />
           </div>
         </div>
-        {activeTab === "blog" ? (
-          <InspirationTable
-            data={data}
-            loading={false}
-            showViewModal={showViewModal}
-            showEditModal={showEditModal}
-            showDeleteModal={showDeleteModal}
-            setPage={setPage}
-            page={page}
-            total={data.length}
-            limit={limit}
-          />
-        ) : (
-          <InspirationGalleryTable
-            data={data}
-            loading={false}
-            showViewModal={showViewModal}
-            showEditModal={showEditModal}
-            showDeleteModal={showDeleteModal}
-            setPage={setPage}
-            page={page}
-            total={data.length}
-            limit={limit}
-          />
-        )}
-        {activeTab === "blog" ? (
-          <AddInspirationModal
-            isAddModalOpen={isAddModalOpen}
-            setIsAddModalOpen={setIsAddModalOpen}
-          />
-        ) : (
-          <AddInspirationGalleryModal
-            isAddModalOpen={isAddModalOpen}
-            setIsAddModalOpen={setIsAddModalOpen}
-          />
-        )}
-        {activeTab === "blog" ? (
-          <EditInspirationModal
-            isEditModalOpen={isEditModalOpen}
-            setIsEditModalOpen={setIsEditModalOpen}
-            currentRecord={currentRecord}
-          />
-        ) : (
-          <EditGalleryInspirationModal
-            isEditModalOpen={isEditModalOpen}
-            setIsEditModalOpen={setIsEditModalOpen}
-            currentRecord={currentRecord}
-          />
-        )}
-        {activeTab === "blog" ? (
-          <InspirationModal
-            isViewModalVisible={isViewModalVisible}
-            handleCancel={handleCancel}
-            currentRecord={currentRecord}
-          />
-        ) : (
-          <InspirationGalleryModal
-            isViewModalVisible={isViewModalVisible}
-            handleCancel={handleCancel}
-            currentRecord={currentRecord}
-          />
-        )}
+
+        <InspirationTable
+          data={inspirationData}
+          loading={isFetching}
+          showViewModal={showViewModal}
+          showEditModal={showEditModal}
+          showDeleteModal={showDeleteModal}
+          setPage={setPage}
+          page={page}
+          total={totalInspiration}
+          limit={limit}
+        />
+
+        <AddInspirationModal
+          isAddModalOpen={isAddModalOpen}
+          setIsAddModalOpen={setIsAddModalOpen}
+        />
+
+        <EditInspirationModal
+          isEditModalOpen={isEditModalOpen}
+          setIsEditModalOpen={setIsEditModalOpen}
+          currentRecord={currentRecord}
+        />
+
+        <InspirationModal
+          isViewModalVisible={isViewModalVisible}
+          handleCancel={handleCancel}
+          currentRecord={currentRecord}
+        />
 
         <DeleteInspirationModal
           isDeleteModalVisible={isDeleteModalVisible}
