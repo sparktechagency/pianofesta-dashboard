@@ -1,33 +1,40 @@
 import { Button, Modal } from "antd";
+import { useDeleteFaqMutation } from "../../../../redux/features/faq/faqApi";
+import { toast } from "sonner";
 // import { toast } from "sonner";
 
 const DeleteFAQModal = ({
+  id,
   isFaqDeleteModalOpen,
   handleCancelFaqDeleteModal,
   currentRecord,
 }) => {
-  // const [deleteFaq] = useDeleteFaqMutation();
+  const [deleteFaq] = useDeleteFaqMutation();
   const handleDelete = async () => {
     console.log(currentRecord);
     handleCancelFaqDeleteModal();
-    // const toastId = toast.loading("Deleting subscription...");
-    // try {
-    //   const res = await deleteFaq({ id: currentRecord?._id }).unwrap();
+    const toastId = toast.loading("Deleting subscription...");
 
-    //   if (res?.success) {
-    //     toast.success("FAQ deleted successfully", {
-    //       id: toastId,
-    //       duration: 2000,
-    //     });
-    //   }
-    //   handleCancelFaqDeleteModal();
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error("Failed to delete subscription", {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
+    try {
+      const res = await deleteFaq({
+        id: id,
+        index: currentRecord.index,
+      }).unwrap();
+
+      if (res?.success) {
+        toast.success("FAQ deleted successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+      }
+      handleCancelFaqDeleteModal();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete subscription", {
+        id: toastId,
+        duration: 2000,
+      });
+    }
   };
   return (
     <Modal

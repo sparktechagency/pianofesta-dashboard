@@ -96,6 +96,7 @@ const FAQSection = () => {
       )}
       {isFaqDeleteModalOpen && (
         <DeleteFAQModal
+          id={data?.data?._id}
           isFaqDeleteModalOpen={isFaqDeleteModalOpen}
           handleCancelFaqDeleteModal={handleCancelFaqDeleteModal}
           currentRecord={currentRecord}

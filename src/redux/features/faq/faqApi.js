@@ -27,9 +27,10 @@ const faqApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.faq],
     }),
     deleteFaq: builder.mutation({
-      query: ({ id }) => ({
+      query: ({ id, index }) => ({
         url: `/faq/${id}`,
         method: "DELETE",
+        body: { index },
       }),
       invalidatesTags: [tagTypes.faq],
     }),

@@ -1,10 +1,12 @@
 import { Button, Modal } from "antd";
 import { AllImages } from "../../../../../public/images/AllImages";
+import { formetDateAndTime } from "../../../../utils/dateFormet";
 
 const AddAdminViewModal = ({
   isUserViewModalVisible,
   handleCancel,
   currentRecord,
+  showDeleteModal,
 }) => {
   return (
     <Modal
@@ -23,7 +25,7 @@ const AddAdminViewModal = ({
           <div className="flex justify-center items-center gap-2 mt-5">
             {/* Avatar */}
             <img
-              src={AllImages.user}
+              src={currentRecord?.profileImage || AllImages.dummyProfile}
               alt={currentRecord?.name}
               className="w-14 h-14 object-cover rounded-full"
             />
@@ -47,13 +49,13 @@ const AddAdminViewModal = ({
               <div className="flex items-center  gap-2 mb-5">
                 <span className="font-medium">Joining Date :</span>
                 <span className="text-justify pt-0 ">
-                  {currentRecord?.Joined}
+                  {formetDateAndTime(currentRecord?.createdAt)}
                 </span>
               </div>
 
               <div className="flex justify-center items-center  gap-2">
                 <Button
-                  onClick={handleCancel}
+                  onClick={() => showDeleteModal(currentRecord)}
                   className="w-fit py-4  px-8 border !border-error-color hover:border-error-color text-xl !text-primary-color bg-error-color hover:!bg-error-color font-semibold rounded-lg"
                 >
                   Remove Admin

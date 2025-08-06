@@ -7,6 +7,7 @@ import updatePass from "./authImages/updatePass.png";
 
 // Main Images
 
+import dummyProfile from "./dummyProfile.png";
 import profile from "./profileImage.png";
 import userImage from "./userImage.png";
 import coverPhoto from "./coverPhoto.png";
@@ -25,6 +26,7 @@ import job from "./icons/job.png";
 
 export const AllImages = {
   logo,
+  dummyProfile,
   profile,
   userImage,
   coverPhoto,

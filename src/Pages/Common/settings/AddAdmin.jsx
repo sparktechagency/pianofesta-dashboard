@@ -4,32 +4,20 @@ import AddAdminViewModal from "../../../Components/UI/Modal/AddAdmin/AddAdminVie
 import { Button } from "antd";
 import { MdAdd } from "react-icons/md";
 import AddAdminModal from "../../../Components/UI/Modal/AddAdmin/AddAdminModal";
-
-const userData = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "i2P7o@example.com",
-    role: "Admin",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    email: "i2P7o@example.com",
-    role: "Admin",
-  },
-];
+import { useGetAdminQuery } from "../../../redux/features/adminManagement/adminManagementApi";
+import AdminRemoveModal from "../../../Components/UI/Modal/AddAdmin/AdminRemoveModal";
 
 const AddAdmin = () => {
-  const data = userData;
+  const { data, isFetching } = useGetAdminQuery();
+  const adminData = data?.data;
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
-  const [searchText, setSearchText] = useState("");
 
   const limit = 12;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
   const showViewUserModal = (record) => {
@@ -37,7 +25,13 @@ const AddAdmin = () => {
     setIsViewModalVisible(true);
   };
 
+  const showDeleteModal = (record) => {
+    setCurrentRecord(record);
+    setIsDeleteModalOpen(true);
+  };
+
   const handleCancel = () => {
+    setIsDeleteModalOpen(false);
     setIsViewModalVisible(false);
     setCurrentRecord(null);
   };
@@ -62,12 +56,12 @@ const AddAdmin = () => {
           </div>
         </div>
         <AddAdminTable
-          data={data}
-          loading={false}
+          data={adminData}
+          loading={isFetching}
           showViewModal={showViewUserModal}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={adminData?.length}
           limit={limit}
         />
         <AddAdminModal
@@ -76,6 +70,12 @@ const AddAdmin = () => {
         />
         <AddAdminViewModal
           isUserViewModalVisible={isViewModalVisible}
+          handleCancel={handleCancel}
+          currentRecord={currentRecord}
+          showDeleteModal={showDeleteModal}
+        />
+        <AdminRemoveModal
+          isDeleteModalOpen={isDeleteModalOpen}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
