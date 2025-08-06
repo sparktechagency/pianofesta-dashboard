@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Modal } from "antd";
 import { AllImages } from "../../../../../public/images/AllImages";
+import { formetDateAndTime } from "../../../../utils/dateFormet";
 
 const UserModal = ({ isUserViewModalVisible, handleCancel, currentRecord }) => {
   return (
@@ -22,7 +23,7 @@ const UserModal = ({ isUserViewModalVisible, handleCancel, currentRecord }) => {
           <div className="flex justify-center items-center gap-2 mt-5">
             {/* Avatar */}
             <img
-              src={AllImages.user}
+              src={currentRecord?.profileImage || AllImages.dummyProfile}
               alt={currentRecord?.name}
               className="w-14 h-14 object-cover rounded-full"
             />
@@ -51,7 +52,7 @@ const UserModal = ({ isUserViewModalVisible, handleCancel, currentRecord }) => {
               <div className="flex items-center  gap-2 mb-2">
                 <span className="font-medium">Joining Date :</span>
                 <span className="text-justify pt-0 ">
-                  {currentRecord?.Joined}
+                  {formetDateAndTime(currentRecord?.createdAt)}
                 </span>
               </div>
             </div>

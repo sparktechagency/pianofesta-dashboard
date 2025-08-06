@@ -21,7 +21,20 @@ const listingApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.listing],
     }),
+    jobListing: builder.query({
+      query: () => {
+        return {
+          url: "/job/list",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.listing],
+    }),
   }),
 });
 
-export const { useEventListingQuery, useBusinessListingQuery } = listingApi;
+export const {
+  useEventListingQuery,
+  useBusinessListingQuery,
+  useJobListingQuery,
+} = listingApi;

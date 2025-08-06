@@ -29,48 +29,51 @@ const Bar_Chart = ({ chartData }) => {
     return null;
   };
 
+  const maxRevenue = Math.max(...chartData.map((d) => d.totalRevenue));
+  const interval = 100;
+  const referenceLines = [];
+
+  for (let i = interval; i <= maxRevenue + interval; i += interval) {
+    referenceLines.push(i);
+  }
+
   // Custom tick style
-  const tickStyle = { fill: "#222222" };
 
   return (
     <div className="w-full h-80">
       <ResponsiveContainer>
         <BarChart
           data={chartData}
-          margin={{
-            top: 10,
-            right: 20,
-            left: 0,
-            bottom: 0,
-          }}
-          barCategoryGap={30} // Adjust the gap between bars if necessary
+          margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+          barCategoryGap={30}
         >
           <RechartsTooltip content={<CustomTooltip />} />
-          <XAxis dataKey="monthName" tick={{ ...tickStyle }} tickMargin={6} />
+          <XAxis
+            dataKey="monthName"
+            tick={{ fill: "#222222" }}
+            tickMargin={6}
+          />
           <YAxis
-            // tickFormatter={yAxisTickFormatter}
-            tick={{ ...tickStyle }}
+            tick={{ fill: "#222222" }}
             axisLine={{
-              stroke: "#0861C500", // Y-axis line color
+              stroke: "#0861C500",
               strokeWidth: 2,
               strokeDasharray: "7 7",
             }}
             tickMargin={16}
           />
-          {/* Add several horizontal black lines using ReferenceLine */}
-          <ReferenceLine y={10} stroke="#E5E5EF" />
-          <ReferenceLine y={20} stroke="#E5E5EF" />
-          <ReferenceLine y={30} stroke="#E5E5EF" />
-          <ReferenceLine y={40} stroke="#E5E5EF" />
-          <ReferenceLine y={50} stroke="#E5E5EF" />
-          <ReferenceLine y={60} stroke="#E5E5EF" />
+
+          {/* Dynamic Reference Lines */}
+          {referenceLines.map((value) => (
+            <ReferenceLine key={value} y={value} stroke="#E5E5EF" />
+          ))}
+
           <Bar
             dataKey="totalRevenue"
-            fill="url(#incomeGradient)" // Bar color
-            barSize={20} // Width of each bar
+            fill="url(#incomeGradient)"
+            barSize={20}
             radius={[10, 10, 10, 10]}
           />
-
           <defs>
             <linearGradient id="incomeGradient" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#6A0DAD" />

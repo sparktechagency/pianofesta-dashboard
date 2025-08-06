@@ -1,6 +1,5 @@
 import MyTable from "../../../../utils/MyTable";
 import { useEffect, useState } from "react";
-import { AllImages } from "../../../../../public/images/AllImages";
 import { Button } from "antd";
 const AdminJobListingTable = ({
   data,
@@ -19,121 +18,154 @@ const AdminJobListingTable = ({
 
   // Use useEffect to update selectedData in the parent component when selectedRowKeys changes
   useEffect(() => {
-    setSelectedData(data.filter((user) => selectedRowKeys.includes(user.uid)));
-  }, [selectedRowKeys, data, setSelectedData]); // Make sure this is using the props
+    setSelectedData(data.filter((job) => selectedRowKeys.includes(job._id)));
+  }, [selectedRowKeys, data, setSelectedData]);
 
   const columns = [
     {
       title: "#UID",
-      dataIndex: "uid",
-      key: "uid",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, __, index) => page * limit - limit + index + 1,
+      fixed: "left",
     },
     {
       title: "Job Title",
-      dataIndex: "jobTitle", // Data key for jobTitle
-      key: "jobTitle",
+      dataIndex: "title",
+      key: "title",
+      fixed: "left",
     },
     {
       title: "Logo",
-      dataIndex: "logo", // Data key for eventName
+      dataIndex: "logo",
       key: "logo",
-      render: () => (
-        <img src={AllImages.company} className="w-auto h-14" alt="Logo" />
+      render: (logo) => (
+        <img
+          src={logo || "/default-logo.png"}
+          alt="Logo"
+          className="w-auto h-14 object-contain"
+        />
       ),
     },
     {
       title: "Cover",
-      dataIndex: "cover", // Data key for eventName
-      key: "cover",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
+      dataIndex: "coverImage",
+      key: "coverImage",
+      render: (coverImage) => (
+        <img
+          src={coverImage || "/default-cover.png"}
+          alt="Cover"
+          className="w-auto h-14 object-cover"
+        />
       ),
     },
     {
       title: "Gallery",
-      dataIndex: "gallery", // Data key for eventName
+      dataIndex: "gallery",
       key: "gallery",
-      render: () => (
-        <img src={AllImages.coverPhoto} className="w-auto h-14" alt="Logo" />
+      render: (gallery) => (
+        <div className="flex gap-1">
+          {Array.isArray(gallery) && gallery.length > 0 ? (
+            gallery
+              .slice(0, 3)
+              .map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  alt={`Gallery ${i + 1}`}
+                  className="w-10 h-10 object-cover rounded"
+                />
+              ))
+          ) : (
+            <span>No images</span>
+          )}
+        </div>
       ),
     },
     {
       title: "Email",
-      dataIndex: "email", // Data key for email
+      dataIndex: "email",
       key: "email",
-      render: () => <p>abc@gmail.com</p>,
     },
     {
       title: "Phone",
-      dataIndex: "phone", // Data key for phone
-      key: "phone",
-      render: () => <p>1234567890</p>,
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Created Date",
-      dataIndex: "CreatedDate", // Data key for CreatedDate
-      key: "CreatedDate",
-      render: () => <p>2023-06-01</p>,
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => new Date(date).toLocaleDateString(),
     },
     {
       title: "Address",
-      dataIndex: "address", // Data key for addre
+      dataIndex: "address",
       key: "address",
-      render: () => <p>123 Main St, City</p>,
     },
     {
-      title: " Role",
-      dataIndex: "Role", // Data key for Role
-      key: "Role",
-      render: () => <p>CEO</p>,
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Contract Type",
-      dataIndex: "contractType", // Data key for contractType
+      dataIndex: "contractType",
       key: "contractType",
+      render: (type) => {
+        switch (type) {
+          case "fullTime":
+            return "Full Time";
+          case "partTime":
+            return "Part Time";
+          case "freelance":
+            return "Freelance";
+          default:
+            return type || "N/A";
+        }
+      },
     },
     {
       title: "Salary",
-      dataIndex: "salary", // Data key for salary
-      key: "salary",
+      dataIndex: "salery",
+      key: "salery",
+      render: (salary) => (salary ? `$${salary.toLocaleString()}` : "N/A"),
     },
     {
       title: "Experience",
-      dataIndex: "experience", // Data key for experience
+      dataIndex: "experience",
       key: "experience",
     },
-
     {
       title: "Work Hrs",
-      dataIndex: "workHrs", // Data key for workHrs
-      key: "workHrs",
+      dataIndex: "workHour",
+      key: "workHour",
     },
     {
       title: "FAQ",
-      dataIndex: "FAQ", // Data key for FAQ
-      key: "FAQ",
-      render: () => <span>5</span>,
+      dataIndex: "faq",
+      key: "faq",
+      render: (faq) => (Array.isArray(faq) ? faq.length : 0),
     },
     {
       title: "Ratings",
-      dataIndex: "ratings", // Data key for ratings
-      key: "ratings",
-      render: () => <span>4</span>,
+      dataIndex: "averageRating",
+      key: "averageRating",
+      render: (rating) => rating?.toFixed(1) || "0.0",
     },
     {
       title: "Comments",
-      dataIndex: "comments", // Data key for Comments
-      key: "comments",
-      render: () => <span>5</span>,
+      dataIndex: "totalComments",
+      key: "totalComments",
     },
     {
       title: "Posted By",
-      dataIndex: "organizer", // Data key for organizer
-      key: "organizer",
+      dataIndex: "author",
+      key: "author",
+      render: (author) => author?.name || "Unknown",
     },
     {
       title: "Resume",
-      dataIndex: "resume", // Data key for resume
       key: "resume",
       render: () => (
         <Button className="!bg-secondary-color !border-secondary-color !text-white">
@@ -155,7 +187,7 @@ const AdminJobListingTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"email"}
+      keyValue={"_id"}
     />
   );
 };

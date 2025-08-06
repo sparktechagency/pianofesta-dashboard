@@ -1,4 +1,4 @@
-import { Space, Tooltip } from "antd";
+import { Avatar, Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
 import { GoEye } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
@@ -16,56 +16,76 @@ const ReportTable = ({
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
+      dataIndex: "_id",
+      render: (_, __, index) => page * limit - limit + index + 1,
       key: "_id",
     },
     {
-      title: "Post Title",
-      dataIndex: "postTitle", // Data key for postTitle
+      title: "Title",
+      dataIndex: ["postId", "title"],
       key: "postTitle",
+      render: (_, record) =>
+        record?.postId
+          ? record?.postId?.title
+          : record?.inspirationId?.title || "N/A",
     },
     {
-      title: "Post Category",
-      dataIndex: "postCategory", // Data key for postCategory
+      title: "Category",
+      dataIndex: "type",
       key: "postCategory",
+      render: (type) =>
+        type === "PostCommunity"
+          ? "Community Post"
+          : type === "PostBusiness"
+          ? "Business Post"
+          : type || "N/A",
     },
     {
       title: "Reported By",
-      dataIndex: "reportedBy", // Data key for reportedBy
+      dataIndex: ["userId", "name"],
       key: "reportedBy",
+      render: (_, record) => {
+        const user = record?.userId;
+        return (
+          <div className="flex items-center gap-2">
+            <Avatar src={user?.profileImage} />
+            <span>{user?.name || "Unknown"}</span>
+          </div>
+        );
+      },
     },
     {
-      title: "Comments",
-      dataIndex: "comments", // Data key for rating
-      key: "comments",
-      render: () => <p>Lorem ipsum dolor sit amet consectetur.</p>,
+      title: "Reason",
+      dataIndex: "reason",
+      key: "reason",
+      render: (reason) => (
+        <p className="max-w-xs text-gray-700 truncate overflow-hidden whitespace-nowrap">
+          {reason}
+        </p>
+      ),
     },
-
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <>
-          <Space size="middle">
-            {/* View Details Tooltip */}
-            <Tooltip placement="right" title="View Details">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-secondary-color"
-                onClick={() => showViewModal(record)}
-              >
-                <GoEye style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-            <Tooltip placement="left" title="Block this User">
-              <button
-                className="!p-0 !bg-transparent !border-none !text-error-color"
-                onClick={() => showDeleteModal(record)}
-              >
-                <MdDelete style={{ fontSize: "24px" }} />
-              </button>
-            </Tooltip>
-          </Space>
-        </>
+        <Space size="middle">
+          <Tooltip placement="right" title="View Details">
+            <button
+              className="!p-0 !bg-transparent !border-none !text-secondary-color"
+              onClick={() => showViewModal(record)}
+            >
+              <GoEye style={{ fontSize: "24px" }} />
+            </button>
+          </Tooltip>
+          <Tooltip placement="left" title="Delete Report">
+            <button
+              className="!p-0 !bg-transparent !border-none !text-error-color"
+              onClick={() => showDeleteModal(record)}
+            >
+              <MdDelete style={{ fontSize: "24px" }} />
+            </button>
+          </Tooltip>
+        </Space>
       ),
       align: "center",
     },

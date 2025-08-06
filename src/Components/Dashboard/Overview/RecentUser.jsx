@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import UserModal from "../../UI/Modal/User/UserModal";
 import AllUserTable from "../../UI/Tables/UserTable";
-import userData from "../../../../public/data/Users";
 import UserBlockModal from "../../UI/Modal/User/UserBlockModal";
 import UserUnblockModal from "../../UI/Modal/User/UserUnblockModal";
+import { useRegularUserQuery } from "../../../redux/features/userManagement/userManagementApi";
 const RecentUser = () => {
-  const recentUserData = userData.slice(0, 6);
+  const { data, isFetching } = useRegularUserQuery();
+  const regularUsers = useMemo(() => data?.data?.slice(0, 5) || [], [data]);
 
   const [isRecentUserViewModalVisible, setIsRecentUserViewModalVisible] =
     useState(false);
@@ -45,11 +46,14 @@ const RecentUser = () => {
       </div>
 
       <AllUserTable
-        data={recentUserData}
-        loading={false}
+        data={regularUsers}
+        loading={isFetching}
         showViewModal={showViewUserModal}
         showBlockModal={showBlockModal}
         showUnblockModal={showUnblockModal}
+        page={1}
+        limit={5}
+        total={regularUsers?.length}
       />
       <UserModal
         isUserViewModalVisible={isRecentUserViewModalVisible}

@@ -11,7 +11,7 @@ import {
 
 const Area_Chart = ({ chartData }) => {
   // Formatter function to add 'K' suffix to Y-axis values
-  const yAxisTickFormatter = (value) => `${value}`;
+  const yAxisTickFormatter = (value) => Math.floor(value);
 
   // Custom tick style
   const tickStyle = { fill: "#222222" };
@@ -36,11 +36,12 @@ const Area_Chart = ({ chartData }) => {
             tickFormatter={(month) => month.substring(0, 3)} // Show first 3 letters
           />
           <YAxis
-            tickFormatter={yAxisTickFormatter}
+            domain={[1, "dataMax"]} // Start from 1, go up to max value in your data
+            allowDecimals={false} // Only whole numbers
             tick={{ ...tickStyle }}
             tickMargin={16}
             axisLine={{
-              stroke: "#02294000", // Y-axis line color
+              stroke: "#02294000",
               strokeWidth: 2,
               strokeDasharray: "7 7",
             }}

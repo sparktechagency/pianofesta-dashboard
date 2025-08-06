@@ -4,6 +4,7 @@ export const tagTypes = {
   userManagement: "UserManagement",
   earning: "Earning",
   listing: "Listing",
+  report: "Report",
   profile: "Profile",
   dataManagementUser: "DataManagementUser",
   dataManagementBusiness: "DataManagementBusiness",

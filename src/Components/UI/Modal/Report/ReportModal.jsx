@@ -16,7 +16,12 @@ const ReportModal = ({ isViewModalVisible, handleCancel, currentRecord }) => {
           <div className="flex justify-center items-center mt-5">
             {/* Avatar */}
             <img
-              src={AllImages.coverPhoto}
+              src={
+                currentRecord?.postId
+                  ? currentRecord?.postId?.image
+                  : currentRecord?.inspirationId?.coverImage ||
+                    AllImages.coverPhoto
+              }
               alt={currentRecord?.Name}
               className="w-full h-auto "
             />
@@ -29,15 +34,11 @@ const ReportModal = ({ isViewModalVisible, handleCancel, currentRecord }) => {
             <div className="text-lg start">
               <div className="flex  flex-col gap-2 mb-2">
                 <div className="text-xl font-semibold">
-                  Wedding Budget Calculator: here&apos;s how to calculate
+                  {currentRecord?.postId
+                    ? currentRecord?.postId?.title
+                    : currentRecord?.inspirationId?.title || "N/A"}
                 </div>
-                <div className="">
-                  Planning a wedding is an exciting journey, but it can also be
-                  stressful—especially when it comes to managing your budget.
-                  Whether you’re organizing a grand celebration or an intimate
-                  gathering, having a clear wedding budget calculator can help
-                  you allocate your funds wisely and avoid unnecessary expenses.
-                </div>
+                <div className="">{currentRecord?.reason}</div>
               </div>
             </div>
 

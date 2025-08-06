@@ -1,27 +1,23 @@
 import { Button, Modal } from "antd";
+import { useDeleteReportMutation } from "../../../../redux/features/report/reportApi";
+import tryCatchWrapper from "../../../../utils/TryCatchWraper";
 
 const ReportDeleteModal = ({
   isDeleteModalVisible,
   handleCancel,
   currentRecord,
 }) => {
+  const [deleteReport] = useDeleteReportMutation();
   const handleDelete = async (data) => {
-    console.log(data);
-    // const toastId = toast.loading("Blocking User...");
-    // try {
-    //   const res = await blockUser({ id: data?._id }).unwrap();
-    //   toast.success(res.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error(error?.data?.message, {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    // }
-    // handleCancel();
+    const res = await tryCatchWrapper(
+      deleteReport,
+      { params: data?._id },
+      "Removing Report..."
+    );
+
+    if (res?.statusCode === 200) {
+      handleCancel();
+    }
   };
   return (
     <Modal

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import reportData from "../../../public/data/reportData";
 import ReportTable from "../../Components/UI/Tables/ReportData";
 import ReportModal from "../../Components/UI/Modal/Report/ReportModal";
 import ReportDeleteModal from "../../Components/UI/Modal/Report/ReportDeleteModal";
+import { useGetReportQuery } from "../../redux/features/report/reportApi";
 
 const AdminReport = () => {
-  const data = reportData;
   const [page, setPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
-  const [searchText, setSearchText] = useState("");
 
   const limit = 12;
+  const { data, isFetching } = useGetReportQuery({ page, limit });
+  const reportData = data?.data?.data;
+  const totalReport = data?.data?.meta?.total;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -44,13 +44,13 @@ const AdminReport = () => {
           </div>
         </div>
         <ReportTable
-          data={data}
-          loading={false}
+          data={reportData}
+          loading={isFetching}
           showViewModal={showViewUserModal}
           showDeleteModal={showDeleteModal}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={totalReport}
           limit={limit}
         />
         <ReportModal

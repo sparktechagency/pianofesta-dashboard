@@ -40,7 +40,7 @@ const dashboardApi = baseApi.injectEndpoints({
     getNotification: builder.query({
       query: ({ page, limit }) => {
         return {
-          url: "notifications/my-notifications",
+          url: "/notification/my-notifications",
           method: "GET",
           params: {
             page,
