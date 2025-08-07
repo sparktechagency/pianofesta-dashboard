@@ -9,13 +9,33 @@ import {
   DatePicker,
   InputNumber,
 } from "antd";
+import { useEffect } from "react";
 import tryCatchWrapper from "../../../../utils/TryCatchWraper";
-import { useCreatePromotionsMutation } from "../../../../redux/features/promotions/promotionsApi";
+import { useUpdatePromotionsMutation } from "../../../../redux/features/promotions/promotionsApi";
+import dayjs from "dayjs";
 
-const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
+const EditPromotionModal = ({
+  isEditModalOpen,
+  handleCancel,
+  currentRecord,
+}) => {
   const { Option } = Select;
   const [form] = Form.useForm();
-  const [createPromotions] = useCreatePromotionsMutation();
+  const [updatePromotion] = useUpdatePromotionsMutation();
+
+  // Populate form with currentRecord values
+  useEffect(() => {
+    if (currentRecord) {
+      form.setFieldsValue({
+        name: currentRecord.name,
+        discountPrice: currentRecord.discountPrice,
+        startDate: dayjs(currentRecord.startDate),
+        endDate: dayjs(currentRecord.endDate),
+        appliesTo: currentRecord.appliesTo,
+        usageLimit: currentRecord.usageLimit,
+      });
+    }
+  }, [currentRecord, form]);
 
   // Handle form submission
   const handleSave = async (values) => {
@@ -25,16 +45,14 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
       endDate: values.endDate?.format("YYYY-MM-DD"),
     };
 
-    console.log(formattedValues);
-
     const res = await tryCatchWrapper(
-      createPromotions,
-      { body: formattedValues },
-      "Adding Promotion..."
+      updatePromotion,
+      { params: currentRecord._id, body: formattedValues },
+      "Updating Promotion..."
     );
 
-    if (res?.statusCode === 201) {
-      setIsAddModalOpen(false);
+    if (res?.statusCode === 200) {
+      handleCancel();
       form.resetFields();
     }
   };
@@ -51,8 +69,8 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
       }}
     >
       <Modal
-        open={isAddModalOpen}
-        onCancel={() => setIsAddModalOpen(false)}
+        open={isEditModalOpen}
+        onCancel={handleCancel}
         footer={null}
         width={600}
       >
@@ -60,9 +78,6 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
           className="mt-7"
           form={form}
           layout="vertical"
-          initialValues={{
-            appliesTo: "all",
-          }}
           onFinish={handleSave}
         >
           <Typography.Title level={5}>Coupon Code</Typography.Title>
@@ -95,7 +110,6 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
             ]}
           >
             <InputNumber
-              type="number"
               placeholder="e.g., 10"
               min={1}
               max={100}
@@ -152,11 +166,10 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               { required: true, message: "Please input the usage limit!" },
             ]}
           >
-            <Input
-              type="number"
-              placeholder="e.g., 100"
+            <InputNumber
               min={1}
-              className="w-full font-medium h-12 text-base border border-secondary-color rounded-md"
+              className="w-full font-medium h-12 text-base border border-secondary-color rounded-md !text-center"
+              placeholder="e.g., 100"
             />
           </Form.Item>
 
@@ -165,7 +178,7 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
               htmlType="submit"
               className="w-full h-12 !bg-secondary-color border !border-secondary-color !text-white text-base font-bold"
             >
-              Create Coupon
+              Update Coupon
             </Button>
           </Form.Item>
         </Form>
@@ -174,4 +187,4 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
   );
 };
 
-export default AddPromotionModal;
+export default EditPromotionModal;

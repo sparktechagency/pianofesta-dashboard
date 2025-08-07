@@ -38,17 +38,7 @@ const SendNotificationModal = ({
               className="font-medium h-12  !text-base-color  placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
             />
           </Form.Item>
-          <Typography.Title level={5}>Email</Typography.Title>
-          <Form.Item
-            name="business"
-            rules={[{ required: true, message: "Please add email!" }]}
-            style={{ fontWeight: "500" }}
-          >
-            <Input
-              placeholder="Enter email"
-              className="font-medium h-12  !text-base-color  placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
-            />
-          </Form.Item>
+
           <Typography.Title level={5}>Message</Typography.Title>
           <Form.Item
             name="message"

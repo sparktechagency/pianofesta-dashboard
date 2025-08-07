@@ -11,7 +11,7 @@ const DeleteInspirationModal = ({
   const [deleteInspiration] = useDeleteInspirationMutation();
   const handleDelete = async (data) => {
     console.log(data);
-    const toastId = toast.loading("Blocking User...");
+    const toastId = toast.loading("Deleting Inspiration...");
     try {
       const res = await deleteInspiration({ id: data?._id }).unwrap();
       toast.success(res.message, {

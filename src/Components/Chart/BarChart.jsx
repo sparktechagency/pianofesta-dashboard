@@ -8,7 +8,7 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 
-const Bar_Chart = ({ chartData }) => {
+const Bar_Chart = ({ chartData = [] }) => {
   // Formatter function to add 'K' suffix to Y-axis values
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {

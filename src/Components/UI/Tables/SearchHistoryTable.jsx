@@ -1,5 +1,6 @@
 import { Space, Tooltip } from "antd";
 import MyTable from "../../../utils/MyTable";
+import { formetDateAndTime } from "../../../utils/dateFormet";
 const SearchHistoryTable = ({
   data,
   loading,
@@ -13,52 +14,46 @@ const SearchHistoryTable = ({
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
+      dataIndex: "_id",
       key: "_id",
+      render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
       title: "Search Query",
-      dataIndex: "searchQuery", // Data key for searchQuery
-      key: "searchQuery",
+      dataIndex: "keyword",
+      key: "keyword",
     },
     {
       title: "User",
-      dataIndex: "user", // Data key for user
-      key: "user",
+      dataIndex: "userId",
+      key: "userId",
+      render: (user) => user?.name || "N/A",
     },
     {
-      title: "Location",
-      dataIndex: "location", // Data key for location
-      key: "location",
+      title: "Date",
+      dataIndex: "searchDate",
+      key: "searchDate",
+      render: (date) => formetDateAndTime(date),
     },
     {
-      title: "Area",
-      dataIndex: "city", // Data key for location
-      key: "city",
-      render: () => <p>Garbatella</p>,
-    },
-    {
-      title: " Results Count",
-      dataIndex: "resultsCount", // Data key for resultsCount
-      key: "resultsCount",
+      title: "Results Count",
+      dataIndex: "totalResults",
+      key: "totalResults",
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <>
-          <Space size="middle">
-            {/* View Details Tooltip */}
-            <Tooltip placement="right" title="View Details">
-              <button
-                className="text-sm !py-2 !px-3 !bg-secondary-color !border-none !text-primary-color rounded-2xl"
-                onClick={() => showViewModal(record)}
-              >
-                Send Notification
-              </button>
-            </Tooltip>
-          </Space>
-        </>
+        <Space size="middle">
+          <Tooltip placement="right" title="Send Notification">
+            <button
+              className="text-sm !py-2 !px-3 !bg-secondary-color !border-none !text-primary-color rounded-2xl"
+              onClick={() => showViewModal(record)}
+            >
+              Send Notification
+            </button>
+          </Tooltip>
+        </Space>
       ),
       align: "center",
     },

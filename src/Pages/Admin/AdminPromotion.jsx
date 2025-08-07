@@ -1,13 +1,20 @@
 import { useState } from "react";
-import promotionData from "../../../public/data/promotionData";
 import { Button, Modal } from "antd";
 import PromotionDeleteModal from "../../Components/UI/Modal/Promotion/PromotionModal";
 import PromotionTable from "../../Components/UI/Tables/PromotionTable";
 import { MdAdd } from "react-icons/md";
 import AddPromotionModal from "../../Components/UI/Modal/Promotion/AddPromotionModal";
+import {
+  useGetPromotionsQuery,
+  useTogglePromotionsActiveMutation,
+} from "../../redux/features/promotions/promotionsApi";
+import { toast } from "sonner";
+import EditPromotionModal from "../../Components/UI/Modal/Promotion/EditPromotionModal";
 
 const AdminPromotion = () => {
-  const data = promotionData;
+  const { data, isFetching } = useGetPromotionsQuery();
+  const [togglePromotionsActive] = useTogglePromotionsActiveMutation();
+  const promotionsData = data?.data;
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
@@ -15,8 +22,14 @@ const AdminPromotion = () => {
 
   const limit = 12;
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
+
+  const showEditModal = (record) => {
+    setCurrentRecord(record);
+    setIsEditModalOpen(true);
+  };
 
   const showDeleteModal = (record) => {
     setCurrentRecord(record);
@@ -24,6 +37,7 @@ const AdminPromotion = () => {
   };
 
   const handleCancel = () => {
+    setIsEditModalOpen(false);
     setIsDeleteModalVisible(false);
     setCurrentRecord(null);
   };
@@ -41,18 +55,21 @@ const AdminPromotion = () => {
         },
       },
       onOk: async () => {
-        console.log(record);
-        // const toastId = toast.loading("Unblocking user...");
-        // try {
-        //   const res = await unBlockUser({ id: currentRecord?._id }).unwrap();
-        //   toast.success(res?.message, { id: toastId, duration: 2000 });
-        //   handleCancel();
-        // } catch (error) {
-        //   toast.error(
-        //     error?.data?.message || error?.message || "Failed to ban user",
-        //     { id: toastId, duration: 2000 }
-        //   );
-        // }
+        const toastId = toast.loading("Enabling promotion...");
+        try {
+          const res = await togglePromotionsActive({
+            id: record?._id,
+          }).unwrap();
+          toast.success(res?.message, { id: toastId, duration: 2000 });
+          handleCancel();
+        } catch (error) {
+          toast.error(
+            error?.data?.message ||
+              error?.message ||
+              "Failed to enable promotion",
+            { id: toastId, duration: 2000 }
+          );
+        }
       },
     });
   };
@@ -69,18 +86,21 @@ const AdminPromotion = () => {
         },
       },
       onOk: async () => {
-        console.log(record);
-        // const toastId = toast.loading("Unblocking user...");
-        // try {
-        //   const res = await unBlockUser({ id: currentRecord?._id }).unwrap();
-        //   toast.success(res?.message, { id: toastId, duration: 2000 });
-        //   handleCancel();
-        // } catch (error) {
-        //   toast.error(
-        //     error?.data?.message || error?.message || "Failed to ban user",
-        //     { id: toastId, duration: 2000 }
-        //   );
-        // }
+        const toastId = toast.loading("Disabling promotion...");
+        try {
+          const res = await togglePromotionsActive({
+            id: record?._id,
+          }).unwrap();
+          toast.success(res?.message, { id: toastId, duration: 2000 });
+          handleCancel();
+        } catch (error) {
+          toast.error(
+            error?.data?.message ||
+              error?.message ||
+              "Failed to disable promotion",
+            { id: toastId, duration: 2000 }
+          );
+        }
       },
     });
   };
@@ -105,18 +125,24 @@ const AdminPromotion = () => {
           </div>
         </div>
         <PromotionTable
-          data={data}
-          loading={false}
+          data={promotionsData}
+          loading={isFetching}
           showDeleteModal={showDeleteModal}
+          showEditModal={showEditModal}
           handleEnable={handleEnable}
           handleDisable={handleDisable}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={promotionsData?.length}
           limit={limit}
         />
         <PromotionDeleteModal
           isDeleteModalVisible={isDeleteModalVisible}
+          handleCancel={handleCancel}
+          currentRecord={currentRecord}
+        />
+        <EditPromotionModal
+          isEditModalOpen={isEditModalOpen}
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />

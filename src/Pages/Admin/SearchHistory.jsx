@@ -1,15 +1,22 @@
 import { useState } from "react";
-import searchData from "../../../public/data/searchData";
 import SearchHistoryTable from "../../Components/UI/Tables/SearchHistoryTable";
 import SendNotificationModal from "../../Components/UI/Modal/SearchHistory/SendNotificationModal";
+import { useGetSearchHistoryQuery } from "../../redux/features/searchHistory/searchHistory";
 
 const SearchHistory = () => {
-  const data = searchData;
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState("");
 
   const limit = 12;
+  const { data, isFetching } = useGetSearchHistoryQuery({
+    page,
+    limit,
+    searchTerm: searchText,
+  });
+
+  const searchHistoryData = data?.data;
+  const totalSearchHistory = data?.meta?.total;
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
@@ -37,12 +44,12 @@ const SearchHistory = () => {
           </div>
         </div>
         <SearchHistoryTable
-          data={data}
-          loading={false}
+          data={searchHistoryData}
+          loading={isFetching}
           showViewModal={showViewUserModal}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={totalSearchHistory}
           limit={limit}
         />
         <SendNotificationModal
