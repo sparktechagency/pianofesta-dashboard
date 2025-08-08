@@ -1,11 +1,68 @@
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Typography, Select, Input } from "antd";
+import {
+  useGetAllUserNameQuery,
+  useSendDirectNotificationMutation,
+} from "../../../redux/features/sendNotification/sendNotificationApi";
+import { useState, useEffect } from "react";
+import tryCatchWrapper from "../../../utils/TryCatchWraper";
+import { useGetProfileQuery } from "../../../redux/features/profile/profileApi";
+import Loading from "../../UI/Loading";
+
+// Simple debounce hook
+function useDebounce(value, delay = 500) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
 
 const DirectNotification = () => {
+  const [sendDirectNotification] = useSendDirectNotificationMutation();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Debounce search term
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const { data: admin, isFetching: adminFetching } = useGetProfileQuery();
+
+  // Call API only with debounced search term
+  const { data, isFetching } = useGetAllUserNameQuery({
+    page: 1,
+    limit: 20,
+    searchTerm: debouncedSearchTerm,
+  });
+
+  const userNames = data?.data?.result || [];
+
   const [form] = Form.useForm();
 
   const handleSave = async (values) => {
-    console.log(values);
+    const payload = {
+      message: {
+        image: admin?.data?.profileImage, // static or from state
+        text: values.message,
+        name: admin?.data?.name, // you can change this dynamically if needed
+      },
+      receiverId: values.userId,
+    };
+
+    const res = await tryCatchWrapper(
+      sendDirectNotification,
+      { body: payload },
+      "Sending Notification..."
+    );
+    if (res) {
+      form.resetFields();
+    }
   };
+
+  if (adminFetching || isFetching) {
+    return <Loading />;
+  }
 
   return (
     <div>
@@ -13,19 +70,31 @@ const DirectNotification = () => {
         form={form}
         layout="vertical"
         onFinish={handleSave}
-        className=" mt-7"
+        className="mt-7"
       >
         <Typography.Title level={5}>Name</Typography.Title>
         <Form.Item
-          name="name"
-          rules={[{ required: true, message: "Please input the name!" }]}
+          name="userId"
+          rules={[{ required: true, message: "Please select a user!" }]}
           style={{ fontWeight: "500" }}
         >
-          <Input
-            placeholder="Enter name"
-            className="font-medium h-12  !text-base-color  placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
-          />
+          <Select
+            showSearch
+            placeholder="Select a user"
+            optionFilterProp="children"
+            loading={isFetching}
+            onSearch={(value) => setSearchTerm(value)}
+            filterOption={false} // API handles filtering
+            className="h-12 font-medium"
+          >
+            {userNames.map((user) => (
+              <Select.Option key={user._id} value={user._id}>
+                {user.name || user.sureName || user.email}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
+
         <Typography.Title level={5}>Message</Typography.Title>
         <Form.Item
           name="message"
@@ -35,7 +104,7 @@ const DirectNotification = () => {
           <Input.TextArea
             rows={5}
             placeholder="Enter message"
-            className="font-medium h-12  !text-base-color  placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
+            className="font-medium !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
           />
         </Form.Item>
 
