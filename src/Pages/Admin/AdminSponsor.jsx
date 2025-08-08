@@ -2,14 +2,13 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input } from "antd";
 import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import DeleteCategoryModal from "../../Components/UI/Modal/Category/DeleteCategoryModal";
 import AddSponsorManagementModal from "../../Components/UI/Modal/Sponsor/AddSponsorModal";
 import SponseManagementTable from "../../Components/UI/Tables/SponserManagementTable";
-import sponsorData from "../../../public/data/sponsorManagement";
 import UpdateSponsorManagementModal from "../../Components/UI/Modal/Sponsor/UpdateSponsorModal";
+import { useGetSponsorManagementQuery } from "../../redux/features/sponsorManagement/sponsorManagementApi";
+import DeleteSponsorModal from "../../Components/UI/Modal/Sponsor/DeleteSponsorModal";
 
 const AdminSponsorManagement = () => {
-  const data = sponsorData;
   const [activeTab, setActiveTab] = useState("event");
   const [page, setPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
@@ -17,6 +16,18 @@ const AdminSponsorManagement = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const limit = 12;
+
+  const { data, isFetching } = useGetSponsorManagementQuery(
+    {
+      type: activeTab,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: !activeTab,
+    }
+  );
+
+  const sponsorData = data?.data;
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -143,13 +154,13 @@ const AdminSponsorManagement = () => {
         />
 
         <SponseManagementTable
-          data={data}
-          loading={false}
+          data={sponsorData}
+          loading={isFetching}
           showEditModal={showEditModal}
           showDeleteModal={showDeleteModal}
           setPage={setPage}
           page={page}
-          total={data.length}
+          total={sponsorData?.length}
           limit={limit}
         />
 
@@ -158,7 +169,7 @@ const AdminSponsorManagement = () => {
           handleCancel={handleCancel}
           currentRecord={currentRecord}
         />
-        <DeleteCategoryModal
+        <DeleteSponsorModal
           isDeleteModalVisible={isDeleteModalVisible}
           handleCancel={handleCancel}
           currentRecord={currentRecord}

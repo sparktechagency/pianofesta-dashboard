@@ -55,6 +55,7 @@ const AddPromotionModal = ({ isAddModalOpen, setIsAddModalOpen }) => {
         onCancel={() => setIsAddModalOpen(false)}
         footer={null}
         width={600}
+        form={form}
       >
         <Form
           className="mt-7"

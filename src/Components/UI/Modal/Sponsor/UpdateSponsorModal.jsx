@@ -8,48 +8,82 @@ import {
   Modal,
   Select,
   Typography,
+  Checkbox,
 } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import tryCatchWrapper from "../../../../utils/TryCatchWraper";
+import { useUpdateSponsorManagementMutation } from "../../../../redux/features/sponsorManagement/sponsorManagementApi";
+import { toast } from "sonner";
 
 const UpdateSponsorManagementModal = ({
   isEditModalVisible,
   handleCancel,
-  // eslint-disable-next-line no-unused-vars
   currentRecord,
 }) => {
+  const [updateSponsor] = useUpdateSponsorManagementMutation();
   const { Option } = Select;
   const { Panel } = Collapse;
 
-  // Using a simple string array for feature state
   const [feature, setFeature] = useState([""]);
-  const [options, setOptions] = useState([0]); // Using numbers just to track count/index
-  const [activeKey, setActiveKey] = useState([0]);
+  const [options, setOptions] = useState([0]);
+  const [activeKey, setActiveKey] = useState(["0"]);
   const [form] = Form.useForm();
 
-  // Handle adding a new feature (string)
+  useEffect(() => {
+    if (isEditModalVisible && currentRecord) {
+      const featuresFromRecord = currentRecord.feature?.length
+        ? currentRecord.feature
+        : [""];
+
+      const optionsFromRecord = currentRecord.options?.length
+        ? currentRecord.options
+        : [{}];
+
+      setFeature(featuresFromRecord);
+      setOptions(optionsFromRecord.map((_, i) => i));
+      setActiveKey(["0"]);
+
+      form.setFieldsValue({
+        name: currentRecord.title || "",
+        subTitle: currentRecord.subTitle || "",
+        type: currentRecord.type || "business",
+        features: featuresFromRecord,
+        options: optionsFromRecord.map((opt) => ({
+          price: opt.price || "",
+          expiration: opt.expirationDays || "",
+          time: opt.time ? opt.time.replace(" Month", "") : "",
+        })),
+        priorityLevel: Number(currentRecord.priorityLevel) || 1, // Convert to number
+        blueVerified: currentRecord.blueVerified || false,
+      });
+    }
+  }, [isEditModalVisible, currentRecord, form]);
+
   const handleAdd = () => {
     form
       .validateFields()
       .then(() => {
         const newFeature = [...feature, ""];
         setFeature(newFeature);
-        setActiveKey([String(newFeature.length - 1)]); // Ensure key is string
+        setActiveKey([String(newFeature.length - 1)]);
       })
       .catch((errorInfo) => {
         console.log("Validation failed:", errorInfo);
       });
   };
 
-  // Handle removing a feature
   const handleRemove = (index) => {
     if (feature.length > 1) {
       const newFeature = feature.filter((_, i) => i !== index);
       setFeature(newFeature);
-      setActiveKey([String(Math.max(0, index - 1))]); // Ensure key is string and update activeKey
+      setActiveKey([String(Math.max(0, index - 1))]);
+
       const fields = form.getFieldsValue();
       const newFields = { ...fields };
-      delete newFields.features[index]; // Adjust to match feature form field
+      if (newFields.features) {
+        newFields.features.splice(index, 1);
+      }
       form.setFieldsValue(newFields);
     }
   };
@@ -65,14 +99,44 @@ const UpdateSponsorManagementModal = ({
 
       const fields = form.getFieldsValue();
       const newFields = { ...fields };
-      newFields.options?.splice(index, 1); // remove index from form values
+      if (newFields.options) {
+        newFields.options.splice(index, 1);
+      }
       form.setFieldsValue(newFields);
     }
   };
 
-  // Handle form submission
   const handleSave = async (values) => {
-    console.log(values); // Handle save functionality here
+    if (!values.options || values.options.length === 0) {
+      toast.error("Please add at least one Option before saving.");
+      return;
+    }
+
+    const payload = {
+      title: values.name,
+      subTitle: values.subTitle,
+      type: values.type,
+      feature: values.features,
+      options: (values.options || []).map((opt) => ({
+        price: Number(opt.price),
+        expirationDays: Number(opt.expiration),
+        time: `${opt.time} Month`,
+      })),
+      priorityLevel: Number(values.priorityLevel),
+      blueVerified: values.blueVerified,
+      _id: currentRecord?._id,
+    };
+
+    const res = await tryCatchWrapper(
+      updateSponsor,
+      { params: currentRecord._id, body: payload },
+      "Updating Sponsor..."
+    );
+
+    if (res?.statusCode === 200) {
+      handleCancel();
+      form.resetFields();
+    }
   };
 
   return (
@@ -95,15 +159,18 @@ const UpdateSponsorManagementModal = ({
         },
       }}
     >
-      <Modal open={isEditModalVisible} onCancel={handleCancel} footer={null}>
+      <Modal
+        open={isEditModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        destroyOnClose
+      >
         <Form
           form={form}
           layout="vertical"
-          initialValues={{
-            facilities: ["Boost voucher to popular"],
-          }}
           onFinish={handleSave}
           className="mt-7"
+          // preserve={false}
         >
           <Typography.Title level={5}>Package Title</Typography.Title>
           <Form.Item
@@ -119,20 +186,38 @@ const UpdateSponsorManagementModal = ({
             />
           </Form.Item>
 
+          <Typography.Title level={5}>Sponsor Type</Typography.Title>
+          <Form.Item
+            name="type"
+            rules={[{ required: true, message: "Please select a sponsor!" }]}
+            style={{ fontWeight: "500" }}
+          >
+            <Select
+              placeholder="Sponsor Type"
+              className="font-medium h-12 !text-base-color !placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md"
+            >
+              <Option value="event">Event</Option>
+              <Option value="business">Business</Option>
+              <Option value="job">Job</Option>
+            </Select>
+          </Form.Item>
+
+          <Typography.Title level={5}>Features</Typography.Title>
           <Collapse
             accordion
             activeKey={activeKey}
-            onChange={setActiveKey}
+            onChange={(key) => setActiveKey(Array.isArray(key) ? key : [key])}
             className="bg-primary-color"
           >
             {feature.map((feat, index) => (
               <Panel
                 header={`Feature ${index + 1}`}
-                key={String(index)} // Ensure key is string
+                key={String(index)}
                 className="!text-base-color bg-primary-color flex flex-col gap-1"
                 extra={
                   feature.length > 1 && (
                     <button
+                      type="button"
                       className="text-red-500 hover:text-red-700"
                       onClick={() => handleRemove(index)}
                     >
@@ -141,26 +226,17 @@ const UpdateSponsorManagementModal = ({
                   )
                 }
               >
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-3">
-                    <p className="text-base-color text-lg font-medium">{`Feature`}</p>
-                    <Form.Item
-                      name={["features", index]} // Now using feature values directly
-                      initialValue={feat}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input the feature!",
-                        },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Type your feature"
-                        className="font-medium h-10 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
+                <Form.Item
+                  name={["features", index]}
+                  rules={[
+                    { required: true, message: "Please input the feature!" },
+                  ]}
+                >
+                  <Input
+                    placeholder="Type your feature"
+                    className="font-medium h-10 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
+                  />
+                </Form.Item>
               </Panel>
             ))}
           </Collapse>
@@ -179,6 +255,7 @@ const UpdateSponsorManagementModal = ({
               marginBottom: "20px",
             }}
             className="!mt-5"
+            type="button"
           >
             <PlusOutlined />
             Add More Feature
@@ -191,9 +268,11 @@ const UpdateSponsorManagementModal = ({
               <Panel
                 key={`option-${index}`}
                 header={`Option ${index + 1}`}
+                forceRender // 👈 ensures the form fields render and register even if collapsed
                 extra={
                   options.length > 1 && (
                     <button
+                      type="button"
                       className="text-red-500 hover:text-red-700"
                       onClick={() => handleRemoveOption(index)}
                     >
@@ -203,33 +282,6 @@ const UpdateSponsorManagementModal = ({
                 }
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <div>
-                    <Typography.Title level={5}>
-                      Priority Level
-                    </Typography.Title>
-                    <Form.Item
-                      name={["options", index, "priority"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select a Priority Level!",
-                        },
-                      ]}
-                      style={{ fontWeight: "500" }}
-                    >
-                      <Select
-                        placeholder="Select Priority Level"
-                        className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md"
-                      >
-                        {[...Array(12)].map((_, i) => (
-                          <Option key={i + 1} value={`${i + 1}`}>{`${
-                            i + 1
-                          } Month${i === 0 ? "" : "s"}`}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </div>
-
                   <div>
                     <Typography.Title level={5}>Add Price</Typography.Title>
                     <Form.Item
@@ -241,7 +293,32 @@ const UpdateSponsorManagementModal = ({
                     >
                       <Input
                         placeholder="Enter Price"
-                        className="font-medium h-12  !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
+                        className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
+                        type="number"
+                        min={0}
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div>
+                    <Typography.Title level={5}>
+                      Expiration Days
+                    </Typography.Title>
+                    <Form.Item
+                      name={["options", index, "expiration"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input the Expiration days!",
+                        },
+                      ]}
+                      style={{ fontWeight: "500" }}
+                    >
+                      <Input
+                        placeholder="Enter Expiration Days"
+                        className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
+                        type="number"
+                        min={0}
                       />
                     </Form.Item>
                   </div>
@@ -249,25 +326,7 @@ const UpdateSponsorManagementModal = ({
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div>
-                    <Typography.Title level={5}>Expiration</Typography.Title>
-                    <Form.Item
-                      name={["options", index, "expiration"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input the Expiration!",
-                        },
-                      ]}
-                      style={{ fontWeight: "500" }}
-                    >
-                      <Input
-                        placeholder="Enter Expiration"
-                        className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md text-xl !bg-input-color"
-                      />
-                    </Form.Item>
-                  </div>
-                  <div>
-                    <Typography.Title level={5}>Time</Typography.Title>
+                    <Typography.Title level={5}>Time (Months)</Typography.Title>
                     <Form.Item
                       name={["options", index, "time"]}
                       rules={[
@@ -277,11 +336,11 @@ const UpdateSponsorManagementModal = ({
                     >
                       <Select
                         placeholder="Select Time"
-                        className="font-medium h-12 !text-base-color !placeholder:text-[##B5B5B5] border !border-secondary-color rounded-md"
+                        className="font-medium h-12 !text-base-color placeholder:text-[#B5B5B5] border !border-secondary-color rounded-md"
                       >
-                        {[1, 2, 3, 4, 5].map((time) => (
-                          <Option key={time} value={`${time}`}>
-                            {time}
+                        {["1", "3", "6", "12"].map((time) => (
+                          <Option key={time} value={time}>
+                            {time} Month
                           </Option>
                         ))}
                       </Select>
@@ -306,10 +365,34 @@ const UpdateSponsorManagementModal = ({
               marginBottom: "20px",
             }}
             className="!mt-3"
+            type="button"
           >
             <PlusOutlined />
             Add More Option
           </Button>
+
+          <Typography.Title level={5}>Priority Level</Typography.Title>
+          <Form.Item
+            name="priorityLevel"
+            rules={[
+              { required: true, message: "Please select Priority Level!" },
+            ]}
+          >
+            <Select
+              className="font-medium h-12 rounded-md"
+              placeholder="Select Priority Level"
+            >
+              {[1, 2, 3].map((lvl) => (
+                <Option key={lvl} value={lvl}>
+                  {lvl}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="blueVerified" valuePropName="checked">
+            <Checkbox>Blue Verified Badge</Checkbox>
+          </Form.Item>
 
           <Form.Item>
             <Button

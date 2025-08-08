@@ -37,8 +37,8 @@ const AllUserTable = ({
   const columns = [
     {
       title: "#UID",
-      dataIndex: "UID",
-      key: "UID",
+      dataIndex: "_id",
+      key: "_id",
       render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
