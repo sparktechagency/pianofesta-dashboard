@@ -48,6 +48,7 @@ import CookiesPolicy from "../Pages/Common/settings/CookiesPolicy";
 import AddAdmin from "../Pages/Common/settings/AddAdmin";
 import AdminRequestedCategory from "../Pages/Admin/AdminRequestedCategory";
 import AdminInspiration from "../Pages/Admin/AdminInspiration";
+import ConversationPage from "../Pages/Common/ConversationPage";
 
 export const adminPaths = [
   {
@@ -165,7 +166,7 @@ export const adminPaths = [
   // },
   {
     path: "support-message",
-    element: <AdminMessage />,
+    element: <ConversationPage />,
     key: "support-message",
     name: "Support Message",
     icon: messageAndCom,

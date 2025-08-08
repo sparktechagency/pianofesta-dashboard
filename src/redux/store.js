@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice"; // Import your auth slice
+import conversationReducer from "./features/conversation/conversationSlice";
 import { baseApi } from "./api/baseApi";
 import { persistStore, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
@@ -44,6 +45,7 @@ const persistConfig = {
 const rootReducer = {
   [baseApi.reducerPath]: baseApi.reducer,
   auth: authReducer, // Regular auth reducer (will be persisted separately)
+  conversation: conversationReducer,
 };
 
 // Create persisted reducer for the auth slice
