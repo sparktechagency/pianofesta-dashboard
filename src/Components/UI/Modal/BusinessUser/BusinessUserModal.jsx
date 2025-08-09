@@ -22,9 +22,8 @@ import Accordion from "../../Accordion";
 import { useBusinessUserByIdQuery } from "../../../../redux/features/userManagement/userManagementApi";
 import { FadeLoader } from "react-spinners";
 import { Link } from "react-router-dom";
-
-const mapUrl =
-  "https://www.openstreetmap.org/export/embed.html?bbox=-0.510375,51.286760,0.334015,51.691874&layer=mapnik";
+import BusinessLocationMap from "../../../../Pages/Admin/AdminUserManagement/BusinessLocationMap";
+import { googleMapsApiKey } from "../../../../helpers/config/envConfig";
 
 const BusinessUserModal = ({
   isUserViewModalVisible,
@@ -333,17 +332,12 @@ const BusinessUserModal = ({
             {/* Location */}
             <div className="mt-4">
               <p className="text-lg lg:text-xl font-bold mb-3">Location</p>
-              <div className="map-container">
-                <iframe
-                  src={mapUrl}
-                  width="100%"
-                  height="200px"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  title="Google Map"
-                ></iframe>
-              </div>
+              <BusinessLocationMap
+                apiKey={googleMapsApiKey()}
+                coordinates={businessUser?.location?.coordinates}
+                name={businessUser?.name}
+                description={businessUser?.description}
+              />
             </div>
 
             {/* FAQ */}

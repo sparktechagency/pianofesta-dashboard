@@ -1,7 +1,7 @@
 import { formatDateTime } from "../../utils/dateFormet";
 import ImagePreviewer from "../../utils/ImagePreviewer";
 
-const ConversationMessageCard = ({ msg, userData, imageUrl }) => {
+const ConversationMessageCard = ({ msg, userData }) => {
   return (
     <div>
       <div>
@@ -17,7 +17,7 @@ const ConversationMessageCard = ({ msg, userData, imageUrl }) => {
             }`}
           >
             <div>
-              {msg?.file && (
+              {msg?.images?.length > 0 && (
                 <div
                   className={`grid grid-cols-1  ${
                     msg?.images?.length > 2 ? " md:grid-cols-2" : "grid-cols-1"
@@ -28,12 +28,14 @@ const ConversationMessageCard = ({ msg, userData, imageUrl }) => {
                       : "w-fit text-left text-base-color bg-[#F1F1F1]"
                   }`}
                 >
-                  <ImagePreviewer
-                    msg={msg}
-                    imageUrl={imageUrl}
-                    image={msg?.file}
-                    userData={userData}
-                  />
+                  {msg.images.map((imageUrl, index) => (
+                    <ImagePreviewer
+                      key={index}
+                      msg={msg}
+                      image={imageUrl}
+                      userData={userData}
+                    />
+                  ))}
                 </div>
               )}
               {msg?.text?.length > 0 && (

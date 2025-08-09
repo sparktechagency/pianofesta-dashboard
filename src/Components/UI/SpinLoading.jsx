@@ -1,11 +1,14 @@
 import { cn } from "../../lib/utils";
 
-const SpinnerLoader = ({ className }) => {
+const SpinnerLoader = ({ className = "", svgClassName = "" }) => {
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <svg
         aria-hidden="true"
-        className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-secondary-color"
+        className={cn(
+          "w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-secondary-color",
+          svgClassName
+        )}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

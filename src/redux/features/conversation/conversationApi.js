@@ -17,6 +17,14 @@ const conversationApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.conversation],
     }),
+    createConversation: build.mutation({
+      query: (req) => ({
+        url: `/chat/create`,
+        method: "POST",
+        body: req.body,
+      }),
+      invalidatesTags: [tagTypes.conversation],
+    }),
     getConversationMessageList: build.query({
       query: ({ id, page, limit }) => ({
         url: `/message/${id}`,
@@ -33,6 +41,7 @@ const conversationApi = baseApi.injectEndpoints({
 
 export const {
   useGetConversationListQuery,
+  useCreateConversationMutation,
   useGetConversationMessageListQuery,
 } = conversationApi;
 

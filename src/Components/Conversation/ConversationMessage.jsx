@@ -7,15 +7,14 @@ import { useSocket } from "../../context/socket-context";
 import {
   selectSelectedChatUser,
   setSelectedChatUser,
+  setTypingUser,
 } from "../../redux/features/conversation/conversationSlice";
 import { useGetConversationMessageListQuery } from "../../redux/features/conversation/conversationApi";
-import { getImageUrl } from "../../helpers/config/envConfig";
 import { FadeLoader } from "react-spinners";
 import ConversationMessageCard from "./ConversationMessageCard";
 import ConversationSendMessage from "./ConversationSendMessage";
 
 const ConversationMessage = ({ userData, onlineUsers }) => {
-  const imageUrl = getImageUrl();
   const socket = useSocket()?.socket;
   const dispatch = useDispatch();
   const selectedConversation = useSelector(selectSelectedChatUser);
@@ -62,18 +61,20 @@ const ConversationMessage = ({ userData, onlineUsers }) => {
 
   // Scroll immediately on conversation change (to catch cases where messages haven't updated yet)
   useEffect(() => {
-    console.log("Bal falao");
     scrollToBottom();
   });
 
   // Incoming socket message handler
   const handleMessage = useCallback(
     (message) => {
+      console.log(message);
       const newMessage = {
         text: message?.message,
         sender: message?.sender,
         chat: selectedConversation?._id,
         createdAt: message?.createdAt,
+
+        images: message?.images,
       };
       setMessages((prev) => [...prev, newMessage]);
 
@@ -95,13 +96,16 @@ const ConversationMessage = ({ userData, onlineUsers }) => {
     }
 
     socket.emit("join", roomId.toString());
+    socket.on(`typing::${roomId}`, (res) => {
+      dispatch(setTypingUser(res));
+    });
     socket.on(`message_received::${roomId}`, handleMessage);
 
     return () => {
       socket.off(`message_received::${roomId}`, handleMessage);
       socket.emit("leave", roomId);
     };
-  }, [socket, selectedConversation?._id, handleMessage]);
+  }, [socket, selectedConversation?._id, handleMessage, dispatch]);
 
   // Sort messages ascending by createdAt
   const sortedMessages = [...messages].sort(
@@ -167,7 +171,6 @@ const ConversationMessage = ({ userData, onlineUsers }) => {
                     key={msg._id ?? i}
                     msg={msg}
                     userData={userData}
-                    imageUrl={imageUrl}
                     ref={
                       i === sortedMessages.length - 1 ? messagesEndRef : null
                     }

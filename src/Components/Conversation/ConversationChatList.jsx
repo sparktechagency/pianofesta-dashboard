@@ -1,5 +1,5 @@
 "use client";
-import { Input } from "antd";
+import { Input, Tooltip } from "antd";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { useGetConversationListQuery } from "../../redux/features/conversation/conversationApi";
@@ -12,12 +12,14 @@ import {
 import useUserData from "../../hooks/useUserData";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/socket-context";
+import { BsFillPlusCircleFill } from "react-icons/bs";
+import CreateConversationModal from "./CreateConversationModal";
 
 const ConversationChatList = ({ userData, onlineUsers }) => {
   const user = useUserData();
   const socket = useSocket()?.socket;
   const dispatch = useDispatch();
-
+  const [isViewCreateModal, setIsViewCreateModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const seletedConversation = useSelector(selectSelectedChatUser);
   const [chatList, setChatList] = useState([]);
@@ -32,39 +34,40 @@ const ConversationChatList = ({ userData, onlineUsers }) => {
       }
     );
 
-  const handleNewMessage = useCallback((message) => {
-    const newMessage = message?.data;
-    console.log("$$$$newMessage", newMessage);
-    if (!newMessage?.conversationId) return;
+  const handleNewMessage = useCallback(
+    (payload) => {
+      // Payload is an array of chat objects with last message and counts
+      const chats = Array.isArray(payload) ? payload : [payload];
 
-    setChatList((prevChatList) => {
-      const existingIndex = prevChatList.findIndex(
-        (item) => item.lastMessage?.conversationId === newMessage.conversationId
-      );
+      const normalized = chats.map((item) => {
+        const otherUser =
+          item.chat.users.find((u) => u._id !== user?.userId) || {};
+        return {
+          _id: item.chat._id,
+          otherUser: {
+            id: otherUser._id,
+            name: otherUser.name || otherUser.sureName || otherUser.email,
+            image: otherUser.profileImage,
+          },
+          lastMessage: {
+            text: item.message,
+            updatedAt: item.lastMessageCreatedAt,
+          },
+          unreadMessageCount: item.unreadMessageCount,
+        };
+      });
 
-      if (existingIndex !== -1) {
-        // Update the existing conversation's lastMessage
-        const updatedList = [...prevChatList];
-        updatedList[existingIndex] = {
-          ...updatedList[existingIndex],
-          lastMessage: newMessage,
-          updatedAt: newMessage.updatedAt,
-        };
-        return updatedList;
-      } else {
-        // Push a new conversation (you need to define what a new conversation looks like)
-        const newConversation = {
-          _id: newMessage.conversationId,
-          lastMessage: newMessage,
-          createdAt: newMessage.createdAt,
-          updatedAt: newMessage.updatedAt,
-          self: {}, // You should populate this from context or existing data
-          otherUser: {}, // Same as above
-        };
-        return [newConversation, ...prevChatList];
-      }
-    });
-  }, []);
+      // Sort descending by lastMessage.updatedAt
+      normalized.sort((a, b) => {
+        const dateA = new Date(a.lastMessage.updatedAt || 0).getTime();
+        const dateB = new Date(b.lastMessage.updatedAt || 0).getTime();
+        return dateB - dateA;
+      });
+
+      setChatList(normalized);
+    },
+    [user?.userId]
+  );
 
   useEffect(() => {
     if (!socket) {
@@ -72,9 +75,7 @@ const ConversationChatList = ({ userData, onlineUsers }) => {
       return;
     }
 
-    socket.on(`chat-list::${user?.userId}`, (message) => {
-      console.log("message ===>", message);
-    });
+    socket.on(`chat-list::${user?.userId}`, handleNewMessage);
     socket.on("onlineUser", (online) => {
       console.log("Online Users:", online);
       dispatch(setOnlineUsers(online));
@@ -129,6 +130,14 @@ const ConversationChatList = ({ userData, onlineUsers }) => {
     setSearchTerm(event.target.value);
   };
 
+  const showCreateModal = () => {
+    setIsViewCreateModal(true);
+  };
+
+  const handleCancel = () => {
+    setIsViewCreateModal(false);
+  };
+
   return (
     <div
       className={`w-full lg:w-[400px] overflow-y-auto px-3 ${
@@ -137,7 +146,13 @@ const ConversationChatList = ({ userData, onlineUsers }) => {
     >
       <div className="sticky top-0 z-20   py-5 mb-3 !bg-primary-color">
         <div className=" flex justify-between items-center pe-4  text-base sm:text-xl md:text-2xl lg:text-3xl text-secondary-color font-bold mt-3">
-          Messages
+          <p>Messages</p>
+          <Tooltip placement="left" title="Create New Conversation">
+            <BsFillPlusCircleFill
+              onClick={showCreateModal}
+              className="text-secondary-color cursor-pointer text-sm sm:text-base md:text-xl lg:text-2xl"
+            />
+          </Tooltip>
         </div>
         <Input
           placeholder="Search Conversations"
@@ -164,6 +179,11 @@ const ConversationChatList = ({ userData, onlineUsers }) => {
           </div>
         </div>
       )}
+      <CreateConversationModal
+        isModalOpen={isViewCreateModal}
+        setIsModalOpen={setIsViewCreateModal}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 };
