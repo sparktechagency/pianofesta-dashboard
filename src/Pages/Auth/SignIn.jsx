@@ -17,6 +17,9 @@ const SignIn = () => {
     const res = await tryCatchWrapper(login, { body: values }, "Logging In...");
 
     if (res?.statusCode === 200 && res?.data?.user?.role === "admin") {
+      Cookies.remove("pianofesta_forgetOtpMatchToken");
+      Cookies.remove("pianofesta_email");
+      Cookies.remove("pianofesta_forgetToken");
       Cookies.set("pianofesta_accessToken", res?.data?.accessToken, {
         path: "/",
         expires: 365,
