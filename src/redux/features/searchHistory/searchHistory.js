@@ -14,7 +14,30 @@ const searchHistoryApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.searchHistory],
     }),
+    getBusinessName: builder.query({
+      query: ({ page, limit, searchTerm }) => ({
+        url: "/business/all-business-nameList",
+        params: {
+          page,
+          limit,
+          searchTerm,
+        },
+      }),
+      providesTags: [tagTypes.searchHistory],
+    }),
+    sendBusinessNotification: builder.mutation({
+      query: (req) => ({
+        url: "/notification/search",
+        method: "POST",
+        body: req.body,
+      }),
+      invalidatesTags: [tagTypes.searchHistory],
+    }),
   }),
 });
 
-export const { useGetSearchHistoryQuery } = searchHistoryApi;
+export const {
+  useGetSearchHistoryQuery,
+  useGetBusinessNameQuery,
+  useSendBusinessNotificationMutation,
+} = searchHistoryApi;

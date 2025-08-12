@@ -68,7 +68,7 @@ const SearchHistoryTable = ({
       total={total}
       limit={limit}
       page={page}
-      keyValue={"email"}
+      keyValue={"_id"}
     />
   );
 };
