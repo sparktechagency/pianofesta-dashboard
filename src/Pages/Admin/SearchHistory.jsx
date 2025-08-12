@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SearchHistoryTable from "../../Components/UI/Tables/SearchHistoryTable";
-import SendNotificationModal from "../../Components/UI/Modal/SearchHistory/SendNotificationModal";
+import SearchHistoryTable from "../../Components/ui/Tables/SearchHistoryTable";
+import SendNotificationModal from "../../Components/ui/Modal/SearchHistory/SendNotificationModal";
 import { useGetSearchHistoryQuery } from "../../redux/features/searchHistory/searchHistory";
 
 const SearchHistory = () => {

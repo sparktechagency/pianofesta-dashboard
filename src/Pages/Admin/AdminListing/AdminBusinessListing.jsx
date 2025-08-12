@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useMemo } from "react";
-import AdminBusinessListingDeleteModal from "../../../Components/UI/Modal/AdminListingModal/AdminBusinessListingDeleteModal";
-import BusinessUserModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserModal";
+import AdminBusinessListingDeleteModal from "../../../Components/ui/Modal/AdminListingModal/AdminBusinessListingDeleteModal";
+import BusinessUserModal from "../../../Components/ui/Modal/BusinessUser/BusinessUserModal";
 
-import AdminBusinessListingTable from "../../../Components/UI/Tables/AdminListing/AdminBusinessListingTable";
+import AdminBusinessListingTable from "../../../Components/ui/Tables/AdminListing/AdminBusinessListingTable";
 // Removed SearchInput, replaced with plain <input>
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";
 import { BiExport } from "react-icons/bi";

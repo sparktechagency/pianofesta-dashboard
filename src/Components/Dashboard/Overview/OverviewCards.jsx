@@ -5,7 +5,7 @@ import { MdEvent } from "react-icons/md";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { AllIcons } from "../../../../public/images/AllImages";
 import { useGetOverviewQuery } from "../../../redux/features/dashboard/dashboardApi";
-import SpinnerLoader from "../../UI/SpinLoading";
+import SpinnerLoader from "../../ui/SpinLoading";
 
 const OverviewCard = () => {
   const { data, isFetching } = useGetOverviewQuery();

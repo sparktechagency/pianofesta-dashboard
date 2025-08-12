@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import AdminBusinessListingDeleteModal from "../../../Components/UI/Modal/AdminListingModal/AdminBusinessListingDeleteModal";
-import AdminJobListingTable from "../../../Components/UI/Tables/AdminListing/AdminJonListingTable";
+import AdminBusinessListingDeleteModal from "../../../Components/ui/Modal/AdminListingModal/AdminBusinessListingDeleteModal";
+import AdminJobListingTable from "../../../Components/ui/Tables/AdminListing/AdminJonListingTable";
 import SearchInput from "../../../utils/SearchInput";
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";
 import { BiExport } from "react-icons/bi";

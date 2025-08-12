@@ -6,7 +6,7 @@ import {
 import { useState, useEffect } from "react";
 import tryCatchWrapper from "../../../utils/TryCatchWraper";
 import { useGetProfileQuery } from "../../../redux/features/profile/profileApi";
-import Loading from "../../UI/Loading";
+import Loading from "../../ui/Loading";
 
 // Simple debounce hook
 function useDebounce(value, delay = 500) {

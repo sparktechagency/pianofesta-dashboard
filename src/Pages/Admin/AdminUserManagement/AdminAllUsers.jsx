@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import AllUserTable from "../../../Components/UI/Tables/UserTable";
-import UserModal from "../../../Components/UI/Modal/User/UserModal";
-import UserBlockModal from "../../../Components/UI/Modal/User/UserBlockModal";
-import UserUnblockModal from "../../../Components/UI/Modal/User/UserUnblockModal";
+import AllUserTable from "../../../Components/ui/Tables/UserTable";
+import UserModal from "../../../Components/ui/Modal/User/UserModal";
+import UserBlockModal from "../../../Components/ui/Modal/User/UserBlockModal";
+import UserUnblockModal from "../../../Components/ui/Modal/User/UserUnblockModal";
 import SearchInput from "../../../utils/SearchInput";
 import { BiExport } from "react-icons/bi";
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";

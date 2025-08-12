@@ -2,7 +2,7 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input, Select, Typography } from "antd";
 import { useState, useMemo } from "react";
-import RequestCategoryTable from "../../Components/UI/Tables/RequestCategoryTable";
+import RequestCategoryTable from "../../Components/ui/Tables/RequestCategoryTable";
 import { FaFilter } from "react-icons/fa";
 import { useRequestedCategoryQuery } from "../../redux/features/categories/categoriesApi";
 

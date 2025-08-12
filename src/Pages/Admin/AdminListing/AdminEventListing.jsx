@@ -5,9 +5,9 @@ import { BiExport } from "react-icons/bi";
 import * as XLSX from "xlsx";
 
 import { useEventListingQuery } from "../../../redux/features/listing/listingApi";
-import AdminListingEventTable from "../../../Components/UI/Tables/AdminListing/AdminListingEventTable";
-import AdminListingModal from "../../../Components/UI/Modal/AdminListingModal/AdminEventListingModal";
-import AdminEventListingDeleteModal from "../../../Components/UI/Modal/AdminListingModal/AdminEventListingDeleteModal";
+import AdminListingEventTable from "../../../Components/ui/Tables/AdminListing/AdminListingEventTable";
+import AdminListingModal from "../../../Components/ui/Modal/AdminListingModal/AdminEventListingModal";
+import AdminEventListingDeleteModal from "../../../Components/ui/Modal/AdminListingModal/AdminEventListingDeleteModal";
 import SearchInput from "../../../utils/SearchInput";
 
 const AdminEventListing = () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import YearOption from "../../../utils/YearOption";
 import Bar_Chart from "../../Chart/BarChart";
 import { useGetEarningRatioQuery } from "../../../redux/features/dashboard/dashboardApi";
-import SpinnerLoader from "../../UI/SpinLoading";
+import SpinnerLoader from "../../ui/SpinLoading";
 
 const IncomeOverview = () => {
   const currentYear = new Date().getFullYear();

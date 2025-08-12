@@ -2,11 +2,11 @@ import { Button } from "antd";
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import SearchInput from "../../utils/SearchInput";
-import AddInspirationModal from "../../Components/UI/Modal/Inspiration/AddInspirationModal";
-import InspirationTable from "../../Components/UI/Tables/InspirationTable";
-import InspirationModal from "../../Components/UI/Modal/Inspiration/InspirationModal";
-import DeleteInspirationModal from "../../Components/UI/Modal/Inspiration/DeleteInspirationModal";
-import EditInspirationModal from "../../Components/UI/Modal/Inspiration/EditInspirationModal";
+import AddInspirationModal from "../../Components/ui/Modal/Inspiration/AddInspirationModal";
+import InspirationTable from "../../Components/ui/Tables/InspirationTable";
+import InspirationModal from "../../Components/ui/Modal/Inspiration/InspirationModal";
+import DeleteInspirationModal from "../../Components/ui/Modal/Inspiration/DeleteInspirationModal";
+import EditInspirationModal from "../../Components/ui/Modal/Inspiration/EditInspirationModal";
 import { useGetInspirationQuery } from "../../redux/features/inspiration/inspirationAPi";
 
 const AdminInspiration = () => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ReportTable from "../../Components/UI/Tables/ReportData";
-import ReportModal from "../../Components/UI/Modal/Report/ReportModal";
-import ReportDeleteModal from "../../Components/UI/Modal/Report/ReportDeleteModal";
+import ReportTable from "../../Components/ui/Tables/ReportData";
+import ReportModal from "../../Components/ui/Modal/Report/ReportModal";
+import ReportDeleteModal from "../../Components/ui/Modal/Report/ReportDeleteModal";
 import { useGetReportQuery } from "../../redux/features/report/reportApi";
 
 const AdminReport = () => {

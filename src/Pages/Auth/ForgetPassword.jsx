@@ -1,7 +1,7 @@
 import { Button, Form, Input, Typography } from "antd";
 
 import { Link, useNavigate } from "react-router-dom";
-import Container from "../../Components/UI/Container";
+import Container from "../../Components/ui/Container";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useForgetPasswordMutation } from "../../redux/features/auth/authApi";
 import tryCatchWrapper from "../../utils/TryCatchWraper";

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import BusinessUserModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserModal";
-import BusinessUserBlockModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserBlockModal";
-import BusinessUserUnblockModal from "../../../Components/UI/Modal/BusinessUser/BusinessUserUnblockModal";
-import AllBusinessUserTable from "../../../Components/UI/Tables/BusinessUserTable";
+import BusinessUserModal from "../../../Components/ui/Modal/BusinessUser/BusinessUserModal";
+import BusinessUserBlockModal from "../../../Components/ui/Modal/BusinessUser/BusinessUserBlockModal";
+import BusinessUserUnblockModal from "../../../Components/ui/Modal/BusinessUser/BusinessUserUnblockModal";
+import AllBusinessUserTable from "../../../Components/ui/Tables/BusinessUserTable";
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";
 import { FaFilter } from "react-icons/fa";
 import SearchInput from "../../../utils/SearchInput";

@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input, Typography } from "antd";
 
 import Cookies from "js-cookie";
 
-import Container from "../../Components/UI/Container";
+import Container from "../../Components/ui/Container";
 import tryCatchWrapper from "../../utils/TryCatchWraper";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { toast } from "sonner";

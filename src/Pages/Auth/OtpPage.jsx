@@ -2,7 +2,7 @@ import { Button, Form } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
-import Container from "../../Components/UI/Container";
+import Container from "../../Components/ui/Container";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Cookies from "js-cookie";
 import tryCatchWrapper from "../../utils/TryCatchWraper";

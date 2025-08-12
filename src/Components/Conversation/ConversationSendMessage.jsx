@@ -7,7 +7,7 @@ import axios from "axios";
 import { selectSelectedChatUser } from "../../redux/features/conversation/conversationSlice";
 import { getBaseUrl } from "../../helpers/config/envConfig";
 import { useSelector } from "react-redux";
-import SpinnerLoader from "../UI/SpinLoading";
+import SpinnerLoader from "../ui/SpinLoading";
 import Cookies from "js-cookie";
 // import useUserData from "../../hooks/useUserData";
 

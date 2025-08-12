@@ -1,11 +1,11 @@
 import { useState } from "react";
-import AddAdminTable from "../../../Components/UI/Tables/AddAdminTable";
-import AddAdminViewModal from "../../../Components/UI/Modal/AddAdmin/AddAdminViewModal";
+import AddAdminTable from "../../../Components/ui/Tables/AddAdminTable";
+import AddAdminViewModal from "../../../Components/ui/Modal/AddAdmin/AddAdminViewModal";
 import { Button } from "antd";
 import { MdAdd } from "react-icons/md";
-import AddAdminModal from "../../../Components/UI/Modal/AddAdmin/AddAdminModal";
+import AddAdminModal from "../../../Components/ui/Modal/AddAdmin/AddAdminModal";
 import { useGetAdminQuery } from "../../../redux/features/adminManagement/adminManagementApi";
-import AdminRemoveModal from "../../../Components/UI/Modal/AddAdmin/AdminRemoveModal";
+import AdminRemoveModal from "../../../Components/ui/Modal/AddAdmin/AdminRemoveModal";
 
 const AddAdmin = () => {
   const { data, isFetching } = useGetAdminQuery();

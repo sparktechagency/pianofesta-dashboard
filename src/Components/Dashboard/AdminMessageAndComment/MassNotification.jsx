@@ -7,7 +7,7 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 import { useGetProfileQuery } from "../../../redux/features/profile/profileApi";
-import Loading from "../../UI/Loading";
+import Loading from "../../ui/Loading";
 import { useSendMassNotificationMutation } from "../../../redux/features/sendNotification/sendNotificationApi";
 import tryCatchWrapper from "../../../utils/TryCatchWraper";
 import { googleMapsApiKey } from "../../../helpers/config/envConfig";

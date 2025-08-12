@@ -3,7 +3,7 @@ import YearOption from "../../../utils/YearOption";
 import { useState } from "react";
 import { ConfigProvider, Select } from "antd";
 import { useGetUserRatioQuery } from "../../../redux/features/dashboard/dashboardApi";
-import SpinnerLoader from "../../UI/SpinLoading";
+import SpinnerLoader from "../../ui/SpinLoading";
 
 const UserOverview = () => {
   const currentYear = new Date().getFullYear();

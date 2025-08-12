@@ -11,7 +11,7 @@ import ForgotPassword from "../Pages/Auth/ForgetPassword";
 import OtpPage from "../Pages/Auth/OtpPage";
 import UpdatePassword from "../Pages/Auth/UpdatePassword";
 
-import NotFoundPage from "../Components/UI/NotFound/NotFound";
+import NotFoundPage from "../Components/ui/NotFound/NotFound";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.route";
 import { decodedToken } from "../utils/jwt";

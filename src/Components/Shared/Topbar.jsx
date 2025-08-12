@@ -7,7 +7,7 @@ import { useState } from "react";
 import { AllImages } from "../../../public/images/AllImages";
 import useUserData from "../../hooks/useUserData";
 import { useGetProfileQuery } from "../../redux/features/profile/profileApi";
-import SpinnerLoader from "../UI/SpinLoading";
+import SpinnerLoader from "../ui/SpinLoading";
 import { useGetNotificationQuery } from "../../redux/features/dashboard/dashboardApi";
 import { formatDateTime } from "../../utils/dateFormet";
 import { FadeLoader } from "react-spinners";

@@ -2,11 +2,11 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input } from "antd";
 import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import AddSponsorManagementModal from "../../Components/UI/Modal/Sponsor/AddSponsorModal";
-import SponseManagementTable from "../../Components/UI/Tables/SponserManagementTable";
-import UpdateSponsorManagementModal from "../../Components/UI/Modal/Sponsor/UpdateSponsorModal";
+import AddSponsorManagementModal from "../../Components/ui/Modal/Sponsor/AddSponsorModal";
+import SponseManagementTable from "../../Components/ui/Tables/SponserManagementTable";
+import UpdateSponsorManagementModal from "../../Components/ui/Modal/Sponsor/UpdateSponsorModal";
 import { useGetSponsorManagementQuery } from "../../redux/features/sponsorManagement/sponsorManagementApi";
-import DeleteSponsorModal from "../../Components/UI/Modal/Sponsor/DeleteSponsorModal";
+import DeleteSponsorModal from "../../Components/ui/Modal/Sponsor/DeleteSponsorModal";
 
 const AdminSponsorManagement = () => {
   const [activeTab, setActiveTab] = useState("event");

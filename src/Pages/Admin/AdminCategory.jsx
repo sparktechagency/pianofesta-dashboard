@@ -2,11 +2,11 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input } from "antd";
 import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import AddCategoryModal from "../../Components/UI/Modal/Category/AddCategoryModal";
-import CategoryTable from "../../Components/UI/Tables/CategoryTable";
-import DeleteCategoryModal from "../../Components/UI/Modal/Category/DeleteCategoryModal";
+import AddCategoryModal from "../../Components/ui/Modal/Category/AddCategoryModal";
+import CategoryTable from "../../Components/ui/Tables/CategoryTable";
+import DeleteCategoryModal from "../../Components/ui/Modal/Category/DeleteCategoryModal";
 import { useSubCategoryQuery } from "../../redux/features/categories/categoriesApi";
-import EditCategoryModal from "../../Components/UI/Modal/Category/EditCategoryModal";
+import EditCategoryModal from "../../Components/ui/Modal/Category/EditCategoryModal";
 
 const tabOptions = [
   { key: "Event", label: "Event" },

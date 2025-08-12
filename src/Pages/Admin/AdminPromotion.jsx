@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Button, Modal } from "antd";
-import PromotionDeleteModal from "../../Components/UI/Modal/Promotion/PromotionModal";
-import PromotionTable from "../../Components/UI/Tables/PromotionTable";
+import PromotionDeleteModal from "../../Components/ui/Modal/Promotion/PromotionModal";
+import PromotionTable from "../../Components/ui/Tables/PromotionTable";
 import { MdAdd } from "react-icons/md";
-import AddPromotionModal from "../../Components/UI/Modal/Promotion/AddPromotionModal";
+import AddPromotionModal from "../../Components/ui/Modal/Promotion/AddPromotionModal";
 import {
   useGetPromotionsQuery,
   useTogglePromotionsActiveMutation,
 } from "../../redux/features/promotions/promotionsApi";
 import { toast } from "sonner";
-import EditPromotionModal from "../../Components/UI/Modal/Promotion/EditPromotionModal";
+import EditPromotionModal from "../../Components/ui/Modal/Promotion/EditPromotionModal";
 
 const AdminPromotion = () => {
   const { data, isFetching } = useGetPromotionsQuery();

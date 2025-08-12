@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import UserModal from "../../UI/Modal/User/UserModal";
-import AllUserTable from "../../UI/Tables/UserTable";
-import UserBlockModal from "../../UI/Modal/User/UserBlockModal";
-import UserUnblockModal from "../../UI/Modal/User/UserUnblockModal";
+import UserModal from "../../ui/Modal/User/UserModal";
+import AllUserTable from "../../ui/Tables/UserTable";
+import UserBlockModal from "../../ui/Modal/User/UserBlockModal";
+import UserUnblockModal from "../../ui/Modal/User/UserUnblockModal";
 import { useRegularUserQuery } from "../../../redux/features/userManagement/userManagementApi";
 const RecentUser = () => {
   const { data, isFetching } = useRegularUserQuery();

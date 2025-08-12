@@ -1,5 +1,5 @@
 import { useState } from "react";
-import NotificationTable from "../../Components/UI/Tables/NotificationTable";
+import NotificationTable from "../../Components/ui/Tables/NotificationTable";
 import DirectNotification from "../../Components/Dashboard/AdminMessageAndComment/DirectNotificationForm";
 import MassNotification from "../../Components/Dashboard/AdminMessageAndComment/MassNotification";
 import { useGetAllCommunicationNotificationQuery } from "../../redux/features/sendNotification/sendNotificationApi";

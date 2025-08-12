@@ -1,6 +1,6 @@
 import { useState } from "react";
-import EarningTable from "../../Components/UI/Tables/EarningTable";
-import EarningModal from "../../Components/UI/Modal/Earning/EarningModal";
+import EarningTable from "../../Components/ui/Tables/EarningTable";
+import EarningModal from "../../Components/ui/Modal/Earning/EarningModal";
 import { Button, ConfigProvider, DatePicker, Select, Typography } from "antd";
 import { FaFilter } from "react-icons/fa";
 import SearchInput from "../../utils/SearchInput";

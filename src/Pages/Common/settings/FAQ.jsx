@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "antd";
 import { GoPlus } from "react-icons/go";
-import Accordion from "../../../Components/UI/Accordion";
-import AddFAQ from "../../../Components/UI/Modal/FAQ/AddFAQ";
-import UpdateFAQ from "../../../Components/UI/Modal/FAQ/UpdateFAQ";
-import DeleteFAQModal from "../../../Components/UI/Modal/FAQ/DeleteFAQ";
+import Accordion from "../../../Components/ui/Accordion";
+import AddFAQ from "../../../Components/ui/Modal/FAQ/AddFAQ";
+import UpdateFAQ from "../../../Components/ui/Modal/FAQ/UpdateFAQ";
+import DeleteFAQModal from "../../../Components/ui/Modal/FAQ/DeleteFAQ";
 import { useGetFaqQuery } from "../../../redux/features/faq/faqApi";
 import Loading from "../../../Components/ui/Loading";
 
