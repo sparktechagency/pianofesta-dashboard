@@ -1,42 +1,48 @@
+import { formatDateTime } from "../../../utils/dateFormet";
 import MyTable from "../../../utils/MyTable";
-const NotificationTable = ({
-  data,
-  loading,
-  setPage,
-  page,
-  total,
-  limit,
-  // showFilters = true,
-}) => {
+
+const NotificationTable = ({ data, loading, setPage, page, total, limit }) => {
+  // Map API data to table-friendly structure
+  const tableData = data?.map((item, index) => ({
+    key: item?._id,
+    uid: index + 1,
+    recipient: item?.receiverId?.name, // or replace with actual recipient name if available
+    message: item?.message?.text || "",
+    channel: item?.channel || "",
+    status: item?.status || "",
+    date: formatDateTime(item?.createdAt),
+  }));
+
   const columns = [
     {
       title: "#UID",
-      render: (_, __, index) => index + 1,
+      dataIndex: "_id",
       key: "_id",
+      render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
       title: "Recipient",
-      dataIndex: "recipient", // Data key for recipient
+      dataIndex: "recipient",
       key: "recipient",
     },
     {
       title: "Notification",
-      dataIndex: "message", // Data key for message
+      dataIndex: "message",
       key: "message",
     },
     {
       title: "Channel",
-      dataIndex: "channel", // Data key for channel
+      dataIndex: "channel",
       key: "channel",
     },
     {
       title: "Status",
-      dataIndex: "status", // Data key for status
+      dataIndex: "status",
       key: "status",
     },
     {
       title: "Date",
-      dataIndex: "date", // Data key for date
+      dataIndex: "date",
       key: "date",
     },
   ];
@@ -44,13 +50,13 @@ const NotificationTable = ({
   return (
     <MyTable
       columns={columns}
-      data={data}
+      data={tableData}
       loading={loading}
       setPage={setPage}
       total={total}
       limit={limit}
       page={page}
-      keyValue={"email"}
+      keyValue={"key"}
     />
   );
 };

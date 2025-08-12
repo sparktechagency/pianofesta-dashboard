@@ -8,6 +8,7 @@ import { useGetProfileQuery } from "../../../../redux/features/profile/profileAp
 import { useState, useMemo } from "react";
 import { debounce } from "lodash";
 import { FadeLoader } from "react-spinners";
+import tryCatchWrapper from "../../../../utils/TryCatchWraper";
 
 const SendNotificationModal = ({ isViewModalVisible, handleCancel }) => {
   const [search, setSearch] = useState("");
@@ -82,8 +83,12 @@ const SendNotificationModal = ({ isViewModalVisible, handleCancel }) => {
 
     console.log("payload sent to backend:", payload);
 
-    const res = await sendBusinessNotification(payload);
-    if (res?.data?.statusCode === 200) {
+    const res = await tryCatchWrapper(
+      sendBusinessNotification,
+      { body: payload },
+      "Sending Notification..."
+    );
+    if (res?.statusCode === 200) {
       handleCancel();
       setSearch("");
       form.resetFields();

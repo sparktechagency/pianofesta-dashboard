@@ -1,56 +1,214 @@
+import { useState, useRef } from "react";
 import { Button, Form, Input, Select, Typography } from "antd";
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
+import { useGetProfileQuery } from "../../../redux/features/profile/profileApi";
+import Loading from "../../UI/Loading";
+import { useSendMassNotificationMutation } from "../../../redux/features/sendNotification/sendNotificationApi";
+import tryCatchWrapper from "../../../utils/TryCatchWraper";
+import { googleMapsApiKey } from "../../../helpers/config/envConfig";
 
 const { Option } = Select;
 
-const MassNotification = () => {
-  const [form] = Form.useForm();
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
 
-  const handleSave = async (values) => {
-    console.log(values);
+const defaultCenter = {
+  lat: 41.9028, // Latitude for Rome, Italy
+  lng: 12.4964, // Longitude for Rome, Italy
+};
+
+const libraries = ["places"];
+
+const MassNotification = ({ activeTab }) => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: googleMapsApiKey(), // Replace this
+    libraries,
+  });
+
+  const [sendMassNotification] = useSendMassNotificationMutation();
+  const { data, isFetching } = useGetProfileQuery(undefined, {
+    skip: activeTab !== "massMessage",
+  });
+
+  const profileData = data?.data;
+  const profileImage = profileData?.profileImage;
+
+  const [form] = Form.useForm();
+  const autocompleteRef = useRef(null);
+
+  const [selectedLocation, setSelectedLocation] = useState({
+    name: "",
+    lat: null,
+    lng: null,
+  });
+
+  const handlePlaceChanged = () => {
+    const place = autocompleteRef.current.getPlace();
+    if (place && place.geometry) {
+      const fullAddress = place.name || place.formatted_address || "";
+      setSelectedLocation({
+        name: fullAddress,
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      });
+      form.setFieldsValue({ location: fullAddress });
+    }
   };
 
+  const handleMapClick = (e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+
+    if (window.google) {
+      const geocoder = new window.google.maps.Geocoder();
+      const latlng = { lat, lng };
+      geocoder.geocode({ location: latlng }, (results, status) => {
+        if (status === "OK" && results.length > 0) {
+          // Try to find best detailed address result:
+          const detailedResult =
+            results.find(
+              (r) =>
+                r.types.includes("street_address") ||
+                r.types.includes("route") ||
+                r.types.includes("locality")
+            ) || results[0]; // fallback to first result
+
+          const fullAddress = detailedResult.formatted_address || "";
+
+          setSelectedLocation({
+            name: fullAddress,
+            lat,
+            lng,
+          });
+          form.setFieldsValue({ location: fullAddress });
+        }
+      });
+    }
+  };
+
+  const handleSave = async (values) => {
+    const payload = {
+      location: {
+        latitude: selectedLocation.lat,
+        longitude: selectedLocation.lng,
+      },
+      rangeKm: Number(values.Range),
+      category: values.category,
+      message: {
+        image: profileImage || "",
+        text: values.message,
+      },
+    };
+
+    console.log("Payload to send backend:", payload);
+
+    const res = await tryCatchWrapper(
+      sendMassNotification,
+      { body: payload },
+      "Sending Notification..."
+    );
+
+    console.log("response from backend:", res);
+    if (res?.statusCode === 200) {
+      setSelectedLocation({
+        name: "",
+        lat: null,
+        lng: null,
+      });
+      form.resetFields();
+    }
+  };
+
+  if (loadError) {
+    return <div>Error loading Google Maps</div>;
+  }
+
+  if (!isLoaded || isFetching) {
+    return <Loading />;
+  }
+
   return (
-    <div className="">
+    <div>
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSave}
         className="space-y-5"
       >
-        {/* Dropdown for Location */}
+        {/* Location with Google Autocomplete */}
         <Typography.Title level={5}>Location</Typography.Title>
         <Form.Item
           name="location"
           rules={[{ required: true, message: "Please select a location!" }]}
           style={{ fontWeight: "500" }}
         >
-          <Select
-            placeholder="All of Italy"
-            className="font-medium h-12 border !border-secondary-color rounded-md"
+          <Autocomplete
+            onLoad={(ref) => (autocompleteRef.current = ref)}
+            onPlaceChanged={handlePlaceChanged}
           >
-            <Option value="italy">All of Italy</Option>
-            <Option value="rome">Rome</Option>
-            <Option value="milan">Milan</Option>
-          </Select>
+            <Input
+              placeholder="Search Location"
+              value={selectedLocation.name}
+              onChange={(e) => {
+                setSelectedLocation({
+                  ...selectedLocation,
+                  name: e.target.value,
+                });
+                form.setFieldsValue({ location: e.target.value });
+              }}
+              className="font-medium h-12 border !border-secondary-color rounded-md text-xl"
+            />
+          </Autocomplete>
         </Form.Item>
+
+        {/* Google Map for selecting location */}
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={
+            selectedLocation.lat && selectedLocation.lng
+              ? { lat: selectedLocation.lat, lng: selectedLocation.lng }
+              : defaultCenter
+          }
+          zoom={selectedLocation.lat && selectedLocation.lng ? 15 : 10}
+          onClick={handleMapClick}
+        >
+          {selectedLocation.lat && selectedLocation.lng && (
+            <Marker
+              position={{
+                lat: selectedLocation.lat,
+                lng: selectedLocation.lng,
+              }}
+            />
+          )}
+        </GoogleMap>
+
+        {/* Range */}
         <Typography.Title level={5}>Range</Typography.Title>
         <Form.Item
           name="Range"
-          rules={[{ required: true, message: "Please select a Rage!" }]}
+          rules={[{ required: true, message: "Please select a Range!" }]}
           style={{ fontWeight: "500" }}
         >
           <Select
             placeholder="Select Range"
             className="font-medium h-12 border !border-secondary-color rounded-md"
           >
-            <Option value="1">1 KM</Option>
-            <Option value="10">10 KM</Option>
-            <Option value="20">20 KM</Option>
-            <Option value="30">30 KM</Option>
+            {[1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((km) => (
+              <Option key={km} value={km.toString()}>
+                {km} KM
+              </Option>
+            ))}
           </Select>
         </Form.Item>
 
-        {/* Dropdown for Categories */}
+        {/* Categories */}
         <Typography.Title level={5}>Categories</Typography.Title>
         <Form.Item
           name="category"
@@ -62,60 +220,12 @@ const MassNotification = () => {
             className="font-medium h-12 border !border-secondary-color rounded-md"
           >
             <Option value="all">All Categories</Option>
-            <Option value="events">Events</Option>
+            <Option value="event">Events</Option>
             <Option value="business">Business</Option>
           </Select>
         </Form.Item>
 
-        {/* Dropdown for Event Types */}
-        <Typography.Title level={5}>Event Types</Typography.Title>
-        <Form.Item
-          name="eventType"
-          rules={[{ required: true, message: "Please select an event type!" }]}
-          style={{ fontWeight: "500" }}
-        >
-          <Select
-            placeholder="All Event Types"
-            className="font-medium h-12 border !border-secondary-color rounded-md"
-          >
-            <Option value="all">All Event Types</Option>
-            <Option value="conference">Conference</Option>
-            <Option value="webinar">Webinar</Option>
-          </Select>
-        </Form.Item>
-
-        {/* Dropdown for Behaviors */}
-        <Typography.Title level={5}>Behaviors</Typography.Title>
-        <Form.Item
-          name="behavior"
-          rules={[{ required: true, message: "Please select a behavior!" }]}
-          style={{ fontWeight: "500" }}
-        >
-          <Select
-            placeholder="All Behaviors"
-            className="font-medium h-12 border !border-secondary-color rounded-md"
-          >
-            <Option value="all">All Behaviors</Option>
-            <Option value="positive">Positive</Option>
-            <Option value="negative">Negative</Option>
-          </Select>
-        </Form.Item>
-
-        {/* Email Input */}
-        <Typography.Title level={5}>Email</Typography.Title>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please input your email!" }]}
-          style={{ fontWeight: "500" }}
-        >
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            className="font-medium h-12 border !border-secondary-color rounded-md text-xl"
-          />
-        </Form.Item>
-
-        {/* Message Input */}
+        {/* Message */}
         <Typography.Title level={5}>Message</Typography.Title>
         <Form.Item
           name="message"

@@ -22,8 +22,31 @@ const sendNotificationApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.sendNotification],
     }),
+    sendMassNotification: builder.mutation({
+      query: (req) => ({
+        url: "/notification/mass-notification",
+        method: "POST",
+        body: req.body,
+      }),
+      invalidatesTags: [tagTypes.sendNotification],
+    }),
+    getAllCommunicationNotification: builder.query({
+      query: ({ page, limit, searchTerm }) => ({
+        url: "/notification/mass",
+        params: {
+          page,
+          limit,
+          searchTerm,
+        },
+      }),
+      providesTags: [tagTypes.sendNotification],
+    }),
   }),
 });
 
-export const { useGetAllUserNameQuery, useSendDirectNotificationMutation } =
-  sendNotificationApi;
+export const {
+  useGetAllUserNameQuery,
+  useSendDirectNotificationMutation,
+  useSendMassNotificationMutation,
+  useGetAllCommunicationNotificationQuery,
+} = sendNotificationApi;

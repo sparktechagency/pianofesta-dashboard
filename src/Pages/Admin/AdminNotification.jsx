@@ -1,16 +1,24 @@
 import { useState } from "react";
-import messageData from "../../../public/data/messageData";
 import NotificationTable from "../../Components/UI/Tables/NotificationTable";
 import DirectNotification from "../../Components/Dashboard/AdminMessageAndComment/DirectNotificationForm";
 import MassNotification from "../../Components/Dashboard/AdminMessageAndComment/MassNotification";
+import { useGetAllCommunicationNotificationQuery } from "../../redux/features/sendNotification/sendNotificationApi";
 
 const AdminNotification = () => {
   const [page, setPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
-  const [searchText, setSearchText] = useState("");
 
   const limit = 12;
   const [activeTab, setActiveTab] = useState("directMessages");
+  const { data, isFetching } = useGetAllCommunicationNotificationQuery(
+    {
+      page,
+      limit,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+      skip: activeTab !== "communicationHistory",
+    }
+  );
 
   return (
     <div className="mt-10">
@@ -56,16 +64,21 @@ const AdminNotification = () => {
           </div>
         ) : activeTab === "massMessage" ? (
           <div className="bg-primary-color w-1/2 py-4  ">
-            <MassNotification />
+            {/* <LoadScript
+              googleMapsApiKey={googleMapsApiKey()}
+              libraries={["places"]}
+            > */}
+            <MassNotification activeTab={activeTab} />
+            {/* </LoadScript> */}
           </div>
         ) : (
           <div className="bg-primary-color  py-4  ">
             <NotificationTable
-              data={messageData}
-              loading={false}
+              data={data?.data}
+              loading={isFetching}
               setPage={setPage}
               page={page}
-              total={messageData.length}
+              total={data?.data?.length}
               limit={limit}
             />
           </div>
