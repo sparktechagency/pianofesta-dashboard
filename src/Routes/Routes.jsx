@@ -11,12 +11,12 @@ import ForgotPassword from "../Pages/Auth/ForgetPassword";
 import OtpPage from "../Pages/Auth/OtpPage";
 import UpdatePassword from "../Pages/Auth/UpdatePassword";
 
+import Loading from "../Components/ui/Loading";
 import NotFoundPage from "../Components/ui/NotFound/NotFound";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.route";
 import { decodedToken } from "../utils/jwt";
 import Cookies from "js-cookie";
-import Loading from "../Components/ui/Loading";
 
 function AuthRedirect() {
   const navigate = useNavigate();
